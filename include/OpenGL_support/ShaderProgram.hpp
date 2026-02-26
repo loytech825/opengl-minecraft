@@ -1,0 +1,29 @@
+#include "glad/glad.h"
+#include <filesystem>
+
+class ShaderProgram
+{
+public:
+    ShaderProgram(const std::filesystem::path& vertex_path, const std::filesystem::path& fragment_path);
+    ShaderProgram(const ShaderProgram& other) = delete;
+    ShaderProgram& operator=(const ShaderProgram& other) = delete;
+    ShaderProgram(ShaderProgram&& other);
+    ShaderProgram& operator=(ShaderProgram&& other);
+    ~ShaderProgram();
+    void bind();
+    void unbind();
+
+
+    void set_uniform(const std::string& name, float value);
+    void set_uniform(const std::string& name, int value);
+    void set_uniform(const std::string& name, bool value);
+
+private:
+
+    //reads vertex and fragment shader files
+    //and compiles both shaders and links them to the program
+    void compile_shader(const std::filesystem::path& v_path, const std::filesystem::path& f_path);
+    void check_compile_errors(unsigned int shader_id, const std::string& type);
+    unsigned int m_ID;
+
+};
