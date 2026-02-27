@@ -115,7 +115,8 @@
 				3,
 				4,
 				5,
-				6
+				6,
+				7
 			]
 		}
 	],
@@ -198,12 +199,19 @@
 				3,
 				4,
 				5,
-				6
+				6,
+				7
 			]
 		}
 	],
 	"sources" : 
 	[
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 0,
+			"path" : "src/Camera.cpp",
+			"sourceGroupIndex" : 0
+		},
 		{
 			"backtrace" : 7,
 			"compileGroupIndex" : 0,

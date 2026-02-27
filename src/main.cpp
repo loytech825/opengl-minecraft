@@ -1,4 +1,5 @@
 #include "World.hpp"
+#include "Camera.hpp"
 #include "OpenGL_support/ShaderProgram.hpp"
 #include "OpenGL_support/VAO.hpp"
 #include "OpenGL_support/VBO.hpp"
@@ -36,18 +37,18 @@ int main(){
     };
 
     {
-    VBO buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW, vertices, 6*sizeof(float));
-
-    VertexBufferLayout layout;
-    layout.push<float>(2, false);
-
-    VAO vertex_array;
-    vertex_array.add_buffer(buffer, layout);
-
     ShaderProgram program("shaders/basic_triangle.vert", "shaders/basic_triangle.frag");
 
     //std::cout << glGetError() << "\n";
     glfwSwapInterval(0);
+
+    Chunk c;
+    Chunk c2(1, 0, 0);
+    Camera cam;
+
+    cam.look_at.y = 8;
+
+    const int R = 5;
 
     while(!glfwWindowShouldClose(window))
     {
@@ -55,11 +56,17 @@ int main(){
         glClearColor(0.3f, 0.5f, 0.9f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        //UPDATE LOOP
+        cam.pos.x = glm::cos(glfwGetTime()*0.5)*R;
+        cam.pos.z = glm::sin(glfwGetTime()*0.5)*R;
+        cam.pos.y = 8;
+
+
         //RENDER CODE
         program.bind();
-        vertex_array.bind();
-
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        program.set_uniform("transform", cam.get_transform());
+        c.render();
+        c2.render();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

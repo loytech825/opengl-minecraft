@@ -5,11 +5,7 @@ VBO::VBO(GLenum type, GLenum usage, void *data, unsigned int size)
    set_data(type, usage, data, size);
 }
 
-VBO::VBO() 
-: m_ID(0)
-{
-
-}
+VBO::VBO(): m_ID(0) {}
 
 void VBO::set_data(GLenum type, GLenum usage, void* data, unsigned int size)
 {

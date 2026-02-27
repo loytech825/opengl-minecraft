@@ -1,6 +1,12 @@
 [
 {
   "directory": "/home/matic/code/Minecraft Clone-rework/build",
+  "command": "/usr/lib/ccache/clang++ -I\"/home/matic/code/Minecraft Clone-rework/include\" -I\"/home/matic/code/Minecraft Clone-rework/thirdparty/glfw-3.4/include\" -I\"/home/matic/code/Minecraft Clone-rework/thirdparty/glad/include\" -I\"/home/matic/code/Minecraft Clone-rework/thirdparty/stb_image/include\" -I\"/home/matic/code/Minecraft Clone-rework/thirdparty/glm/include\" -g -std=gnu++17 -o CMakeFiles/minecraft.dir/src/Camera.cpp.o -c \"/home/matic/code/Minecraft Clone-rework/src/Camera.cpp\"",
+  "file": "/home/matic/code/Minecraft Clone-rework/src/Camera.cpp",
+  "output": "CMakeFiles/minecraft.dir/src/Camera.cpp.o"
+},
+{
+  "directory": "/home/matic/code/Minecraft Clone-rework/build",
   "command": "/usr/lib/ccache/clang++ -I\"/home/matic/code/Minecraft Clone-rework/include\" -I\"/home/matic/code/Minecraft Clone-rework/thirdparty/glfw-3.4/include\" -I\"/home/matic/code/Minecraft Clone-rework/thirdparty/glad/include\" -I\"/home/matic/code/Minecraft Clone-rework/thirdparty/stb_image/include\" -I\"/home/matic/code/Minecraft Clone-rework/thirdparty/glm/include\" -g -std=gnu++17 -o CMakeFiles/minecraft.dir/src/Chunk.cpp.o -c \"/home/matic/code/Minecraft Clone-rework/src/Chunk.cpp\"",
   "file": "/home/matic/code/Minecraft Clone-rework/src/Chunk.cpp",
   "output": "CMakeFiles/minecraft.dir/src/Chunk.cpp.o"

@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
-#include "OpenGL_support/VBO.hpp"
+#include <glm/glm.hpp>
+#include "OpenGL_support/VAO.hpp"
 
 constexpr int CHUNK_SIDE = 16;
 
@@ -30,9 +31,19 @@ public:
 
     //DEBUG
     void print();
-    int x, y, z;
+    void render();
+
+    glm::vec3 pos;
 
 private:
     std::array<Block, CHUNK_SIDE*CHUNK_SIDE*CHUNK_SIDE> blocks;
-    VBO vertices;
+
+
+    //should this be here or in world?
+    //does hunk generate its vertices or does the world generate vertices
+    //for all chunks at once
+    VAO vertex_array;
+    void generate_vertices();
+    int vertex_count;
+
 };

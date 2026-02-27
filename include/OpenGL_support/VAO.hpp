@@ -14,7 +14,7 @@ public:
 
     ~VAO();
 
-    void add_buffer(const VBO& buffer, const VertexBufferLayout& layout);
+    void set_buffer(const VBO& buffer, const VertexBufferLayout& layout);
 
     void bind() const;
     void unbind() const;

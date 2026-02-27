@@ -35,7 +35,7 @@ void VAO::unbind() const
     glBindVertexArray(0);
 }
 
-void VAO::add_buffer(const VBO& buffer, const VertexBufferLayout& layout)
+void VAO::set_buffer(const VBO& buffer, const VertexBufferLayout& layout)
 {
     //FIXME: NON URGENT: VAO can have multiple buffers, indexes continue  
     bind();
@@ -50,7 +50,7 @@ void VAO::add_buffer(const VBO& buffer, const VertexBufferLayout& layout)
         const auto& el = elements.at(i);
         glVertexAttribPointer(i, el.count, el.type, el.normalized, layout.get_stride(), (void*)offset);
         glEnableVertexAttribArray(i);
-        offset += sizeof(el.type);
+        offset += el.size;
     }
 
     buffer.unbind();

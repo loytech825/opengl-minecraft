@@ -1,190 +1,80 @@
 # ninja log v5
-125	158	1772028852935981984	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/xkb_unicode.c.o	9cab81d6eeb84660
-20	40	1772028852830980992	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/relative-pointer-unstable-v1-client-protocol.h	26e04e624ff482a4
-32	44	1772028852840981086	thirdparty/glfw-3.4/src/xdg-activation-v1-client-protocol.h	d8f23e7803bb8212
-9	20	1772028852814980841	thirdparty/glfw-3.4/src/viewporter-client-protocol.h	fa0967484e098236
-99	131	1772028852914981786	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/null_window.c.o	c46e1830b0824448
-90	125	1772028852907981719	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/null_init.c.o	d1de089b0fcf6b00
-141	168	1772028852960982220	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/wl_window.c.o	29283e271752a59f
-169	325	1772028853115983685	thirdparty/glfw-3.4/src/libglfw3.a	2d03bb5ce3724235
-83	110	1772028852893981587	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/window.c.o	5893daa057ecd016
-66	99	1772028852887981530	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/init.c.o	8c57a721ac4d636
-51	66	1772028852860981275	CMakeFiles/minecraft.dir/src/Chunk.cpp.o	521a267fd351400d
-40	68	1772028852849981171	thirdparty/stb_image/CMakeFiles/stb_image.dir/src/stb_image.cpp.o	1fb90c2da08d6768
-3	14	0	clean	a31eedcededa8236
-148	167	1772028852960982220	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/linux_joystick.c.o	5a6a11ed1fec8b9a
-12	40	1772028852830980992	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/idle-inhibit-unstable-v1-client-protocol-code.h	87eb92fd0df01c36
-9	38	1772028852830980992	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/wayland-client-protocol-code.h	384e242b82862900
-21	41	1772028852833981020	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/relative-pointer-unstable-v1-client-protocol-code.h	e550f38ccef425b4
-87	122	1772028852898981634	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/egl_context.c.o	cfef296be56770ee
-12	40	1772028852830980992	thirdparty/glfw-3.4/src/idle-inhibit-unstable-v1-client-protocol-code.h	87eb92fd0df01c36
-114	150	1772028852932981956	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/x11_init.c.o	33507c47e0f2a65c
-20	37	1772028852828980973	thirdparty/glfw-3.4/src/pointer-constraints-unstable-v1-client-protocol-code.h	11fc6177afc2b85d
-57	89	1772028852871981379	CMakeFiles/minecraft.dir/src/World.cpp.o	ce70897bb90dfed5
-74	111	1772028852902981672	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/monitor.c.o	ea1466cc65214f19
-35	44	1772028852841981096	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/xdg-activation-v1-client-protocol-code.h	3376b9bd7ab42b3a
-127	159	1772028852945982078	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/glx_context.c.o	35ad76a8d4cf1dbe
-20	37	1772028852828980973	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/pointer-constraints-unstable-v1-client-protocol-code.h	11fc6177afc2b85d
-80	103	1772028852895981606	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/vulkan.c.o	dd767b031a8f6514
-124	154	1772028852942982050	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/x11_window.c.o	ff671a37013cc9ba
-149	169	1772028852960982220	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/posix_poll.c.o	8ea6c7c98522539a
-10	24	1772028852818980879	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/xdg-shell-client-protocol-code.h	d415971ca11b2635
-24	44	1772028852837981058	thirdparty/glfw-3.4/src/fractional-scale-v1-client-protocol-code.h	504baf83e123f50f
-9	20	1772028852814980841	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/viewporter-client-protocol.h	fa0967484e098236
-16	35	1772028852825980945	thirdparty/glfw-3.4/src/pointer-constraints-unstable-v1-client-protocol.h	61b6234848b2c162
-38	49	1772028852845981134	thirdparty/glfw-3.4/src/xdg-decoration-unstable-v1-client-protocol-code.h	878d554ce614c258
-9	38	1772028852830980992	thirdparty/glfw-3.4/src/wayland-client-protocol-code.h	384e242b82862900
-11	23	1772028852815980850	thirdparty/glfw-3.4/src/idle-inhibit-unstable-v1-client-protocol.h	863c9014965850ec
-37	51	1772028852847981153	thirdparty/glfw-3.4/src/xdg-decoration-unstable-v1-client-protocol.h	97b42ee26e1da1a
-23	41	1772028852830980992	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/fractional-scale-v1-client-protocol.h	4ef057ca468e82aa
-38	49	1772028852845981134	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/xdg-decoration-unstable-v1-client-protocol-code.h	878d554ce614c258
-20	40	1772028852830980992	thirdparty/glfw-3.4/src/relative-pointer-unstable-v1-client-protocol.h	26e04e624ff482a4
-40	74	1772028852849981171	thirdparty/glad/CMakeFiles/glad.dir/src/glad.c.o	2339dad2f8064f74
-151	267	1772028853058983146	thirdparty/stb_image/libstb_image.a	2f8b93789abccb90
-95	127	1772028852910981748	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/null_monitor.c.o	f924ec67b2d58bef
-56	83	1772028852870981370	CMakeFiles/minecraft.dir/src/OpenGL_support/VBO.cpp.o	3cc57f244b6e4d9c
-35	44	1772028852841981096	thirdparty/glfw-3.4/src/xdg-activation-v1-client-protocol-code.h	3376b9bd7ab42b3a
-51	80	1772028852865981323	CMakeFiles/minecraft.dir/src/OpenGL_support/ShaderProgram.cpp.o	121ad8cebe3e7abf
-68	100	1772028852883981493	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/input.c.o	98ab33959228397a
-135	162	1772028852956982182	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/wl_monitor.c.o	b746e0907b449d4a
-53	77	1772028852859981266	CMakeFiles/minecraft.dir/src/OpenGL_support/VAO.cpp.o	b1b8b7215f00d093
-21	41	1772028852833981020	thirdparty/glfw-3.4/src/relative-pointer-unstable-v1-client-protocol-code.h	e550f38ccef425b4
-8	41	1772028852834981030	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/wayland-client-protocol.h	442c14e01d0bede2
-10	32	1772028852823980926	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/xdg-shell-client-protocol.h	c28d2bd7450f71a2
-131	159	1772028852945982078	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/wl_init.c.o	dd679982db412734
-122	151	1772028852933981965	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/x11_monitor.c.o	996bc7418cba7887
-10	21	1772028852814980841	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/viewporter-client-protocol-code.h	66be4d5a81b9f879
-89	123	1772028852904981691	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/osmesa_context.c.o	ae694d7f7362fa1c
-23	41	1772028852830980992	thirdparty/glfw-3.4/src/fractional-scale-v1-client-protocol.h	4ef057ca468e82aa
-111	149	1772028852922981861	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/posix_thread.c.o	1673e6786c347d1a
-10	21	1772028852814980841	thirdparty/glfw-3.4/src/viewporter-client-protocol-code.h	66be4d5a81b9f879
-32	44	1772028852840981086	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/xdg-activation-v1-client-protocol.h	d8f23e7803bb8212
-150	259	1772028853051983080	thirdparty/glad/libglad.a	34dabd63ba3b0fb1
-56	87	1772028852867981342	CMakeFiles/minecraft.dir/src/OpenGL_support/VertexBufferLayout.cpp.o	e6f6ee719d9ae30a
-24	44	1772028852837981058	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/fractional-scale-v1-client-protocol-code.h	504baf83e123f50f
-97	238	1771925775886197631	minecraft	b8a1c38fd0aba616
-60	94	1772028852880981464	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/context.c.o	234727b1ac500233
-10	32	1772028852823980926	thirdparty/glfw-3.4/src/xdg-shell-client-protocol.h	c28d2bd7450f71a2
-100	135	1772028852918981823	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/null_joystick.c.o	8a9935080c59a5d6
-16	35	1772028852825980945	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/pointer-constraints-unstable-v1-client-protocol.h	61b6234848b2c162
-11	23	1772028852815980850	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/idle-inhibit-unstable-v1-client-protocol.h	863c9014965850ec
-77	114	1772028852900981653	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/platform.c.o	19da91f948ca359b
-8	41	1772028852834981030	thirdparty/glfw-3.4/src/wayland-client-protocol.h	442c14e01d0bede2
-37	51	1772028852847981153	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/xdg-decoration-unstable-v1-client-protocol.h	97b42ee26e1da1a
-57	90	1772028852880981464	CMakeFiles/minecraft.dir/src/main.cpp.o	b2e8c6a591ac92ab
-10	24	1772028852818980879	thirdparty/glfw-3.4/src/xdg-shell-client-protocol-code.h	d415971ca11b2635
-103	141	1772028852919981833	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/posix_module.c.o	ceab477b3cee3490
-111	148	1772028852928981918	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/posix_time.c.o	8ffc618f174f70c2
-7	19	1772029029313648131	thirdparty/glfw-3.4/src/viewporter-client-protocol.h	fa0967484e098236
-7	19	1772029029313648131	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/viewporter-client-protocol.h	fa0967484e098236
-8	22	1772029029312648121	thirdparty/glfw-3.4/src/viewporter-client-protocol-code.h	66be4d5a81b9f879
-8	22	1772029029312648121	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/viewporter-client-protocol-code.h	66be4d5a81b9f879
-9	23	1772029029312648121	thirdparty/glfw-3.4/src/idle-inhibit-unstable-v1-client-protocol.h	863c9014965850ec
-9	23	1772029029312648121	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/idle-inhibit-unstable-v1-client-protocol.h	863c9014965850ec
-8	25	1772029029317648169	thirdparty/glfw-3.4/src/xdg-shell-client-protocol.h	c28d2bd7450f71a2
-8	25	1772029029317648169	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/xdg-shell-client-protocol.h	c28d2bd7450f71a2
-8	28	1772029029317648169	thirdparty/glfw-3.4/src/xdg-shell-client-protocol-code.h	d415971ca11b2635
-8	28	1772029029317648169	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/xdg-shell-client-protocol-code.h	d415971ca11b2635
-9	32	1772029029315648150	thirdparty/glfw-3.4/src/idle-inhibit-unstable-v1-client-protocol-code.h	87eb92fd0df01c36
-9	32	1772029029315648150	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/idle-inhibit-unstable-v1-client-protocol-code.h	87eb92fd0df01c36
-7	35	1772029029330648292	thirdparty/glfw-3.4/src/wayland-client-protocol.h	442c14e01d0bede2
-7	35	1772029029330648292	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/wayland-client-protocol.h	442c14e01d0bede2
-7	36	1772029029329648282	thirdparty/glfw-3.4/src/wayland-client-protocol-code.h	384e242b82862900
-7	36	1772029029329648282	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/wayland-client-protocol-code.h	384e242b82862900
-11	36	1772029029321648207	thirdparty/glfw-3.4/src/pointer-constraints-unstable-v1-client-protocol.h	61b6234848b2c162
-11	36	1772029029321648207	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/pointer-constraints-unstable-v1-client-protocol.h	61b6234848b2c162
-16	37	1772029029328648272	thirdparty/glfw-3.4/src/pointer-constraints-unstable-v1-client-protocol-code.h	11fc6177afc2b85d
-16	37	1772029029328648272	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/pointer-constraints-unstable-v1-client-protocol-code.h	11fc6177afc2b85d
-21	40	1772029029331648301	thirdparty/glfw-3.4/src/relative-pointer-unstable-v1-client-protocol.h	26e04e624ff482a4
-21	40	1772029029331648301	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/relative-pointer-unstable-v1-client-protocol.h	26e04e624ff482a4
-22	40	1772029029332648310	thirdparty/glfw-3.4/src/relative-pointer-unstable-v1-client-protocol-code.h	e550f38ccef425b4
-22	40	1772029029332648310	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/relative-pointer-unstable-v1-client-protocol-code.h	e550f38ccef425b4
-23	41	1772029029336648348	thirdparty/glfw-3.4/src/fractional-scale-v1-client-protocol.h	4ef057ca468e82aa
-23	41	1772029029336648348	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/fractional-scale-v1-client-protocol.h	4ef057ca468e82aa
-25	41	1772029029333648320	thirdparty/glfw-3.4/src/fractional-scale-v1-client-protocol-code.h	504baf83e123f50f
-25	41	1772029029333648320	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/fractional-scale-v1-client-protocol-code.h	504baf83e123f50f
-28	44	1772029029337648358	thirdparty/glfw-3.4/src/xdg-activation-v1-client-protocol.h	d8f23e7803bb8212
-28	44	1772029029337648358	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/xdg-activation-v1-client-protocol.h	d8f23e7803bb8212
-36	47	1772029029341648395	thirdparty/glfw-3.4/src/xdg-decoration-unstable-v1-client-protocol-code.h	878d554ce614c258
-36	47	1772029029341648395	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/xdg-decoration-unstable-v1-client-protocol-code.h	878d554ce614c258
-32	47	1772029029337648358	thirdparty/glfw-3.4/src/xdg-activation-v1-client-protocol-code.h	3376b9bd7ab42b3a
-32	47	1772029029337648358	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/xdg-activation-v1-client-protocol-code.h	3376b9bd7ab42b3a
-35	47	1772029029342648405	thirdparty/glfw-3.4/src/xdg-decoration-unstable-v1-client-protocol.h	97b42ee26e1da1a
-35	47	1772029029342648405	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/xdg-decoration-unstable-v1-client-protocol.h	97b42ee26e1da1a
-37	59	1772029029347648452	thirdparty/glad/CMakeFiles/glad.dir/src/glad.c.o	2339dad2f8064f74
-37	66	1772029029350648480	thirdparty/stb_image/CMakeFiles/stb_image.dir/src/stb_image.cpp.o	1fb90c2da08d6768
-48	73	1772029029355648528	CMakeFiles/minecraft.dir/src/Chunk.cpp.o	521a267fd351400d
-48	78	1772029029360648575	CMakeFiles/minecraft.dir/src/OpenGL_support/ShaderProgram.cpp.o	121ad8cebe3e7abf
-49	83	1772029029354648518	CMakeFiles/minecraft.dir/src/OpenGL_support/VAO.cpp.o	b1b8b7215f00d093
-50	84	1772029029358648556	CMakeFiles/minecraft.dir/src/OpenGL_support/VBO.cpp.o	3cc57f244b6e4d9c
-54	85	1772029029367648641	CMakeFiles/minecraft.dir/src/World.cpp.o	ce70897bb90dfed5
-57	88	1772029029368648650	CMakeFiles/minecraft.dir/src/main.cpp.o	b2e8c6a591ac92ab
-57	91	1772029029369648660	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/context.c.o	234727b1ac500233
-65	94	1772029029375648716	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/init.c.o	8c57a721ac4d636
-79	99	1772029029388648839	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/platform.c.o	19da91f948ca359b
-69	104	1772029029388648839	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/input.c.o	98ab33959228397a
-74	107	1772029029388648839	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/monitor.c.o	ea1466cc65214f19
-83	108	1772029029395648905	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/vulkan.c.o	dd767b031a8f6514
-84	113	1772029029402648971	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/window.c.o	5893daa057ecd016
-85	118	1772029029403648981	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/egl_context.c.o	cfef296be56770ee
-88	124	1772029029405649000	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/osmesa_context.c.o	ae694d7f7362fa1c
-95	126	1772029029415649094	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/null_monitor.c.o	f924ec67b2d58bef
-100	132	1772029029417649113	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/null_window.c.o	c46e1830b0824448
-91	134	1772029029416649104	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/null_init.c.o	d1de089b0fcf6b00
-108	138	1772029029424649179	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/posix_time.c.o	8ffc618f174f70c2
-114	141	1772029029427649208	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/posix_thread.c.o	1673e6786c347d1a
-105	146	1772029029427649208	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/null_joystick.c.o	8a9935080c59a5d6
-107	149	1772029029425649189	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/posix_module.c.o	ceab477b3cee3490
-118	153	1772029029434649274	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/x11_init.c.o	33507c47e0f2a65c
-125	155	1772029029437649302	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/x11_monitor.c.o	996bc7418cba7887
-126	160	1772029029446649387	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/x11_window.c.o	ff671a37013cc9ba
-133	166	1772029029451649434	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/xkb_unicode.c.o	9cab81d6eeb84660
-134	168	1772029029449649416	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/glx_context.c.o	35ad76a8d4cf1dbe
-138	169	1772029029456649482	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/wl_init.c.o	dd679982db412734
-141	169	1772029029462649538	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/wl_monitor.c.o	b746e0907b449d4a
-153	172	1772029029464649557	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/posix_poll.c.o	8ea6c7c98522539a
-149	174	1772029029468649595	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/linux_joystick.c.o	5a6a11ed1fec8b9a
-146	177	1772029029465649567	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/wl_window.c.o	29283e271752a59f
-155	275	1772029029565650511	thirdparty/glad/libglad.a	34dabd63ba3b0fb1
-160	290	1772029029581650662	thirdparty/stb_image/libstb_image.a	2f8b93789abccb90
-177	370	1772029029655651361	thirdparty/glfw-3.4/src/libglfw3.a	2d03bb5ce3724235
-53	1413	1772029030682661062	CMakeFiles/minecraft.dir/src/OpenGL_support/VertexBufferLayout.cpp.o	e6f6ee719d9ae30a
-1413	1634	1772029030920663310	minecraft	8cf8906b88cbbd3b
-10	1664	1772029242972666110	CMakeFiles/minecraft.dir/src/main.cpp.o	b2e8c6a591ac92ab
-1664	1898	1772029243217668424	minecraft	8cf8906b88cbbd3b
-9	1560	1772033037985330400	CMakeFiles/minecraft.dir/src/main.cpp.o	b2e8c6a591ac92ab
-1560	1767	1772033038204332468	minecraft	8cf8906b88cbbd3b
-8	1634	1772033110998019914	CMakeFiles/minecraft.dir/src/main.cpp.o	b2e8c6a591ac92ab
-1634	1850	1772033111228022085	minecraft	8cf8906b88cbbd3b
-6	1610	1772033249852331159	CMakeFiles/minecraft.dir/src/main.cpp.o	b2e8c6a591ac92ab
-1610	1824	1772033250080333312	minecraft	8cf8906b88cbbd3b
-7	1646	1772033341202193766	CMakeFiles/minecraft.dir/src/main.cpp.o	b2e8c6a591ac92ab
-1646	1898	1772033341468196278	minecraft	8cf8906b88cbbd3b
-9	530	1772033516691850845	CMakeFiles/minecraft.dir/src/OpenGL_support/VBO.cpp.o	3cc57f244b6e4d9c
-9	1691	1772033517844861732	CMakeFiles/minecraft.dir/src/main.cpp.o	b2e8c6a591ac92ab
-1691	1941	1772033518104864187	minecraft	8cf8906b88cbbd3b
-8	524	1772033589554538841	CMakeFiles/minecraft.dir/src/OpenGL_support/VBO.cpp.o	3cc57f244b6e4d9c
-9	1633	1772033590658549265	CMakeFiles/minecraft.dir/src/main.cpp.o	b2e8c6a591ac92ab
-1633	1840	1772033590876551323	minecraft	8cf8906b88cbbd3b
-7	1612	1772033610681738327	CMakeFiles/minecraft.dir/src/main.cpp.o	b2e8c6a591ac92ab
-1612	1820	1772033610904740432	minecraft	8cf8906b88cbbd3b
-6	1536	1772033671984317158	CMakeFiles/minecraft.dir/src/main.cpp.o	b2e8c6a591ac92ab
-1536	1794	1772033672253319698	minecraft	8cf8906b88cbbd3b
-7	1060	1772033961123047190	CMakeFiles/minecraft.dir/src/OpenGL_support/VertexBufferLayout.cpp.o	e6f6ee719d9ae30a
-1060	1275	1772033961346049296	minecraft	8cf8906b88cbbd3b
-6	554	1772034008438493938	CMakeFiles/minecraft.dir/src/OpenGL_support/VAO.cpp.o	b1b8b7215f00d093
-554	776	1772034008665496081	minecraft	8cf8906b88cbbd3b
-7	1584	1772034054219926196	CMakeFiles/minecraft.dir/src/main.cpp.o	b2e8c6a591ac92ab
-1584	1836	1772034054484928698	minecraft	8cf8906b88cbbd3b
-6	1703	1772034083852205977	CMakeFiles/minecraft.dir/src/main.cpp.o	b2e8c6a591ac92ab
-1703	1917	1772034084078208111	minecraft	8cf8906b88cbbd3b
-7	1654	1772034117686525434	CMakeFiles/minecraft.dir/src/main.cpp.o	b2e8c6a591ac92ab
-1654	1903	1772034117947527898	minecraft	8cf8906b88cbbd3b
-8	1591	1772034130575647129	CMakeFiles/minecraft.dir/src/main.cpp.o	b2e8c6a591ac92ab
-1591	1796	1772034130794649197	minecraft	8cf8906b88cbbd3b
-8	1543	1772034161318937397	CMakeFiles/minecraft.dir/src/main.cpp.o	b2e8c6a591ac92ab
-1543	1787	1772034161573939805	minecraft	8cf8906b88cbbd3b
-8	1632	1772034227035557876	CMakeFiles/minecraft.dir/src/main.cpp.o	b2e8c6a591ac92ab
-1632	1900	1772034227315560520	minecraft	8cf8906b88cbbd3b
-7	1600	1772034246749744006	CMakeFiles/minecraft.dir/src/main.cpp.o	b2e8c6a591ac92ab
-1600	1837	1772034247000746376	minecraft	8cf8906b88cbbd3b
+13	29	1772101510616812037	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/idle-inhibit-unstable-v1-client-protocol.h	863c9014965850ec
+17	37	1772101510622812089	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/pointer-constraints-unstable-v1-client-protocol.h	61b6234848b2c162
+83	155	1772101510728813004	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/input.c.o	98ab33959228397a
+235	275	1772101510856814110	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/wl_monitor.c.o	b746e0907b449d4a
+131	176	1772101510763813307	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/osmesa_context.c.o	ae694d7f7362fa1c
+28	47	1772101510638812227	thirdparty/glfw-3.4/src/fractional-scale-v1-client-protocol.h	4ef057ca468e82aa
+9	25	1772101510617812046	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/viewporter-client-protocol-code.h	66be4d5a81b9f879
+181	214	1772101510807813687	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/posix_thread.c.o	1673e6786c347d1a
+7	41	1772101510635812201	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/wayland-client-protocol.h	442c14e01d0bede2
+10	36	1772101510620812072	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/xdg-shell-client-protocol.h	c28d2bd7450f71a2
+9	25	1772101510617812046	thirdparty/glfw-3.4/src/viewporter-client-protocol-code.h	66be4d5a81b9f879
+33	47	1772101510641812253	thirdparty/glfw-3.4/src/xdg-activation-v1-client-protocol-code.h	3376b9bd7ab42b3a
+54	83	1772101510665812461	CMakeFiles/minecraft.dir/src/OpenGL_support/VBO.cpp.o	3cc57f244b6e4d9c
+14	3749	1772102831334006140	CMakeFiles/minecraft.dir/src/OpenGL_support/ShaderProgram.cpp.o	121ad8cebe3e7abf
+42	88	1772101510676812555	thirdparty/stb_image/CMakeFiles/stb_image.dir/src/stb_image.cpp.o	1fb90c2da08d6768
+5	1490	1772199904916963724	CMakeFiles/minecraft.dir/src/Chunk.cpp.o	521a267fd351400d
+77	145	1772101510715812892	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/init.c.o	8c57a721ac4d636
+25	47	1772101510630812158	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/relative-pointer-unstable-v1-client-protocol-code.h	e550f38ccef425b4
+127	170	1772101510753813220	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/egl_context.c.o	cfef296be56770ee
+15	30	1772101510618812055	thirdparty/glfw-3.4/src/idle-inhibit-unstable-v1-client-protocol-code.h	87eb92fd0df01c36
+192	233	1772101510822813816	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/x11_init.c.o	33507c47e0f2a65c
+210	250	1772101510831813894	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/glx_context.c.o	35ad76a8d4cf1dbe
+22	46	1772101510631812167	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/pointer-constraints-unstable-v1-client-protocol-code.h	11fc6177afc2b85d
+9	26	1772199569876695693	CMakeFiles/minecraft.dir/src/World.cpp.o	ce70897bb90dfed5
+84	131	1772101510712812866	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/monitor.c.o	ea1466cc65214f19
+33	47	1772101510641812253	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/xdg-activation-v1-client-protocol-code.h	3376b9bd7ab42b3a
+22	46	1772101510631812167	thirdparty/glfw-3.4/src/pointer-constraints-unstable-v1-client-protocol-code.h	11fc6177afc2b85d
+204	240	1772101510828813868	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/x11_window.c.o	ff671a37013cc9ba
+242	276	1772101510867814205	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/posix_poll.c.o	8ea6c7c98522539a
+93	121	1772101510713812875	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/vulkan.c.o	dd767b031a8f6514
+200	238	1772101510821813807	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/x11_monitor.c.o	996bc7418cba7887
+214	262	1772101510848814041	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/wl_init.c.o	dd679982db412734
+165	203	1772101510790813540	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/null_joystick.c.o	8a9935080c59a5d6
+10	36	1772101510620812072	thirdparty/glfw-3.4/src/xdg-shell-client-protocol.h	c28d2bd7450f71a2
+88	140	1772101510712812866	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/platform.c.o	19da91f948ca359b
+7	41	1772101510635812201	thirdparty/glfw-3.4/src/wayland-client-protocol.h	442c14e01d0bede2
+25	47	1772101510630812158	thirdparty/glfw-3.4/src/relative-pointer-unstable-v1-client-protocol-code.h	e550f38ccef425b4
+7	710	1772199388806932211	CMakeFiles/minecraft.dir/src/OpenGL_support/VAO.cpp.o	b1b8b7215f00d093
+170	205	1772101510785813497	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/posix_module.c.o	ceab477b3cee3490
+29	47	1772101510634812193	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/fractional-scale-v1-client-protocol-code.h	504baf83e123f50f
+54	93	1772101510665812461	CMakeFiles/minecraft.dir/src/OpenGL_support/VertexBufferLayout.cpp.o	e6f6ee719d9ae30a
+250	479	1772101511062815889	thirdparty/glad/libglad.a	34dabd63ba3b0fb1
+71	127	1772101510713812875	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/context.c.o	234727b1ac500233
+1490	1685	1772199905120965715	minecraft	72e893b0ec072d36
+51	2935	1772101513509837032	CMakeFiles/minecraft.dir/src/Camera.cpp.o	20d0cdff313fd835
+30	47	1772101510639812236	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/xdg-activation-v1-client-protocol.h	d8f23e7803bb8212
+36	47	1772101510641812253	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/xdg-decoration-unstable-v1-client-protocol.h	97b42ee26e1da1a
+177	209	1772101510796813592	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/posix_time.c.o	8ffc618f174f70c2
+29	47	1772101510634812193	thirdparty/glfw-3.4/src/fractional-scale-v1-client-protocol-code.h	504baf83e123f50f
+284	522	1772101511111816312	thirdparty/glfw-3.4/src/libglfw3.a	2d03bb5ce3724235
+238	271	1772101510861814153	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/wl_window.c.o	29283e271752a59f
+240	284	1772101510877814291	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/linux_joystick.c.o	5a6a11ed1fec8b9a
+7	28	0	clean	a31eedcededa8236
+11	28	1772101510617812046	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/xdg-shell-client-protocol-code.h	d415971ca11b2635
+8	24	1772101510613812012	thirdparty/glfw-3.4/src/viewporter-client-protocol.h	fa0967484e098236
+24	39	1772101510627812132	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/relative-pointer-unstable-v1-client-protocol.h	26e04e624ff482a4
+205	242	1772101510830813885	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/xkb_unicode.c.o	9cab81d6eeb84660
+30	47	1772101510639812236	thirdparty/glfw-3.4/src/xdg-activation-v1-client-protocol.h	d8f23e7803bb8212
+140	181	1772101510771813376	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/null_init.c.o	d1de089b0fcf6b00
+155	200	1772101510780813453	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/null_window.c.o	c46e1830b0824448
+11	28	1772101510617812046	thirdparty/glfw-3.4/src/xdg-shell-client-protocol-code.h	d415971ca11b2635
+22	2406	1772199769366640949	CMakeFiles/minecraft.dir/src/main.cpp.o	b2e8c6a591ac92ab
+7	33	1772101510626812124	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/wayland-client-protocol-code.h	384e242b82862900
+15	30	1772101510618812055	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/idle-inhibit-unstable-v1-client-protocol-code.h	87eb92fd0df01c36
+121	165	1772101510756813246	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/window.c.o	5893daa057ecd016
+24	39	1772101510627812132	thirdparty/glfw-3.4/src/relative-pointer-unstable-v1-client-protocol.h	26e04e624ff482a4
+36	47	1772101510641812253	thirdparty/glfw-3.4/src/xdg-decoration-unstable-v1-client-protocol.h	97b42ee26e1da1a
+13	29	1772101510616812037	thirdparty/glfw-3.4/src/idle-inhibit-unstable-v1-client-protocol.h	863c9014965850ec
+39	71	1772101510654812365	thirdparty/glad/CMakeFiles/glad.dir/src/glad.c.o	2339dad2f8064f74
+262	472	1772101511062815889	thirdparty/stb_image/libstb_image.a	2f8b93789abccb90
+145	191	1772101510776813419	thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/null_monitor.c.o	f924ec67b2d58bef
+37	50	1772101510645812288	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/xdg-decoration-unstable-v1-client-protocol-code.h	878d554ce614c258
+28	47	1772101510638812227	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/fractional-scale-v1-client-protocol.h	4ef057ca468e82aa
+7	33	1772101510626812124	thirdparty/glfw-3.4/src/wayland-client-protocol-code.h	384e242b82862900
+17	37	1772101510622812089	thirdparty/glfw-3.4/src/pointer-constraints-unstable-v1-client-protocol.h	61b6234848b2c162
+37	50	1772101510645812288	thirdparty/glfw-3.4/src/xdg-decoration-unstable-v1-client-protocol-code.h	878d554ce614c258
+8	24	1772101510613812012	/home/matic/code/Minecraft Clone-rework/build/thirdparty/glfw-3.4/src/viewporter-client-protocol.h	fa0967484e098236
+9	2082	1772199921645127012	CMakeFiles/minecraft.dir/src/main.cpp.o	b2e8c6a591ac92ab
+2083	2224	1772199921796128486	minecraft	72e893b0ec072d36

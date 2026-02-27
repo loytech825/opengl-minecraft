@@ -4,12 +4,18 @@
 
 struct VertexArrayElement
 {
+    //number of data "numbers"
     unsigned int count;
+    //GL type
     GLenum type;
     GLboolean normalized;
 
-    VertexArrayElement(int c, GLenum t, GLboolean n)
-    : count(c), type(t), normalized(n){}
+    //size of elements in bytes
+    //TODO: function from GLenum type -> size or extra field
+    unsigned int size;
+
+    VertexArrayElement(int c, GLenum t, GLboolean n, unsigned int s)
+    : count(c), type(t), normalized(n), size(s){}
 };
 
 class VertexBufferLayout

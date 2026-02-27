@@ -1,6 +1,8 @@
 #pragma once
 #include "OpenGL_support/VertexBufferLayout.hpp"
 
+
+//TODO: Other buffer types
 class VBO
 {
 public:
