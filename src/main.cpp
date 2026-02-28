@@ -42,9 +42,8 @@ int main(){
     //std::cout << glGetError() << "\n";
     glfwSwapInterval(0);
 
-    Chunk c;
-    Chunk c2(1, 0, 0);
     Camera cam;
+    World world;
 
     cam.look_at.y = 8;
 
@@ -65,8 +64,7 @@ int main(){
         //RENDER CODE
         program.bind();
         program.set_uniform("transform", cam.get_transform());
-        c.render();
-        c2.render();
+        world.render();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

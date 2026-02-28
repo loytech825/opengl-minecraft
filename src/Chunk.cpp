@@ -1,6 +1,8 @@
 #include "Chunk.hpp"
+#include "World.hpp"
 
 #include <iostream>
+#include <math.h>
 #include "GLFW/glfw3.h"
 
 //cube vertex position literals
@@ -98,13 +100,14 @@ const std::vector<float> generate_side_vertices(DIRECTION dir, const glm::vec3& 
     return vertices;
 }
 
-Chunk::Chunk(int X, int Y, int Z) : pos(X, Y, Z)
+Chunk::Chunk(int X, int Y, int Z, World& world)
+:   pos(X, Y, Z),
+    m_world(world)
 {
     std::fill(blocks.begin(), blocks.end(), (unsigned char)1);
-    generate_vertices();
 }
 
-Chunk::Chunk() : Chunk(0, 0, 0) {}
+Chunk::Chunk(World& world) : Chunk(0, 0, 0, world) {}
 
 //DEBUG
 void Chunk::print(){
@@ -154,15 +157,37 @@ void Chunk::generate_vertices()
                                 +(direction_vectors[i].x+x);
 
                     //checks if neighboring block is in chunk
-                    const bool in_x_limit = x+direction_vectors[i].x>=0 && x+direction_vectors[i].x<CHUNK_SIDE;
-                    const bool in_y_limit = y+direction_vectors[i].y>=0 && y+direction_vectors[i].y<CHUNK_SIDE;
-                    const bool in_z_limit = z+direction_vectors[i].z>=0 && z+direction_vectors[i].z<CHUNK_SIDE;
+                    //these three ints get us a chunk offset of the neighboring block
+                    //all three == 0, when block is in this chunk
+
+                    const int rel_x = floor((float)(x+(int)direction_vectors[i].x)/CHUNK_SIDE);
+                    const int rel_y = floor((float)(y+(int)direction_vectors[i].y)/CHUNK_SIDE);
+                    const int rel_z = floor((float)(z+(int)direction_vectors[i].z)/CHUNK_SIDE);
+
+                    const bool in_x_limit = rel_x == 0;
+                    const bool in_y_limit = rel_y == 0;
+                    const bool in_z_limit = rel_z == 0;
 
                     if(in_x_limit && in_y_limit && in_z_limit)
                     {
                         //checks if neighboring block exists
                         if(blocks[index].type) continue;
+
                     }
+                    //Block not in this chunk!
+                    
+                    auto other_pos = pos + glm::vec3(rel_x, rel_y, rel_z);
+                    const Chunk* other = m_world.get_chunk(other_pos);
+  
+                    if(other)
+                    {
+                        //std::cout << "Pos: " << pos.x << ", " << pos.y << ", " << pos.z << "\tRel: "
+                        //<< rel_x << ", " << rel_y << ", " << rel_z << "\tOther: " 
+                        //<< other_pos.x << ", " << other_pos.y << ", " << other_pos.z 
+                        //<< "\t" << other << "\n";
+                        continue;
+                    }
+                    
 
                     auto face_vertices = generate_side_vertices((DIRECTION)i, glm::vec3(x, y, z)+(float)CHUNK_SIDE*pos);
                     v.insert(v.end(), face_vertices.begin(), face_vertices.end());

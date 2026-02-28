@@ -5,6 +5,7 @@
 
 constexpr int CHUNK_SIDE = 16;
 
+class World;
 
 struct Block
 {
@@ -17,8 +18,8 @@ class Chunk
 {
 
 public:
-    Chunk();
-    Chunk(int X, int Y, int Z);
+    Chunk(World& world);
+    Chunk(int X, int Y, int Z, World& world);
     // since chunk only contains Blocks (for now)
     // we dont need any special resource management
 
@@ -35,7 +36,14 @@ public:
 
     glm::vec3 pos;
 
+
+
 private:
+
+    //so world can generate vertices as well
+    friend World;
+
+    void generate_vertices();
     std::array<Block, CHUNK_SIDE*CHUNK_SIDE*CHUNK_SIDE> blocks;
 
 
@@ -43,7 +51,8 @@ private:
     //does hunk generate its vertices or does the world generate vertices
     //for all chunks at once
     VAO vertex_array;
-    void generate_vertices();
     int vertex_count;
+
+    World& m_world;
 
 };
