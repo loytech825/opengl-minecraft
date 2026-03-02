@@ -140,7 +140,8 @@ void Chunk::print(){
 
 void Chunk::render(Renderer& renderer)
 {
-    renderer.add_vertices(m_vertices.size(), m_vertices.data());
+    if(!m_vertices.empty())
+        renderer.add_vertices(m_vertices.size(), m_vertices.data());
 }
 
 //This can be slow, we need to regen the entire buffer if a single block changes
@@ -217,6 +218,8 @@ void Chunk::generate_faces()
             }
         }
     }
+
+    m_vertices.shrink_to_fit();
 }
 
 const Block* Chunk::get_block(const glm::vec3& pos) const

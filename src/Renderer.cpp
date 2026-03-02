@@ -3,6 +3,9 @@
 #include <memory>
 #include <cstring>
 
+#include <iostream>
+#include <GLFW/glfw3.h>
+
 constexpr unsigned int MAX_FACES = 10000;
 constexpr unsigned int MAX_VERTICES = MAX_FACES*4;
 constexpr unsigned int MAX_INDICES = MAX_FACES*6;
@@ -148,6 +151,8 @@ void Renderer::add_vertex(const VertexData& v)
 
 void Renderer::add_vertices(unsigned int count, const VertexData* data)
 {
+    double start = glfwGetTime();
+
     if(currentPtr+count-bufferPtr > MAX_VERTICES)
     {
         //unsigned int remaining_space = (MAX_VERTICES - (currentPtr-bufferPtr));
@@ -161,6 +166,10 @@ void Renderer::add_vertices(unsigned int count, const VertexData* data)
     memcpy(currentPtr, data, count*sizeof(VertexData));
     currentPtr += count;
     indices_to_draw += (count*6)/4;
+
+    double end = glfwGetTime();
+    double deltaTime = end-start;
+    std::cout << "Frametime: " << deltaTime << "\tFPS: " << 1/deltaTime << "\n";
 }
 
 void Renderer::flush()
