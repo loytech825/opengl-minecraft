@@ -104,7 +104,11 @@ Chunk::Chunk(int X, int Y, int Z, World& world)
 :   pos(X, Y, Z),
     m_world(world)
 {
-    std::fill(blocks.begin(), blocks.end(), (unsigned char)1);
+    std::fill(m_blocks.begin(), m_blocks.end(), (unsigned char)1);
+    set_block({0, 0, 0}, Block(0));
+    set_block({1, 0, 0}, Block(0));
+    set_block({0, 0, 1}, Block(0));
+    set_block({7, 7, 7}, Block(0));
 }
 
 Chunk::Chunk(World& world) : Chunk(0, 0, 0, world) {}
@@ -112,7 +116,7 @@ Chunk::Chunk(World& world) : Chunk(0, 0, 0, world) {}
 //DEBUG
 void Chunk::print(){
 
-    for(const auto& blk : blocks){
+    for(const auto& blk : m_blocks){
         std::cout << (unsigned short)blk.type << "\n";
     }
 }
@@ -134,7 +138,7 @@ void Chunk::render()
 void Chunk::generate_vertices()
 {
 
-    double start = glfwGetTime();
+    //double start = glfwGetTime();
 
     std::vector<float> v;
     v.reserve(CHUNK_SIDE*CHUNK_SIDE*CHUNK_SIDE*2*4*3);
@@ -146,7 +150,7 @@ void Chunk::generate_vertices()
             for(int x = 0; x < CHUNK_SIDE; x++)
             {
                 //if there is no block here skip
-                if(!blocks[y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x].type) continue;
+                if(!m_blocks[y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x].type) continue;
 
                 //check all six sides
                 for(int i = 0; i < 6; i++)
@@ -171,21 +175,30 @@ void Chunk::generate_vertices()
                     if(in_x_limit && in_y_limit && in_z_limit)
                     {
                         //checks if neighboring block exists
-                        if(blocks[index].type) continue;
-
-                    }
-                    //Block not in this chunk!
-                    
-                    auto other_pos = pos + glm::vec3(rel_x, rel_y, rel_z);
-                    const Chunk* other = m_world.get_chunk(other_pos);
-  
-                    if(other)
+                        if(m_blocks[index].type)
+                        {
+                            //std::cout << ": " << x << ", " << y << ", " << z << ": " << m_blocks[index].type << "\n";
+                            continue;
+                        }
+                    }else
                     {
-                        //std::cout << "Pos: " << pos.x << ", " << pos.y << ", " << pos.z << "\tRel: "
-                        //<< rel_x << ", " << rel_y << ", " << rel_z << "\tOther: " 
-                        //<< other_pos.x << ", " << other_pos.y << ", " << other_pos.z 
-                        //<< "\t" << other << "\n";
-                        continue;
+                        //Block not in this chunk!
+                        auto other_pos = pos + glm::vec3(rel_x, rel_y, rel_z);
+                        const Chunk* other = m_world.get_chunk(other_pos);
+    
+                        if(other)
+                        {
+                            glm::vec3 relative_block_pos = glm::vec3(x, y, z) + direction_vectors[i];
+                            glm::vec3 absolute_block_pos = relative_block_pos + pos*(float)CHUNK_SIDE;
+
+                            const Block* neighbor = m_world.get_block(absolute_block_pos);
+
+                            if(!neighbor)
+                                continue;
+
+                            if(neighbor->type != 0)
+                                continue;
+                        }
                     }
                     
 
@@ -205,7 +218,29 @@ void Chunk::generate_vertices()
 
     vertex_array.set_buffer(vertices, layout);
 
-    double end = glfwGetTime();
+    //double end = glfwGetTime();
+    //std::cout << "Vertex generation time: " << end-start << "\n";
+}
 
-    std::cout << "Vertex generation time: " << end-start << "\n";
+const Block* Chunk::get_block(const glm::vec3& pos) const
+{
+
+    const bool check_x = pos.x >= 0 && pos.x < CHUNK_SIDE; 
+    const bool check_y = pos.y >= 0 && pos.y < CHUNK_SIDE;
+    const bool check_z = pos.z >= 0 && pos.z < CHUNK_SIDE;
+    
+    if(check_x && check_y && check_z)
+        return &m_blocks[pos.y*CHUNK_SIDE*CHUNK_SIDE+pos.z*CHUNK_SIDE+pos.x];
+
+    return nullptr;
+}
+
+void Chunk::set_block(const glm::vec3& pos, const Block& block)
+{
+    const bool check_x = pos.x >= 0 && pos.x < CHUNK_SIDE; 
+    const bool check_y = pos.y >= 0 && pos.y < CHUNK_SIDE;
+    const bool check_z = pos.z >= 0 && pos.z < CHUNK_SIDE;
+    
+    if(check_x && check_y && check_z)
+        m_blocks[pos.y*CHUNK_SIDE*CHUNK_SIDE+pos.z*CHUNK_SIDE+pos.x] = block;
 }

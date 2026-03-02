@@ -16,6 +16,14 @@ public:
     //returns null if chunk not loaded
     const Chunk* get_chunk(const glm::vec3& pos) const;
 
+    /*
+    @brief Returns the block at positio
+    @param pos world position of the block
+    @return Pointer to block (nullptr if invalid)
+    
+    */
+    const Block* get_block(const glm::vec3& pos) const;
+
 private:
     std::vector<Chunk> loadedChunks;
 };

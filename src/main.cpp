@@ -52,6 +52,8 @@ int main(){
     while(!glfwWindowShouldClose(window))
     {
 
+        double start = glfwGetTime();
+
         glClearColor(0.3f, 0.5f, 0.9f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -68,7 +70,11 @@ int main(){
 
         glfwSwapBuffers(window);
         glfwPollEvents();
-        //std::cout << "Frametime: " << deltaTime << "\tFPS: " << 1/deltaTime << "\n";
+
+        double end = glfwGetTime();
+
+        double deltaTime = end - start;
+        std::cout << "Frametime: " << deltaTime << "\tFPS: " << 1/deltaTime << "\n";
     }
 
     }
