@@ -23,10 +23,13 @@ World::World()
 
     //we need to generate vertices after all chunks have their blocks
     //so we can check edges
+    unsigned int current = 0;
     for(auto& c : loadedChunks)
     {
-        c.generate_faces();
+        current = c.generate_faces(m_vertices, current);
     }
+
+    m_vertices.shrink_to_fit();
 
     double end = glfwGetTime();
 
@@ -37,19 +40,22 @@ World::World()
     << loadedChunks.size()*sizeof(Chunk) << "\n";
 
     std::cout << "Generation time: " << end-start << "\tAverage per chunk: " << (end-start)/loadedChunks.size() << "\n";
+    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 }
 
 void World::render(Renderer& renderer)
 {
-    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+
+    double start = glfwGetTime();
     renderer.init_batch();
 
-    for(auto& c: loadedChunks)
-    {
-        c.render(renderer);
-    }
+    renderer.add_vertices(m_vertices.size(), m_vertices.data());
+
     renderer.flush();
-    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+    
+    double end = glfwGetTime();
+    double deltaTime = end-start;
+    std::cout << "Frametime: " << deltaTime << "\tFPS: " << 1/deltaTime << "\n";
 
 }
 

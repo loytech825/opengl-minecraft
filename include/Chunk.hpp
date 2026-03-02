@@ -48,6 +48,15 @@ struct FaceData
 //side note:
 //  max number of vertices/chunk = CHUNK_SIDE*CHUNK_SIDE*CHUNK_SIDE * 6 * 4 / 2 since two blocks cant render the same side 
 
+//(face based rendering world storage)
+// - we still store an array of all vertices but this time inside the world
+//    so we dont have t loop through chunks
+//  - each chunk gets a start and an end index for its vertices
+//       so we can easily delete it or find a side for a chunk
+//  - if a face needs to be deleted we remove 4 vertices from an array
+//  - if a face needs to be added its a hell hole
+//      (figure out where and how many vert are generated and move 
+//       all subsequent ones back)
 class Chunk
 {
 
@@ -77,18 +86,18 @@ private:
     //so world can generate vertices as well
     friend World;
 
-    void generate_faces();
+    unsigned int generate_faces(std::vector<VertexData>& array, unsigned int start_index);
     const Block* get_block(const glm::vec3& pos) const;
     void set_block(const glm::vec3& pos, const Block& block);
 
 
     std::array<Block, CHUNK_SIDE*CHUNK_SIDE*CHUNK_SIDE> m_blocks;
-    std::vector<VertexData> m_vertices;
+    
+    unsigned int start;
+    unsigned int end;
     //should this be here or in world?
     //does hunk generate its vertices or does the world generate vertices
     //for all chunks at once
-    VAO vertex_array;
-    int vertex_count;
 
     World& m_world;
 

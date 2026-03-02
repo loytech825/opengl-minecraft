@@ -26,4 +26,5 @@ public:
 
 private:
     std::vector<Chunk> loadedChunks;
+    std::vector<VertexData> m_vertices;
 };

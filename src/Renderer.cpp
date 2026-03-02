@@ -6,7 +6,7 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 
-constexpr unsigned int MAX_FACES = 10000;
+constexpr unsigned int MAX_FACES = 130000;
 constexpr unsigned int MAX_VERTICES = MAX_FACES*4;
 constexpr unsigned int MAX_INDICES = MAX_FACES*6;
 
@@ -47,17 +47,19 @@ Renderer::Renderer()
     delete[] indices;
     glBindVertexArray(0);
     glDeleteBuffers(1, &EBO);
-}
-
-void Renderer::init_batch()
-{
-    if(bufferPtr != nullptr)
-        flush();
 
     bufferPtr = new VertexData[MAX_VERTICES];
     currentPtr = bufferPtr;
     indices_to_draw = 0;
 }
+
+void Renderer::init_batch()
+{
+    currentPtr = bufferPtr;
+    indices_to_draw = 0;
+}
+
+void Renderer::print_draw_calls() {std::cout << "Draw calls: " << draw_calls << "\n";}
 
 void Renderer::add_face(const FaceData& face)
 {
@@ -151,34 +153,27 @@ void Renderer::add_vertex(const VertexData& v)
 
 void Renderer::add_vertices(unsigned int count, const VertexData* data)
 {
-    double start = glfwGetTime();
-
     if(currentPtr+count-bufferPtr > MAX_VERTICES)
     {
-        //unsigned int remaining_space = (MAX_VERTICES - (currentPtr-bufferPtr));
-        //memcpy(currentPtr, data, remaining_space*sizeof(VertexData));
-        //add_vertices((count-remaining_space), data+remaining_space);
+        unsigned int remaining_space = (MAX_VERTICES - (currentPtr-bufferPtr));
+        memcpy(currentPtr, data, remaining_space*sizeof(VertexData));
+        indices_to_draw += (remaining_space*6)/4;
         flush();
+
         init_batch();
-        //return;
+        add_vertices((count-remaining_space), data+remaining_space);
+        return;
     }
 
     memcpy(currentPtr, data, count*sizeof(VertexData));
     currentPtr += count;
     indices_to_draw += (count*6)/4;
-
-    double end = glfwGetTime();
-    double deltaTime = end-start;
-    std::cout << "Frametime: " << deltaTime << "\tFPS: " << 1/deltaTime << "\n";
 }
 
 void Renderer::flush()
-{
+{ 
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, MAX_VERTICES*sizeof(VertexData), bufferPtr);
-    delete[] bufferPtr;
-    bufferPtr = nullptr;
-    currentPtr = nullptr;
 
     glBindVertexArray(m_VAO);
     glDrawElements(GL_TRIANGLES, indices_to_draw, GL_UNSIGNED_INT, 0);

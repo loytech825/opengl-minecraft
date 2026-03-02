@@ -140,21 +140,15 @@ void Chunk::print(){
 
 void Chunk::render(Renderer& renderer)
 {
-    if(!m_vertices.empty())
-        renderer.add_vertices(m_vertices.size(), m_vertices.data());
 }
 
 //This can be slow, we need to regen the entire buffer if a single block changes
 //TODO: maybe add vertex generation to gpu (compute shader)
 //5ms / 16²
 //66ms / 64²
-void Chunk::generate_faces()
+unsigned int Chunk::generate_faces(std::vector<VertexData>& array, unsigned int start_index)
 {
-
-    //double start = glfwGetTime();
-    std::vector<float> v;
-    v.reserve(CHUNK_SIDE*CHUNK_SIDE*CHUNK_SIDE*2*4*3);
-
+    unsigned int offset = 0;
     for(int y = 0; y < CHUNK_SIDE; y++)
     {
         for(int z = 0; z < CHUNK_SIDE; z++)
@@ -213,13 +207,14 @@ void Chunk::generate_faces()
                         }
                     }
                     
-                    generate_side_vertices((DIRECTION)i, glm::vec3(x, y, z)+pos, m_vertices);
+                    generate_side_vertices((DIRECTION)i, glm::vec3(x, y, z)+pos, array);
+                    offset+=4;
                 }
             }
         }
     }
 
-    m_vertices.shrink_to_fit();
+   return offset+start_index;
 }
 
 const Block* Chunk::get_block(const glm::vec3& pos) const

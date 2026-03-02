@@ -21,8 +21,12 @@ public:
     void add_vertex(const VertexData& v);
     void add_vertices(unsigned int count, const VertexData* data);
 
+
     void init_batch();
     void flush();
+
+    void print_draw_calls();
+    void reset_draw_calls() {draw_calls=0;}
 
 
 private:
@@ -34,5 +38,7 @@ private:
     VertexData* bufferPtr;
     VertexData* currentPtr;
     unsigned int* indices;
+
+    int draw_calls;
 
 };
