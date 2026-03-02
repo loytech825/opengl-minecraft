@@ -1,0 +1,34 @@
+#pragma once
+#include <glm/glm.hpp>
+
+struct FaceData;
+
+struct VertexData
+{
+    glm::vec3 pos;
+};
+
+class Renderer
+{
+
+public:
+    Renderer();
+    ~Renderer();
+    void add_face(const FaceData& face);
+    void add_vertex(const VertexData& v);
+
+    void init_batch();
+    void flush();
+
+
+private:
+    unsigned int m_VAO;
+    unsigned int m_VBO;
+
+    unsigned int indices_to_draw;
+
+    VertexData* bufferPtr;
+    VertexData* currentPtr;
+    unsigned int* indices;
+
+};

@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "GLFW/glfw3.h"
+#include "Renderer.hpp"
 
 World::World()
 {
@@ -24,7 +25,7 @@ World::World()
     //so we can check edges
     for(auto& c : loadedChunks)
     {
-        c.generate_vertices();
+        c.generate_faces();
     }
 
     double end = glfwGetTime();
@@ -38,12 +39,15 @@ World::World()
     std::cout << "Generation time: " << end-start << "\tAverage per chunk: " << (end-start)/loadedChunks.size() << "\n";
 }
 
-void World::render()
+void World::render(Renderer& renderer)
 {
+    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     for(auto& c: loadedChunks)
     {
-        c.render();
+        c.render(renderer);
     }
+    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+
 }
 
 const Chunk* World::get_chunk(const glm::vec3& pos) const

@@ -91,6 +91,13 @@ build CMakeFiles/minecraft.dir/src/OpenGL_support/VertexBufferLayout.cpp.o: CXX_
   OBJECT_DIR = CMakeFiles/minecraft.dir
   OBJECT_FILE_DIR = CMakeFiles/minecraft.dir/src/OpenGL_support
 
+build CMakeFiles/minecraft.dir/src/Renderer.cpp.o: CXX_COMPILER__minecraft_unscanned_Debug /home/matic/code/Minecraft$ Clone-rework/src/Renderer.cpp || cmake_object_order_depends_target_minecraft
+  DEP_FILE = CMakeFiles/minecraft.dir/src/Renderer.cpp.o.d
+  FLAGS = -g -std=gnu++17
+  INCLUDES = -I"/home/matic/code/Minecraft Clone-rework/include" -I"/home/matic/code/Minecraft Clone-rework/thirdparty/glfw-3.4/include" -I"/home/matic/code/Minecraft Clone-rework/thirdparty/glad/include" -I"/home/matic/code/Minecraft Clone-rework/thirdparty/stb_image/include" -I"/home/matic/code/Minecraft Clone-rework/thirdparty/glm/include"
+  OBJECT_DIR = CMakeFiles/minecraft.dir
+  OBJECT_FILE_DIR = CMakeFiles/minecraft.dir/src
+
 build CMakeFiles/minecraft.dir/src/World.cpp.o: CXX_COMPILER__minecraft_unscanned_Debug /home/matic/code/Minecraft$ Clone-rework/src/World.cpp || cmake_object_order_depends_target_minecraft
   DEP_FILE = CMakeFiles/minecraft.dir/src/World.cpp.o.d
   FLAGS = -g -std=gnu++17
@@ -113,7 +120,7 @@ build CMakeFiles/minecraft.dir/src/main.cpp.o: CXX_COMPILER__minecraft_unscanned
 #############################################
 # Link the executable minecraft
 
-build minecraft: CXX_EXECUTABLE_LINKER__minecraft_Debug CMakeFiles/minecraft.dir/src/Camera.cpp.o CMakeFiles/minecraft.dir/src/Chunk.cpp.o CMakeFiles/minecraft.dir/src/OpenGL_support/ShaderProgram.cpp.o CMakeFiles/minecraft.dir/src/OpenGL_support/VAO.cpp.o CMakeFiles/minecraft.dir/src/OpenGL_support/VBO.cpp.o CMakeFiles/minecraft.dir/src/OpenGL_support/VertexBufferLayout.cpp.o CMakeFiles/minecraft.dir/src/World.cpp.o CMakeFiles/minecraft.dir/src/main.cpp.o | thirdparty/glfw-3.4/src/libglfw3.a thirdparty/glad/libglad.a thirdparty/stb_image/libstb_image.a /usr/lib/x86_64-linux-gnu/librt.a /usr/lib/x86_64-linux-gnu/libm.so || thirdparty/glad/libglad.a thirdparty/glfw-3.4/src/libglfw3.a thirdparty/stb_image/libstb_image.a
+build minecraft: CXX_EXECUTABLE_LINKER__minecraft_Debug CMakeFiles/minecraft.dir/src/Camera.cpp.o CMakeFiles/minecraft.dir/src/Chunk.cpp.o CMakeFiles/minecraft.dir/src/OpenGL_support/ShaderProgram.cpp.o CMakeFiles/minecraft.dir/src/OpenGL_support/VAO.cpp.o CMakeFiles/minecraft.dir/src/OpenGL_support/VBO.cpp.o CMakeFiles/minecraft.dir/src/OpenGL_support/VertexBufferLayout.cpp.o CMakeFiles/minecraft.dir/src/Renderer.cpp.o CMakeFiles/minecraft.dir/src/World.cpp.o CMakeFiles/minecraft.dir/src/main.cpp.o | thirdparty/glfw-3.4/src/libglfw3.a thirdparty/glad/libglad.a thirdparty/stb_image/libstb_image.a /usr/lib/x86_64-linux-gnu/librt.a /usr/lib/x86_64-linux-gnu/libm.so || thirdparty/glad/libglad.a thirdparty/glfw-3.4/src/libglfw3.a thirdparty/stb_image/libstb_image.a
   FLAGS = -g
   LINK_LIBRARIES = thirdparty/glfw-3.4/src/libglfw3.a  thirdparty/glad/libglad.a  thirdparty/stb_image/libstb_image.a  /usr/lib/x86_64-linux-gnu/librt.a  -lm  -ldl
   OBJECT_DIR = CMakeFiles/minecraft.dir

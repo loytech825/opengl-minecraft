@@ -5,12 +5,13 @@
 
 constexpr int RENDER_DISTANCE = 4;
 
+class Renderer;
 
 class World
 {
 public:
     World();
-    void render();
+    void render(Renderer& renderer);
 
     //returns a raw pointer to a chunk at position
     //returns null if chunk not loaded

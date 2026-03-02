@@ -37,6 +37,12 @@
 },
 {
   "directory": "/home/matic/code/Minecraft Clone-rework/build",
+  "command": "/usr/lib/ccache/clang++ -I\"/home/matic/code/Minecraft Clone-rework/include\" -I\"/home/matic/code/Minecraft Clone-rework/thirdparty/glfw-3.4/include\" -I\"/home/matic/code/Minecraft Clone-rework/thirdparty/glad/include\" -I\"/home/matic/code/Minecraft Clone-rework/thirdparty/stb_image/include\" -I\"/home/matic/code/Minecraft Clone-rework/thirdparty/glm/include\" -g -std=gnu++17 -o CMakeFiles/minecraft.dir/src/Renderer.cpp.o -c \"/home/matic/code/Minecraft Clone-rework/src/Renderer.cpp\"",
+  "file": "/home/matic/code/Minecraft Clone-rework/src/Renderer.cpp",
+  "output": "CMakeFiles/minecraft.dir/src/Renderer.cpp.o"
+},
+{
+  "directory": "/home/matic/code/Minecraft Clone-rework/build",
   "command": "/usr/lib/ccache/clang++ -I\"/home/matic/code/Minecraft Clone-rework/include\" -I\"/home/matic/code/Minecraft Clone-rework/thirdparty/glfw-3.4/include\" -I\"/home/matic/code/Minecraft Clone-rework/thirdparty/glad/include\" -I\"/home/matic/code/Minecraft Clone-rework/thirdparty/stb_image/include\" -I\"/home/matic/code/Minecraft Clone-rework/thirdparty/glm/include\" -g -std=gnu++17 -o CMakeFiles/minecraft.dir/src/World.cpp.o -c \"/home/matic/code/Minecraft Clone-rework/src/World.cpp\"",
   "file": "/home/matic/code/Minecraft Clone-rework/src/World.cpp",
   "output": "CMakeFiles/minecraft.dir/src/World.cpp.o"
