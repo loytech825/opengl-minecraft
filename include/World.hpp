@@ -3,7 +3,7 @@
 
 #include <vector>
 
-constexpr int RENDER_DISTANCE = 4;
+constexpr int RENDER_DISTANCE = 2;
 
 class Renderer;
 
@@ -21,7 +21,6 @@ public:
     @brief Returns the block at positio
     @param pos world position of the block
     @return Pointer to block (nullptr if invalid)
-    
     */
     const Block* get_block(const glm::vec3& pos) const;
 

@@ -81,19 +81,40 @@ glm::vec3 direction_vectors[] = {
 
 //generates the vertex position for a single side of a block
 //at a position
-const std::vector<float> generate_side_vertices(DIRECTION dir, const glm::vec3& block_pos)
+void generate_side_vertices(DIRECTION dir, const glm::vec3& block_pos, std::vector<VertexData>& array)
 {
-    std::vector<float> vertices;
-    vertices.reserve(18);
 
-    for(int i = 0; i <18; i+=3)
+    int X = 0, Y = 0, Z = 0;
+
+    switch(dir)
     {
-        vertices.push_back(cube_vertices[dir*18+i] + block_pos.x);
-        vertices.push_back(cube_vertices[dir*18+i+1] + block_pos.y);
-        vertices.push_back(cube_vertices[dir*18+i+2] + block_pos.z);
-    }
+        case UP:
+            Y = 1;
+        case DOWN:
+            array.emplace_back(block_pos+glm::vec3(0, Y, 0));
+            array.emplace_back(block_pos+glm::vec3(0, Y, 1));
+            array.emplace_back(block_pos+glm::vec3(1, Y, 1));
+            array.emplace_back(block_pos+glm::vec3(1, Y, 0));
+            break;
 
-    return vertices;
+        case NORTH:
+            X = 1;
+        case SOUTH:
+            array.emplace_back(block_pos+glm::vec3(X, 0, 0));
+            array.emplace_back(block_pos+glm::vec3(X, 0, 1));
+            array.emplace_back(block_pos+glm::vec3(X, 1, 1));
+            array.emplace_back(block_pos+glm::vec3(X, 1, 0));
+            break;
+        
+        case EAST:
+            Z = 1;
+        case WEST:
+            array.emplace_back(block_pos+glm::vec3(0, 0, Z));
+            array.emplace_back(block_pos+glm::vec3(0, 1, Z));
+            array.emplace_back(block_pos+glm::vec3(1, 1, Z));
+            array.emplace_back(block_pos+glm::vec3(1, 0, Z));
+            break;
+    }
 }
 
 Chunk::Chunk(int X, int Y, int Z, World& world)
@@ -119,10 +140,7 @@ void Chunk::print(){
 
 void Chunk::render(Renderer& renderer)
 {
-    for(const auto& face : m_visible_faces)
-    {
-        renderer.add_face(face);
-    }
+    renderer.add_vertices(m_vertices.size(), m_vertices.data());
 }
 
 //This can be slow, we need to regen the entire buffer if a single block changes
@@ -133,7 +151,6 @@ void Chunk::generate_faces()
 {
 
     //double start = glfwGetTime();
-
     std::vector<float> v;
     v.reserve(CHUNK_SIDE*CHUNK_SIDE*CHUNK_SIDE*2*4*3);
 
@@ -195,7 +212,7 @@ void Chunk::generate_faces()
                         }
                     }
                     
-                    m_visible_faces.emplace_back(x+pos.x, y+pos.y, z+pos.z, (DIRECTION)i);
+                    generate_side_vertices((DIRECTION)i, glm::vec3(x, y, z)+pos, m_vertices);
                 }
             }
         }

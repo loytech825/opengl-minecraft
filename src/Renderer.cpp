@@ -1,5 +1,7 @@
 #include "Renderer.hpp"
 #include "Chunk.hpp"
+#include <memory>
+#include <cstring>
 
 constexpr unsigned int MAX_FACES = 10000;
 constexpr unsigned int MAX_VERTICES = MAX_FACES*4;
@@ -42,9 +44,6 @@ Renderer::Renderer()
     delete[] indices;
     glBindVertexArray(0);
     glDeleteBuffers(1, &EBO);
-
-    bufferPtr = new VertexData[MAX_VERTICES];
-    currentPtr = bufferPtr;
 }
 
 void Renderer::init_batch()
@@ -145,6 +144,23 @@ void Renderer::add_vertex(const VertexData& v)
 
     currentPtr->pos = v.pos;
     currentPtr++;
+}
+
+void Renderer::add_vertices(unsigned int count, const VertexData* data)
+{
+    if(currentPtr+count-bufferPtr > MAX_VERTICES)
+    {
+        //unsigned int remaining_space = (MAX_VERTICES - (currentPtr-bufferPtr));
+        //memcpy(currentPtr, data, remaining_space*sizeof(VertexData));
+        //add_vertices((count-remaining_space), data+remaining_space);
+        flush();
+        init_batch();
+        //return;
+    }
+
+    memcpy(currentPtr, data, count*sizeof(VertexData));
+    currentPtr += count;
+    indices_to_draw += (count*6)/4;
 }
 
 void Renderer::flush()

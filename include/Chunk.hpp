@@ -2,6 +2,7 @@
 #include <array>
 #include <glm/glm.hpp>
 #include "OpenGL_support/VAO.hpp"
+#include "Renderer.hpp"
 
 constexpr int CHUNK_SIDE = 16;
 
@@ -29,11 +30,7 @@ struct FaceData
     : x(X), y(Y), z(Z), direction(D){}
 };
 
-//TODO: add structure for holding side data with block
-// 1 byte to store which sides are visible
-// when generating vertices we can use this data instead of
-//needing to recalculate
-
+//TODO: add vertex data here directly instead of face data
 
 // RENDERING IDEAS:
 // - use a buffer on the gpu, everytime the chunk is updated we update the buffer (side data stored in block)
@@ -86,7 +83,7 @@ private:
 
 
     std::array<Block, CHUNK_SIDE*CHUNK_SIDE*CHUNK_SIDE> m_blocks;
-    std::vector<FaceData> m_visible_faces;
+    std::vector<VertexData> m_vertices;
     //should this be here or in world?
     //does hunk generate its vertices or does the world generate vertices
     //for all chunks at once

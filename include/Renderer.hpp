@@ -6,6 +6,9 @@ struct FaceData;
 struct VertexData
 {
     glm::vec3 pos;
+    VertexData(const glm::vec3& p)
+    :pos(p) {}
+    VertexData() : VertexData({0, 0, 0}) {}
 };
 
 class Renderer
@@ -16,6 +19,7 @@ public:
     ~Renderer();
     void add_face(const FaceData& face);
     void add_vertex(const VertexData& v);
+    void add_vertices(unsigned int count, const VertexData* data);
 
     void init_batch();
     void flush();
