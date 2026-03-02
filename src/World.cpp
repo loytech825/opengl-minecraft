@@ -41,6 +41,7 @@ World::World()
 
 void World::render(Renderer& renderer)
 {
+    double start = glfwGetTime();
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     renderer.init_batch();
 
@@ -50,6 +51,10 @@ void World::render(Renderer& renderer)
     }
     renderer.flush();
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+
+    double end = glfwGetTime();
+    double deltaTime = end-start;
+    std::cout << "Frametime: " << deltaTime << "\tFPS: " << 1/deltaTime << "\n";
 
 }
 
