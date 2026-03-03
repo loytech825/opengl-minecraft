@@ -1,5 +1,6 @@
 #include "Chunk.hpp"
 #include "World.hpp"
+#include "Renderer.hpp"
 
 #include <iostream>
 #include <math.h>
@@ -66,38 +67,54 @@ float cube_vertices[] = {
 glm::vec3 direction_vectors[] = {
     //up
     glm::vec3(0, 1, 0),
-    //down
-    glm::vec3(0, -1, 0),
     //north
     glm::vec3(1, 0, 0),
-    //south
-    glm::vec3(-1, 0, 0),
     //east
     glm::vec3(0, 0, 1),
     //west
-    glm::vec3(0, 0, -1)
-};
-
-enum DIRECTION : unsigned char
-{
-    UP = 0, DOWN, NORTH, SOUTH, EAST, WEST
+    glm::vec3(0, 0, -1),
+    //south
+    glm::vec3(-1, 0, 0),
+    //down
+    glm::vec3(0, -1, 0),
 };
 
 //generates the vertex position for a single side of a block
 //at a position
-const std::vector<float> generate_side_vertices(DIRECTION dir, const glm::vec3& block_pos)
+void generate_side_vertices(DIRECTION dir, const glm::vec3& block_pos, std::vector<VertexData>& array)
 {
-    std::vector<float> vertices;
-    vertices.reserve(18);
 
-    for(int i = 0; i <18; i+=3)
+    int X = 0, Y = 0, Z = 0;
+
+    switch(dir)
     {
-        vertices.push_back(cube_vertices[dir*18+i] + block_pos.x);
-        vertices.push_back(cube_vertices[dir*18+i+1] + block_pos.y);
-        vertices.push_back(cube_vertices[dir*18+i+2] + block_pos.z);
-    }
+        case UP:
+            Y = 1;
+        case DOWN:
+            array.emplace_back(block_pos+glm::vec3(0, Y, 0));
+            array.emplace_back(block_pos+glm::vec3(0, Y, 1));
+            array.emplace_back(block_pos+glm::vec3(1, Y, 1));
+            array.emplace_back(block_pos+glm::vec3(1, Y, 0));
+            break;
 
-    return vertices;
+        case NORTH:
+            X = 1;
+        case SOUTH:
+            array.emplace_back(block_pos+glm::vec3(X, 0, 0));
+            array.emplace_back(block_pos+glm::vec3(X, 0, 1));
+            array.emplace_back(block_pos+glm::vec3(X, 1, 1));
+            array.emplace_back(block_pos+glm::vec3(X, 1, 0));
+            break;
+        
+        case EAST:
+            Z = 1;
+        case WEST:
+            array.emplace_back(block_pos+glm::vec3(0, 0, Z));
+            array.emplace_back(block_pos+glm::vec3(0, 1, Z));
+            array.emplace_back(block_pos+glm::vec3(1, 1, Z));
+            array.emplace_back(block_pos+glm::vec3(1, 0, Z));
+            break;
+    }
 }
 
 Chunk::Chunk(int X, int Y, int Z, World& world)
@@ -105,10 +122,10 @@ Chunk::Chunk(int X, int Y, int Z, World& world)
     m_world(world)
 {
     std::fill(m_blocks.begin(), m_blocks.end(), (unsigned char)1);
-    set_block({0, 0, 0}, Block(0));
+    /*set_block({0, 0, 0}, Block(0));
     set_block({1, 0, 0}, Block(0));
     set_block({0, 0, 1}, Block(0));
-    set_block({7, 7, 7}, Block(0));
+    set_block({7, 7, 7}, Block(0));*/
 }
 
 Chunk::Chunk(World& world) : Chunk(0, 0, 0, world) {}
@@ -121,28 +138,17 @@ void Chunk::print(){
     }
 }
 
-void Chunk::render()
+void Chunk::render(Renderer& renderer)
 {
-    vertex_array.bind();
-    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-    glDrawArrays(GL_TRIANGLES, 0, vertex_count);
-    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-    vertex_array.unbind();
 }
-
 
 //This can be slow, we need to regen the entire buffer if a single block changes
 //TODO: maybe add vertex generation to gpu (compute shader)
 //5ms / 16²
 //66ms / 64²
-void Chunk::generate_vertices()
+unsigned int Chunk::generate_faces(std::vector<VertexData>& array, unsigned int start_index)
 {
-
-    //double start = glfwGetTime();
-
-    std::vector<float> v;
-    v.reserve(CHUNK_SIDE*CHUNK_SIDE*CHUNK_SIDE*2*4*3);
-
+    unsigned int offset = 0;
     for(int y = 0; y < CHUNK_SIDE; y++)
     {
         for(int z = 0; z < CHUNK_SIDE; z++)
@@ -201,25 +207,14 @@ void Chunk::generate_vertices()
                         }
                     }
                     
-
-                    auto face_vertices = generate_side_vertices((DIRECTION)i, glm::vec3(x, y, z)+(float)CHUNK_SIDE*pos);
-                    v.insert(v.end(), face_vertices.begin(), face_vertices.end());
+                    generate_side_vertices((DIRECTION)i, glm::vec3(x, y, z)+pos, array);
+                    offset+=4;
                 }
             }
         }
     }
 
-    vertex_count = v.size()/3;
-
-    VBO vertices(GL_ARRAY_BUFFER, GL_STATIC_DRAW, v.data(), v.size()*sizeof(float));
-
-    VertexBufferLayout layout;
-    layout.push<float>(3, false);
-
-    vertex_array.set_buffer(vertices, layout);
-
-    //double end = glfwGetTime();
-    //std::cout << "Vertex generation time: " << end-start << "\n";
+   return offset+start_index;
 }
 
 const Block* Chunk::get_block(const glm::vec3& pos) const

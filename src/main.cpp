@@ -4,6 +4,7 @@
 #include "OpenGL_support/VAO.hpp"
 #include "OpenGL_support/VBO.hpp"
 #include "OpenGL_support/VertexBufferLayout.hpp"
+#include "Renderer.hpp"
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
@@ -43,9 +44,10 @@ int main(){
     glfwSwapInterval(0);
 
     Camera cam;
-    World world;
+    Renderer r;
+    World world(r);
 
-    cam.look_at.y = 8;
+    cam.look_at.y = 0;
 
     const int R = 5;
 
@@ -60,13 +62,13 @@ int main(){
         //UPDATE LOOP
         cam.pos.x = glm::cos(glfwGetTime()*0.5)*R;
         cam.pos.z = glm::sin(glfwGetTime()*0.5)*R;
-        cam.pos.y = 8;
+        cam.pos.y = 0;
 
 
         //RENDER CODE
         program.bind();
         program.set_uniform("transform", cam.get_transform());
-        world.render();
+        world.render(r);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -74,7 +76,7 @@ int main(){
         double end = glfwGetTime();
 
         double deltaTime = end - start;
-        std::cout << "Frametime: " << deltaTime << "\tFPS: " << 1/deltaTime << "\n";
+        //std::cout << "Frametime: " << deltaTime << "\tFPS: " << 1/deltaTime << "\n";
     }
 
     }

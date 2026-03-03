@@ -5,12 +5,13 @@
 
 constexpr int RENDER_DISTANCE = 4;
 
+class Renderer;
 
 class World
 {
 public:
-    World();
-    void render();
+    World(Renderer& r);
+    void render(Renderer& renderer);
 
     //returns a raw pointer to a chunk at position
     //returns null if chunk not loaded
@@ -20,10 +21,10 @@ public:
     @brief Returns the block at positio
     @param pos world position of the block
     @return Pointer to block (nullptr if invalid)
-    
     */
     const Block* get_block(const glm::vec3& pos) const;
 
 private:
     std::vector<Chunk> loadedChunks;
+    std::vector<VertexData> m_vertices;
 };
