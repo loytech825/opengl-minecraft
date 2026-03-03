@@ -7,9 +7,9 @@ I compared different rendering approaches to test their performance:
 - Dynamic VBO:
   - for all geometry together (face-based-rendering-world-storage, old)
   - for each chunk separately (chunks store which faces need to be rendered, and the renderer generates vertex data each frame) (face-based-batching)
-- depends on the size of the buffer:
-  - If the buffer is small the performance drops ~50fps
-  - If the buffer can hold all the vertices, performance is back to ~250fps
+  - depends on the size of the buffer:
+    1. If the buffer is small the performance drops ~50fps
+    2. If the buffer can hold all the vertices, performance is back to ~250fps
 - Static VBO for all geometry together (face-based-rendering-world-storage):
   - The buffer gets set once at the beggining or when the geometry changes
   - Massive performance uplift > 10000fps
