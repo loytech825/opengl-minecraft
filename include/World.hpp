@@ -10,7 +10,7 @@ class Renderer;
 class World
 {
 public:
-    World();
+    World(Renderer& r);
     void render(Renderer& renderer);
 
     //returns a raw pointer to a chunk at position

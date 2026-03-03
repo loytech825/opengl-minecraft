@@ -11,6 +11,15 @@ struct VertexData
     VertexData() : VertexData({0, 0, 0}) {}
 };
 
+struct RenderData
+{
+    unsigned int VAO;
+    unsigned int index_count;
+
+    RenderData(unsigned int v, unsigned int c)
+    : VAO(v), index_count(c) {}
+};
+
 class Renderer
 {
 
@@ -21,6 +30,8 @@ public:
     void add_vertex(const VertexData& v);
     void add_vertices(unsigned int count, const VertexData* data);
 
+    void add_static_geometry(unsigned int count, VertexData* data);
+    void render_static_geometry();
 
     void init_batch();
     void flush();
@@ -34,6 +45,8 @@ private:
     unsigned int m_VBO;
 
     unsigned int indices_to_draw;
+
+    std::vector<RenderData> m_static_geometry;
 
     VertexData* bufferPtr;
     VertexData* currentPtr;

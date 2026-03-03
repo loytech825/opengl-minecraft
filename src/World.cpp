@@ -4,7 +4,7 @@
 #include "GLFW/glfw3.h"
 #include "Renderer.hpp"
 
-World::World()
+World::World(Renderer& r)
 {
 
     double start = glfwGetTime();
@@ -40,6 +40,8 @@ World::World()
     << loadedChunks.size()*sizeof(Chunk) << "\n";
 
     std::cout << "Generation time: " << end-start << "\tAverage per chunk: " << (end-start)/loadedChunks.size() << "\n";
+
+    r.add_static_geometry(m_vertices.size(), m_vertices.data());
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 }
 
@@ -47,11 +49,8 @@ void World::render(Renderer& renderer)
 {
 
     double start = glfwGetTime();
-    renderer.init_batch();
-
-    renderer.add_vertices(m_vertices.size(), m_vertices.data());
-
-    renderer.flush();
+   
+    renderer.render_static_geometry();
     
     double end = glfwGetTime();
     double deltaTime = end-start;

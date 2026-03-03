@@ -44,13 +44,12 @@ int main(){
     glfwSwapInterval(0);
 
     Camera cam;
-    World world;
+    Renderer r;
+    World world(r);
 
     cam.look_at.y = 0;
 
     const int R = 5;
-
-    Renderer r;
 
     while(!glfwWindowShouldClose(window))
     {
