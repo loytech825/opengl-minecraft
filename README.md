@@ -13,5 +13,3 @@ I compared different rendering approaches to test their performance:
 - Static VBO for all geometry together (face-based-rendering-world-storage):
   - The buffer gets set once at the beggining or when the geometry changes
   - Massive performance uplift > 10000fps
-
-TODO: add process of optimization process
