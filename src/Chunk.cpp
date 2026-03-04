@@ -146,9 +146,8 @@ void Chunk::render(Renderer& renderer)
 //TODO: maybe add vertex generation to gpu (compute shader)
 //5ms / 16²
 //66ms / 64²
-unsigned int Chunk::generate_faces(std::vector<VertexData>& array, unsigned int start_index)
+void Chunk::generate_faces()
 {
-    unsigned int offset = 0;
     for(int y = 0; y < CHUNK_SIDE; y++)
     {
         for(int z = 0; z < CHUNK_SIDE; z++)
@@ -207,14 +206,45 @@ unsigned int Chunk::generate_faces(std::vector<VertexData>& array, unsigned int 
                         }
                     }
                     
-                    generate_side_vertices((DIRECTION)i, glm::vec3(x, y, z)+pos, array);
-                    offset+=4;
+                    m_blocks[y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x].sides |= 1<<i;
                 }
             }
         }
     }
+}
 
-   return offset+start_index;
+unsigned int Chunk::generate_face_vertices(std::vector<VertexData>& array, unsigned int start_index)
+{
+    //TEST LOOP
+    double start = glfwGetTime();
+    unsigned int offset = 0;
+    for(int y = 0; y < CHUNK_SIDE; y++)
+    {
+    for(int z = 0; z < CHUNK_SIDE; z++)
+    {
+    for(int x = 0; x < CHUNK_SIDE; x++)
+    {
+        unsigned char sides = m_blocks[y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x].sides;
+
+        if(!sides) continue;
+        for(int i = 0; i < 6; i++)
+        {
+            if(sides & (1<<i))
+            {
+                generate_side_vertices((DIRECTION)i, glm::vec3(x, y, z)+pos, array);
+                offset += 4;
+            }
+        } 
+    }
+    }
+    }
+
+    double end = glfwGetTime();
+    double deltaTime = end-start;
+    std::cout << "New vertex gen time: " << deltaTime << "\tFPS: " << 1/deltaTime << "\n";
+    end = start+offset;
+    return end;
+
 }
 
 const Block* Chunk::get_block(const glm::vec3& pos) const

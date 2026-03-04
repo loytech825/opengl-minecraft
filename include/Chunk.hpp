@@ -12,7 +12,9 @@ class Renderer;
 struct Block
 {
     unsigned char type;
-    Block(const unsigned char& tp) : type(tp){};
+    unsigned char sides;
+    Block(const unsigned char& tp) : Block(tp, 0){};
+    Block(const unsigned char& tp, const unsigned char s) : type(tp), sides(s){};
     Block(): type(0){};
 };
 
@@ -86,7 +88,8 @@ private:
     //so world can generate vertices as well
     friend World;
 
-    unsigned int generate_faces(std::vector<VertexData>& array, unsigned int start_index);
+    void generate_faces();
+    unsigned int generate_face_vertices(std::vector<VertexData>& array, unsigned int start_index);
     const Block* get_block(const glm::vec3& pos) const;
     void set_block(const glm::vec3& pos, const Block& block);
 

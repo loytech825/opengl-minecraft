@@ -6,8 +6,6 @@
 
 World::World(Renderer& r)
 {
-
-    double start = glfwGetTime();
     loadedChunks.reserve(8*RENDER_DISTANCE*RENDER_DISTANCE*RENDER_DISTANCE);
 
     for(int i = -RENDER_DISTANCE; i < RENDER_DISTANCE+1; i++)
@@ -26,12 +24,18 @@ World::World(Renderer& r)
     unsigned int current = 0;
     for(auto& c : loadedChunks)
     {
-        current = c.generate_faces(m_vertices, current);
+        double start = glfwGetTime();
+        c.generate_faces();
+        current = c.generate_face_vertices(m_vertices, current);
+
+        double end = glfwGetTime();
+        double deltaTime = end-start;
+        std::cout << "Full gen time: " << deltaTime << "\tFPS: " << 1/deltaTime << "\n";
     }
 
     m_vertices.shrink_to_fit();
 
-    double end = glfwGetTime();
+    //double end = glfwGetTime();
 
     std::cout << "Size of single block: " << sizeof(Block) << "\n";
     std::cout << "Size of chunk: " << sizeof(Chunk) << "\n";
@@ -39,7 +43,7 @@ World::World(Renderer& r)
     << "\nNumber, Size of chunks: " << loadedChunks.size() << ", " 
     << loadedChunks.size()*sizeof(Chunk) << "\n";
 
-    std::cout << "Generation time: " << end-start << "\tAverage per chunk: " << (end-start)/loadedChunks.size() << "\n";
+    //std::cout << "Generation time: " << end-start << "\tAverage per chunk: " << (end-start)/loadedChunks.size() << "\n";
 
     r.add_static_geometry(m_vertices.size(), m_vertices.data());
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
@@ -54,7 +58,7 @@ void World::render(Renderer& renderer)
     
     double end = glfwGetTime();
     double deltaTime = end-start;
-    std::cout << "Frametime: " << deltaTime << "\tFPS: " << 1/deltaTime << "\n";
+    //std::cout << "Frametime: " << deltaTime << "\tFPS: " << 1/deltaTime << "\n";
 
 }
 

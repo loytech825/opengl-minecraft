@@ -107,7 +107,6 @@ void Renderer::render_static_geometry()
     for(const auto& r_data : m_static_geometry)
     {
         glBindVertexArray(r_data.VAO);
-        std::cout << "Error: " << glGetError() << ": " << r_data.VAO << "\n";
         glDrawElements(GL_TRIANGLES, r_data.index_count, GL_UNSIGNED_INT, 0);
     }
 }
