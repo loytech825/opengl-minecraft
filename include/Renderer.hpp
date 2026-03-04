@@ -26,7 +26,6 @@ class Renderer
 public:
     Renderer();
     ~Renderer();
-    void add_face(const FaceData& face);
     void add_vertex(const VertexData& v);
     void add_vertices(unsigned int count, const VertexData* data);
 
