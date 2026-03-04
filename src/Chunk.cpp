@@ -130,22 +130,6 @@ Chunk::Chunk(int X, int Y, int Z, World& world)
 
 Chunk::Chunk(World& world) : Chunk(0, 0, 0, world) {}
 
-//DEBUG
-void Chunk::print(){
-
-    for(const auto& blk : m_blocks){
-        std::cout << (unsigned short)blk.type << "\n";
-    }
-}
-
-void Chunk::render(Renderer& renderer)
-{
-}
-
-//This can be slow, we need to regen the entire buffer if a single block changes
-//TODO: maybe add vertex generation to gpu (compute shader)
-//5ms / 16²
-//66ms / 64²
 void Chunk::generate_faces()
 {
     for(int y = 0; y < CHUNK_SIDE; y++)
@@ -215,7 +199,6 @@ void Chunk::generate_faces()
 
 unsigned int Chunk::generate_face_vertices(std::vector<VertexData>& array, unsigned int start_index)
 {
-    //TEST LOOP
     double start = glfwGetTime();
     unsigned int offset = 0;
     for(int y = 0; y < CHUNK_SIDE; y++)
@@ -244,7 +227,13 @@ unsigned int Chunk::generate_face_vertices(std::vector<VertexData>& array, unsig
     std::cout << "New vertex gen time: " << deltaTime << "\tFPS: " << 1/deltaTime << "\n";
     end = start+offset;
     return end;
+}
 
+void Chunk::set_face(const glm::vec3& pos, DIRECTION dir, bool value)
+{
+    Block& block = m_blocks[pos.y*CHUNK_SIDE*CHUNK_SIDE+pos.z*CHUNK_SIDE+pos.x];
+    //set bit at location dir to value
+    block.sides = (block.sides & ~(1<<dir) | value << dir );
 }
 
 const Block* Chunk::get_block(const glm::vec3& pos) const

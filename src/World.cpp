@@ -6,7 +6,7 @@
 
 World::World(Renderer& r)
 {
-    loadedChunks.reserve(8*RENDER_DISTANCE*RENDER_DISTANCE*RENDER_DISTANCE);
+    m_loaded_chunks.reserve(8*RENDER_DISTANCE*RENDER_DISTANCE*RENDER_DISTANCE);
 
     for(int i = -RENDER_DISTANCE; i < RENDER_DISTANCE+1; i++)
     {
@@ -14,36 +14,33 @@ World::World(Renderer& r)
         {
             for(int k = -RENDER_DISTANCE; k < RENDER_DISTANCE+1; k++)
             {
-                loadedChunks.emplace_back(j, k, i, *this);
+                m_loaded_chunks.emplace_back(j, k, i, *this);
             }
         }
     }
 
+    for(auto& c : m_loaded_chunks)
+    {
+        c.generate_faces();
+    }
+
+    m_loaded_chunks.at(0).set_face({8, 8, 8}, DOWN, true);
+
     //we need to generate vertices after all chunks have their blocks
     //so we can check edges
     unsigned int current = 0;
-    for(auto& c : loadedChunks)
+    for(auto& c : m_loaded_chunks)
     {
-        double start = glfwGetTime();
-        c.generate_faces();
         current = c.generate_face_vertices(m_vertices, current);
-
-        double end = glfwGetTime();
-        double deltaTime = end-start;
-        std::cout << "Full gen time: " << deltaTime << "\tFPS: " << 1/deltaTime << "\n";
     }
 
     m_vertices.shrink_to_fit();
 
-    //double end = glfwGetTime();
-
     std::cout << "Size of single block: " << sizeof(Block) << "\n";
     std::cout << "Size of chunk: " << sizeof(Chunk) << "\n";
     std::cout << "Size of World: " << sizeof(World) 
-    << "\nNumber, Size of chunks: " << loadedChunks.size() << ", " 
-    << loadedChunks.size()*sizeof(Chunk) << "\n";
-
-    //std::cout << "Generation time: " << end-start << "\tAverage per chunk: " << (end-start)/loadedChunks.size() << "\n";
+    << "\nNumber, Size of chunks: " << m_loaded_chunks.size() << ", " 
+    << m_loaded_chunks.size()*sizeof(Chunk) << "\n";
 
     r.add_static_geometry(m_vertices.size(), m_vertices.data());
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
@@ -51,22 +48,19 @@ World::World(Renderer& r)
 
 void World::render(Renderer& renderer)
 {
-
     double start = glfwGetTime();
    
     renderer.render_static_geometry();
     
     double end = glfwGetTime();
     double deltaTime = end-start;
-    //std::cout << "Frametime: " << deltaTime << "\tFPS: " << 1/deltaTime << "\n";
-
 }
 
 const Chunk* World::get_chunk(const glm::vec3& pos) const
 {
-    auto index = std::find_if(loadedChunks.begin(), loadedChunks.end(), [&pos](const Chunk& c){return c.pos == pos;});
+    auto index = std::find_if(m_loaded_chunks.begin(), m_loaded_chunks.end(), [&pos](const Chunk& c){return c.pos == pos;});
     
-    if(index == loadedChunks.end())
+    if(index == m_loaded_chunks.end())
     {
         return nullptr;
     }

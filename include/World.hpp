@@ -25,6 +25,6 @@ public:
     const Block* get_block(const glm::vec3& pos) const;
 
 private:
-    std::vector<Chunk> loadedChunks;
+    std::vector<Chunk> m_loaded_chunks;
     std::vector<VertexData> m_vertices;
 };

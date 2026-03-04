@@ -65,23 +65,8 @@ class Chunk
 public:
     Chunk(World& world);
     Chunk(int X, int Y, int Z, World& world);
-    // since chunk only contains Blocks (for now)
-    // we dont need any special resource management
-
-    /*Chunk(const Chunk& other);
-    Chunk& operator=(const Chunk& other);
-    Chunk(Chunk&& other);
-    Chunk& operator=(Chunk&& other);*/
-
-    //~Chunk();
-
-    //DEBUG
-    void print();
-    void render(Renderer& renderer);
 
     glm::vec3 pos;
-
-
 
 private:
 
@@ -92,6 +77,14 @@ private:
     unsigned int generate_face_vertices(std::vector<VertexData>& array, unsigned int start_index);
     const Block* get_block(const glm::vec3& pos) const;
     void set_block(const glm::vec3& pos, const Block& block);
+
+    /*
+    @brief Sets face of block to value
+    @param pos block position in chunk
+    @param dir direction of face to se
+    @param value to set the face to
+    */
+    void set_face(const glm::vec3& pos, DIRECTION dir, bool value);
 
 
     std::array<Block, CHUNK_SIDE*CHUNK_SIDE*CHUNK_SIDE> m_blocks;
