@@ -1,10 +1,25 @@
-#include "Chunk.hpp"
 #include "World.hpp"
 #include "Renderer.hpp"
 
 #include <iostream>
 #include <math.h>
 #include "GLFW/glfw3.h"
+
+
+glm::vec3 direction_vectors[] = {
+    //up
+    glm::vec3(0, 1, 0),
+    //north
+    glm::vec3(1, 0, 0),
+    //east
+    glm::vec3(0, 0, 1),
+    //west
+    glm::vec3(0, 0, -1),
+    //south
+    glm::vec3(-1, 0, 0),
+    //down
+    glm::vec3(0, -1, 0),
+};
 
 //cube vertex position literals
 float cube_vertices[] = {
@@ -64,21 +79,6 @@ float cube_vertices[] = {
     0, 0, 0,
 };
 
-glm::vec3 direction_vectors[] = {
-    //up
-    glm::vec3(0, 1, 0),
-    //north
-    glm::vec3(1, 0, 0),
-    //east
-    glm::vec3(0, 0, 1),
-    //west
-    glm::vec3(0, 0, -1),
-    //south
-    glm::vec3(-1, 0, 0),
-    //down
-    glm::vec3(0, -1, 0),
-};
-
 //generates the vertex position for a single side of a block
 //at a position
 void generate_side_vertices(DIRECTION dir, const glm::vec3& block_pos, std::vector<VertexData>& array)
@@ -122,10 +122,6 @@ Chunk::Chunk(int X, int Y, int Z, World& world)
     m_world(world)
 {
     std::fill(m_blocks.begin(), m_blocks.end(), (unsigned char)1);
-    /*set_block({0, 0, 0}, Block(0));
-    set_block({1, 0, 0}, Block(0));
-    set_block({0, 0, 1}, Block(0));
-    set_block({7, 7, 7}, Block(0));*/
 }
 
 Chunk::Chunk(World& world) : Chunk(0, 0, 0, world) {}
@@ -199,7 +195,6 @@ void Chunk::generate_faces()
 
 unsigned int Chunk::generate_face_vertices(std::vector<VertexData>& array, unsigned int start_index)
 {
-    double start = glfwGetTime();
     unsigned int offset = 0;
     for(int y = 0; y < CHUNK_SIDE; y++)
     {
@@ -214,17 +209,13 @@ unsigned int Chunk::generate_face_vertices(std::vector<VertexData>& array, unsig
         {
             if(sides & (1<<i))
             {
-                generate_side_vertices((DIRECTION)i, glm::vec3(x, y, z)+pos, array);
+                generate_side_vertices((DIRECTION)i, glm::vec3(x, y, z)+pos*(float)CHUNK_SIDE, array);
                 offset += 4;
             }
         } 
     }
     }
     }
-
-    double end = glfwGetTime();
-    double deltaTime = end-start;
-    std::cout << "New vertex gen time: " << deltaTime << "\tFPS: " << 1/deltaTime << "\n";
     end = start+offset;
     return end;
 }

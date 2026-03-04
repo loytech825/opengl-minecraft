@@ -9,6 +9,8 @@ constexpr int CHUNK_SIDE = 16;
 class World;
 class Renderer;
 
+extern glm::vec3 direction_vectors[];
+
 struct Block
 {
     unsigned char type;

@@ -47,9 +47,13 @@ int main(){
     Renderer r;
     World world(r);
 
-    cam.look_at.y = 0;
+    cam.look_at = {0, 0, 0};
 
-    const int R = 5;
+    const int R = 16;
+
+    /*glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CW);*/  
 
     while(!glfwWindowShouldClose(window))
     {
@@ -76,7 +80,7 @@ int main(){
         double end = glfwGetTime();
 
         double deltaTime = end - start;
-        //std::cout << "Frametime: " << deltaTime << "\tFPS: " << 1/deltaTime << "\n";
+        std::cout << "Frametime: " << deltaTime << "\tFPS: " << 1/deltaTime << "\n";
     }
 
     }

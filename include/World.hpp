@@ -3,7 +3,7 @@
 
 #include <vector>
 
-constexpr int RENDER_DISTANCE = 4;
+constexpr int RENDER_DISTANCE = 1;
 
 class Renderer;
 
@@ -18,11 +18,12 @@ public:
     const Chunk* get_chunk(const glm::vec3& pos) const;
 
     /*
-    @brief Returns the block at positio
+    @brief Returns the block at position
     @param pos world position of the block
     @return Pointer to block (nullptr if invalid)
     */
     const Block* get_block(const glm::vec3& pos) const;
+    void set_block(const glm::vec3& pos, const Block& block);
 
 private:
     std::vector<Chunk> m_loaded_chunks;
