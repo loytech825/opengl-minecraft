@@ -240,6 +240,7 @@ unsigned int Chunk::generate_face_vertices(std::vector<VertexData>& array, unsig
             {
                 generate_side_vertices((DIRECTION)i, glm::vec3(x, y, z)+pos*(float)CHUNK_SIDE, array);
                 offset += 4;
+                std::cout << "Side gen\n";
             }
         } 
     }

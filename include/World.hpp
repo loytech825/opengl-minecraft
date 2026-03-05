@@ -5,13 +5,16 @@
 
 constexpr int RENDER_DISTANCE = 1;
 
+class Camera;
 class Renderer;
 
 class World
 {
 public:
     World(Renderer& r);
-    void render(Renderer& renderer);
+
+    void update(const float dt, Camera& cam);
+    void render();
 
     //returns a raw pointer to a chunk at position
     //returns null if chunk not loaded
@@ -28,4 +31,12 @@ public:
 private:
     std::vector<Chunk> m_loaded_chunks;
     std::vector<VertexData> m_vertices;
+
+    glm::vec3 last_player_chunk_pos;
+
+    void load_chunks_around_player();
+    void reload_chunks();
+    void reload_geometry();
+
+    Renderer& m_renderer;
 };

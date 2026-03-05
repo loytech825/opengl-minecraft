@@ -70,12 +70,6 @@ int main(){
     Renderer r;
     World world(r);
 
-    const int R = 64;
-
-    /*glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-    glFrontFace(GL_CW);*/  
-
     double delta_time = 0;
 
     while(!glfwWindowShouldClose(window))
@@ -88,12 +82,13 @@ int main(){
 
         //UPDATE LOOP
         cam.handle_keyboard(window, delta_time);
+        world.update(delta_time, cam);
 
 
         //RENDER CODE
         program.bind();
         program.set_uniform("transform", cam.get_transform());
-        world.render(r);
+        world.render();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

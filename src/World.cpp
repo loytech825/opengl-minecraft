@@ -3,36 +3,27 @@
 #include <iostream>
 #include "GLFW/glfw3.h"
 #include "Renderer.hpp"
+#include "Camera.hpp"
 
 World::World(Renderer& r)
+: m_renderer(r)
 {
-    //m_loaded_chunks.reserve(8*RENDER_DISTANCE*RENDER_DISTANCE*RENDER_DISTANCE);
-    m_loaded_chunks.reserve(2);
+    m_loaded_chunks.reserve(8*RENDER_DISTANCE*RENDER_DISTANCE*RENDER_DISTANCE);
+    //m_loaded_chunks.reserve(2);
 
-    for(int i = -RENDER_DISTANCE; i < RENDER_DISTANCE+1; i++)
+    for(int i = -RENDER_DISTANCE+last_player_chunk_pos.x; i < RENDER_DISTANCE+1+last_player_chunk_pos.x; i++)
     {
-        for(int j = -RENDER_DISTANCE; j < RENDER_DISTANCE+1; j++)
+        for(int j = -RENDER_DISTANCE + last_player_chunk_pos.y; j < RENDER_DISTANCE+1+last_player_chunk_pos.y; j++)
         {
-            for(int k = -RENDER_DISTANCE; k < RENDER_DISTANCE+1; k++)
+            for(int k = -RENDER_DISTANCE+last_player_chunk_pos.z; k < RENDER_DISTANCE+1+last_player_chunk_pos.z; k++)
             {
-                m_loaded_chunks.emplace_back(j, k, i, *this);
-                m_loaded_chunks.back().generate_faces();
+                m_loaded_chunks.emplace_back(i, j, k, *this);
             }
         }
     }
 
-    m_vertices.clear();
-
-    //we need to generate vertices after all chunks have their blocks
-    //so we can check edges
-    unsigned int current = 0;
-    for(auto& c : m_loaded_chunks)
-    {
-        current = c.generate_face_vertices(m_vertices, current);
-        std::cout << c.pos.x << ", " << c.pos.y << ", " << c.pos.z << "\n";
-    }
-
-    m_vertices.shrink_to_fit();
+    reload_chunks();
+    reload_geometry();
 
     std::cout << "Size of single block: " << sizeof(Block) << "\n";
     std::cout << "Size of chunk: " << sizeof(Chunk) << "\n";
@@ -42,18 +33,103 @@ World::World(Renderer& r)
 
     std::cout << "Vertex count: " << m_vertices.size() << "\n";
 
-    r.add_static_geometry(m_vertices.size(), m_vertices.data());
+    r.set_static_geometry(m_vertices.size(), m_vertices.data());
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 }
 
-void World::render(Renderer& renderer)
+void World::render()
 {
     double start = glfwGetTime();
    
-    renderer.render_static_geometry();
+    m_renderer.render_static_geometry();
     
     double end = glfwGetTime();
     double deltaTime = end-start;
+}
+
+void World::update(const float delta_time, Camera& cam)
+{
+    glm::vec3 chunk_player_pos = glm::floor(cam.position/(float)CHUNK_SIDE);
+
+    if(chunk_player_pos != last_player_chunk_pos)
+    {
+        std::cout << "Player entered new chunk!\n";
+        last_player_chunk_pos = chunk_player_pos;
+        load_chunks_around_player();
+        reload_chunks();
+        reload_geometry();
+    }
+}
+
+void World::reload_chunks()
+{
+    for(auto& c : m_loaded_chunks)
+    {
+        c.generate_faces();
+    }
+}
+
+void World::reload_geometry()
+{
+    m_vertices.clear();
+    unsigned int current = 0;
+    for(auto& c : m_loaded_chunks)
+    {
+        current = c.generate_face_vertices(m_vertices, current);
+    }
+    m_vertices.shrink_to_fit();
+    m_renderer.set_static_geometry(m_vertices.size(), m_vertices.data());
+}
+
+//works but is probably the slowest shit ever
+void World::load_chunks_around_player()
+{
+    //loaded chunks are in range [player_pos - RENDER_DISTANCE, player_pos + RENDER_DISTANCE]
+    //check which indices to clear
+    std::vector<Chunk*> reassignable_chunks;
+    std::cout << "before: \n";
+    for(int i = 0; i < m_loaded_chunks.size(); i++)
+    {
+        Chunk& c = m_loaded_chunks[i];
+        
+        if(c.pos.x > (last_player_chunk_pos.x + RENDER_DISTANCE) || c.pos.x < (last_player_chunk_pos.x - RENDER_DISTANCE)
+        || c.pos.y > (last_player_chunk_pos.y + RENDER_DISTANCE) || c.pos.y < (last_player_chunk_pos.y - RENDER_DISTANCE)
+        || c.pos.z > (last_player_chunk_pos.z + RENDER_DISTANCE) || c.pos.z < (last_player_chunk_pos.z - RENDER_DISTANCE))
+        {
+            std::cout << "-->";
+            reassignable_chunks.push_back(&c);
+        }
+        std::cout << "[" << i << "] " << c.pos.x << ", " << c.pos.y << ", " << c.pos.z << "\n";
+
+    }
+
+    //reassignable_chunks should contain all chunks pending for deletion
+    int current_index = 0;
+
+    std::cout << "After:\n";
+    for(int i = -RENDER_DISTANCE+last_player_chunk_pos.x; i < RENDER_DISTANCE+1+last_player_chunk_pos.x; i++)
+    {
+        for(int j = -RENDER_DISTANCE + last_player_chunk_pos.y; j < RENDER_DISTANCE+1+last_player_chunk_pos.y; j++)
+        {
+            for(int k = -RENDER_DISTANCE+last_player_chunk_pos.z; k < RENDER_DISTANCE+1+last_player_chunk_pos.z; k++)
+            {
+                if(std::find_if(m_loaded_chunks.begin(), m_loaded_chunks.end(), [&i, &j, &k](const Chunk& c){ return c.pos == glm::vec3{i, j, k};})
+                    == m_loaded_chunks.end())
+                {
+                    reassignable_chunks[current_index]->~Chunk();
+                    new (reassignable_chunks[current_index]) Chunk(i, j, k, *this);
+                    current_index++;
+                }
+            }
+        }
+    }
+
+    for(int i = 0; i < m_loaded_chunks.size(); i++)
+    {
+        Chunk& c = m_loaded_chunks[i];
+        std::cout << "[" << i << "] " << c.pos.x << ", " << c.pos.y << ", " << c.pos.z << "\n";
+
+    }
 }
 
 const Chunk* World::get_chunk(const glm::vec3& pos) const

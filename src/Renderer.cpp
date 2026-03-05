@@ -11,6 +11,7 @@ constexpr unsigned int MAX_VERTICES = MAX_FACES*4;
 constexpr unsigned int MAX_INDICES = MAX_FACES*6;
 
 Renderer::Renderer()
+: m_static_geometry(0, 0)
 {
     glGenVertexArrays(1, &m_VAO);
     glGenBuffers(1, &m_VBO);
@@ -61,8 +62,11 @@ void Renderer::init_batch()
 
 void Renderer::print_draw_calls() {std::cout << "Draw calls: " << draw_calls << "\n";}
 
-void Renderer::add_static_geometry(unsigned int count, VertexData* data)
+void Renderer::set_static_geometry(unsigned int count, VertexData* data)
 {
+
+    if(m_static_geometry.VAO) glDeleteVertexArrays(1, &m_static_geometry.VAO);
+
     unsigned int VAO = 0;
     unsigned int VBO = 0;
     unsigned int EBO = 0;
@@ -99,16 +103,13 @@ void Renderer::add_static_geometry(unsigned int count, VertexData* data)
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
 
-    m_static_geometry.emplace_back(VAO, index_count);
+    m_static_geometry = RenderData(VAO, index_count);
 }
 
 void Renderer::render_static_geometry()
 {
-    for(const auto& r_data : m_static_geometry)
-    {
-        glBindVertexArray(r_data.VAO);
-        glDrawElements(GL_TRIANGLES, r_data.index_count, GL_UNSIGNED_INT, 0);
-    }
+    glBindVertexArray(m_static_geometry.VAO);
+    glDrawElements(GL_TRIANGLES, m_static_geometry.index_count, GL_UNSIGNED_INT, 0);
 }
 
 void Renderer::add_vertex(const VertexData& v)

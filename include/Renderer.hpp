@@ -29,7 +29,7 @@ public:
     void add_vertex(const VertexData& v);
     void add_vertices(unsigned int count, const VertexData* data);
 
-    void add_static_geometry(unsigned int count, VertexData* data);
+    void set_static_geometry(unsigned int count, VertexData* data);
     void render_static_geometry();
 
     void init_batch();
@@ -45,7 +45,7 @@ private:
 
     unsigned int indices_to_draw;
 
-    std::vector<RenderData> m_static_geometry;
+    RenderData m_static_geometry;
 
     VertexData* bufferPtr;
     VertexData* currentPtr;
