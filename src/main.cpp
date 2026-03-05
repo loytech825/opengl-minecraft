@@ -45,9 +45,10 @@ int main(){
     Renderer r;
     World world(r);
 
-    cam.look_at = {0, 0, 0};
+    int Y = 0;
+    cam.look_at = {0, Y, 0};
 
-    const int R = 16;
+    const int R = 64;
 
     /*glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
@@ -64,7 +65,7 @@ int main(){
         //UPDATE LOOP
         cam.pos.x = glm::cos(glfwGetTime()*0.5)*R;
         cam.pos.z = glm::sin(glfwGetTime()*0.5)*R;
-        cam.pos.y = 0;
+        cam.pos.y = Y;
 
 
         //RENDER CODE
@@ -83,6 +84,6 @@ int main(){
 
     }
     glfwTerminate();
-    
+
     return 0;
 }

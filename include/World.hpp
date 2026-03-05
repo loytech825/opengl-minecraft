@@ -3,7 +3,7 @@
 
 #include <vector>
 
-constexpr int RENDER_DISTANCE = 1;
+constexpr int RENDER_DISTANCE = 4;
 
 class Renderer;
 

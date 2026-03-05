@@ -121,7 +121,13 @@ Chunk::Chunk(int X, int Y, int Z, World& world)
 :   pos(X, Y, Z),
     m_world(world)
 {
-    std::fill(m_blocks.begin(), m_blocks.end(), (unsigned char)1);
+    //very simple world gen
+    if(pos.y > 0)
+        std::fill(m_blocks.begin(), m_blocks.end(), (unsigned char)0);
+    else
+        std::fill(m_blocks.begin(), m_blocks.end(), (unsigned char)1);
+
+    //std::fill(m_blocks.begin(), m_blocks.end(), (unsigned char)0);
 }
 
 Chunk::Chunk(World& world) : Chunk(0, 0, 0, world) {}
@@ -206,7 +212,7 @@ void Chunk::generate_faces()
 
                             if(neighbor->type != 0)
                                 continue;
-                        }
+                        }//else continue;
                     }
                     m_blocks[y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x].sides |= 1<<i;
                 }
@@ -224,6 +230,8 @@ unsigned int Chunk::generate_face_vertices(std::vector<VertexData>& array, unsig
     {
     for(int x = 0; x < CHUNK_SIDE; x++)
     {
+        if(m_blocks[y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x].type == 0) continue;
+
         unsigned char sides = m_blocks[y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x].sides;
 
         if(!sides) continue;

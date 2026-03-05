@@ -9,29 +9,16 @@ World::World(Renderer& r)
     //m_loaded_chunks.reserve(8*RENDER_DISTANCE*RENDER_DISTANCE*RENDER_DISTANCE);
     m_loaded_chunks.reserve(2);
 
-    /*for(int i = -RENDER_DISTANCE; i < RENDER_DISTANCE+1; i++)
+    for(int i = -RENDER_DISTANCE; i < RENDER_DISTANCE+1; i++)
     {
         for(int j = -RENDER_DISTANCE; j < RENDER_DISTANCE+1; j++)
         {
             for(int k = -RENDER_DISTANCE; k < RENDER_DISTANCE+1; k++)
             {
                 m_loaded_chunks.emplace_back(j, k, i, *this);
+                m_loaded_chunks.back().generate_faces();
             }
         }
-    }*/
-
-    m_loaded_chunks.emplace_back(0, 0, 0, *this);
-
-    for(auto& c : m_loaded_chunks)
-    {
-        c.generate_faces();
-    }
-
-    m_loaded_chunks.emplace_back(1, 0, 0, *this);
-
-    for(auto& c : m_loaded_chunks)
-    {
-        c.generate_faces();
     }
 
     m_vertices.clear();
