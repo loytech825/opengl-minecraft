@@ -150,11 +150,6 @@ void Chunk::generate_faces()
         {
             for(int x = 0; x < CHUNK_SIDE; x++)
             {
-                //if there is no block here skip
-                //if(!m_blocks[y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x].type) continue;
-                //TODO: update neighbor block faces even if block is transparent
-                //LOAD neighboring chunks in the beginiging
-
                 Block& this_block = m_blocks[y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x];
 
                 //check all six sides
@@ -179,6 +174,10 @@ void Chunk::generate_faces()
 
                     if(in_x_limit && in_y_limit && in_z_limit)
                     {
+                        //we can skip generation for this block if its
+                        //empty and in this chunk
+                        if(this_block.type == 0)
+                            continue;
                         //checks if neighboring block exists
                         if(m_blocks[index].type)
                         {

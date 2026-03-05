@@ -34,8 +34,6 @@ struct FaceData
     : x(X), y(Y), z(Z), direction(D){}
 };
 
-//TODO: add vertex data here directly instead of face data
-
 // RENDERING IDEAS:
 // - use a buffer on the gpu, everytime the chunk is updated we update the buffer (side data stored in block)
 //      -> every change requires to redo the entire buffer

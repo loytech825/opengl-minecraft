@@ -11,6 +11,29 @@
 
 #include <iostream>
 
+void process_input(GLFWwindow* window, Camera& cam)
+ {
+
+    glm::vec3 move_vec{0, 0, 0};
+
+    if(glfwGetKey(window, GLFW_KEY_W))
+    {
+        move_vec.x = 1;
+    }else if(glfwGetKey(window, GLFW_KEY_S))
+    {
+        move_vec.x = -1;
+    }
+    if(glfwGetKey(window, GLFW_KEY_A))
+    {
+        move_vec.z = -1;
+    }else if(glfwGetKey(window, GLFW_KEY_D))
+    {
+        move_vec.z = 1;
+    }
+
+    cam.move_relative(glm::normalize(move_vec));
+ }
+
 int main(){
 
     glfwInit();
@@ -42,17 +65,18 @@ int main(){
     glfwSwapInterval(0);
 
     Camera cam;
+    cam.position = {0, 0, 0};
+    cam.speed = 8;
     Renderer r;
     World world(r);
-
-    int Y = 0;
-    cam.look_at = {0, Y, 0};
 
     const int R = 64;
 
     /*glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     glFrontFace(GL_CW);*/  
+
+    double delta_time = 0;
 
     while(!glfwWindowShouldClose(window))
     {
@@ -63,9 +87,7 @@ int main(){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         //UPDATE LOOP
-        cam.pos.x = glm::cos(glfwGetTime()*0.5)*R;
-        cam.pos.z = glm::sin(glfwGetTime()*0.5)*R;
-        cam.pos.y = Y;
+        cam.handle_keyboard(window, delta_time);
 
 
         //RENDER CODE
@@ -78,7 +100,7 @@ int main(){
 
         double end = glfwGetTime();
 
-        double deltaTime = end - start;
+        delta_time = end - start;
         //std::cout << "Frametime: " << deltaTime << "\tFPS: " << 1/deltaTime << "\n";
     }
 
