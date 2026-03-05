@@ -6,9 +6,10 @@
 
 World::World(Renderer& r)
 {
-    m_loaded_chunks.reserve(8*RENDER_DISTANCE*RENDER_DISTANCE*RENDER_DISTANCE);
+    //m_loaded_chunks.reserve(8*RENDER_DISTANCE*RENDER_DISTANCE*RENDER_DISTANCE);
+    m_loaded_chunks.reserve(2);
 
-    for(int i = -RENDER_DISTANCE; i < RENDER_DISTANCE+1; i++)
+    /*for(int i = -RENDER_DISTANCE; i < RENDER_DISTANCE+1; i++)
     {
         for(int j = -RENDER_DISTANCE; j < RENDER_DISTANCE+1; j++)
         {
@@ -17,14 +18,23 @@ World::World(Renderer& r)
                 m_loaded_chunks.emplace_back(j, k, i, *this);
             }
         }
-    }
+    }*/
+
+    m_loaded_chunks.emplace_back(0, 0, 0, *this);
 
     for(auto& c : m_loaded_chunks)
     {
         c.generate_faces();
     }
 
-    set_block({8, 0, 8}, Block(1));
+    m_loaded_chunks.emplace_back(1, 0, 0, *this);
+
+    for(auto& c : m_loaded_chunks)
+    {
+        c.generate_faces();
+    }
+
+    m_vertices.clear();
 
     //we need to generate vertices after all chunks have their blocks
     //so we can check edges

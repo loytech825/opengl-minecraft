@@ -128,6 +128,16 @@ Chunk::Chunk(World& world) : Chunk(0, 0, 0, world) {}
 
 void Chunk::generate_faces()
 {
+
+    std::vector<Chunk*> neighbor_chunks;
+    neighbor_chunks.reserve(6);
+
+    for(int i = 0; i < 6; i++)
+    {
+        neighbor_chunks.push_back((Chunk*)m_world.get_chunk(pos+direction_vectors[i]));
+        std::cout << i << ": Neighbor: " << neighbor_chunks[i] << "\n";
+    }
+
     for(int y = 0; y < CHUNK_SIDE; y++)
     {
         for(int z = 0; z < CHUNK_SIDE; z++)
@@ -135,7 +145,11 @@ void Chunk::generate_faces()
             for(int x = 0; x < CHUNK_SIDE; x++)
             {
                 //if there is no block here skip
-                if(!m_blocks[y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x].type) continue;
+                //if(!m_blocks[y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x].type) continue;
+                //TODO: update neighbor block faces even if block is transparent
+                //LOAD neighboring chunks in the beginiging
+
+                Block& this_block = m_blocks[y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x];
 
                 //check all six sides
                 for(int i = 0; i < 6; i++)
@@ -167,25 +181,33 @@ void Chunk::generate_faces()
                         }
                     }else
                     {
-                        //Block not in this chunk!
-                        auto other_pos = pos + glm::vec3(rel_x, rel_y, rel_z);
-                        const Chunk* other = m_world.get_chunk(other_pos);
-    
-                        if(other)
+                        if(neighbor_chunks[i])
                         {
-                            glm::vec3 relative_block_pos = glm::vec3(x, y, z) + direction_vectors[i];
-                            glm::vec3 absolute_block_pos = relative_block_pos + pos*(float)CHUNK_SIDE;
+                            //direction vector has a 1 or -1 in the direction of neighboring chunk
+                            //if it has a 1, the coorinate at that position needs to be 0
+                            // 1 -> add -15
+                            // -1 -> add 15 
+                            glm::vec3 relative_block_pos = glm::vec3(x, y, z) + -15.f*direction_vectors[i];
 
-                            const Block* neighbor = m_world.get_block(absolute_block_pos);
+                            Block* neighbor = (Block*) neighbor_chunks[i]->get_block(relative_block_pos);
+                            std::cout << "Chunk: " << neighbor_chunks[i] 
+                                        << ", block: " << relative_block_pos.x
+                                        << ", " << relative_block_pos.y
+                                        << ", " << relative_block_pos.z << "\n";
 
                             if(!neighbor)
                                 continue;
+
+                            //Update neighbor block side
+                            if(this_block.type == 0)
+                                neighbor->sides |= 1<<(DIRECTION::SIZE-1-i);
+                            else
+                                neighbor->sides &= ~(1<<(DIRECTION::SIZE-1-i));
 
                             if(neighbor->type != 0)
                                 continue;
                         }
                     }
-                    
                     m_blocks[y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x].sides |= 1<<i;
                 }
             }
@@ -229,7 +251,6 @@ void Chunk::set_face(const glm::vec3& pos, DIRECTION dir, bool value)
 
 const Block* Chunk::get_block(const glm::vec3& pos) const
 {
-
     const bool check_x = pos.x >= 0 && pos.x < CHUNK_SIDE; 
     const bool check_y = pos.y >= 0 && pos.y < CHUNK_SIDE;
     const bool check_z = pos.z >= 0 && pos.z < CHUNK_SIDE;

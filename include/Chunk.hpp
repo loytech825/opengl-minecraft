@@ -51,7 +51,6 @@ struct FaceData
 //          -> we can store this entire buffer on the renderer and not at the chunk level
 //side note:
 //  max number of vertices/chunk = CHUNK_SIDE*CHUNK_SIDE*CHUNK_SIDE * 6 * 4 / 2 since two blocks cant render the same side 
-
 //(face based rendering world storage)
 // - we still store an array of all vertices but this time inside the world
 //    so we dont have t loop through chunks
@@ -93,9 +92,6 @@ private:
     
     unsigned int start;
     unsigned int end;
-    //should this be here or in world?
-    //does hunk generate its vertices or does the world generate vertices
-    //for all chunks at once
 
     World& m_world;
 
