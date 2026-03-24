@@ -63,7 +63,7 @@ void World::update(const float delta_time, Camera& cam)
 
     if(m_to_reload)
     {
-        reload_geometry();
+        m_renderer.set_static_geometry(m_vertices.size(), m_vertices.data());
         m_to_reload = false;
     }
 }
@@ -132,6 +132,15 @@ void World::load_chunks_around_player()
         Chunk& c = *reassignable_chunks[i];
         c.generate_faces();
     }
+
+    //in this function so it can run on a separate thread
+    m_vertices.clear();
+    unsigned int current = 0;
+    for(auto& c : m_loaded_chunks)
+    {
+        current = c.generate_face_vertices(m_vertices, current);
+    }
+    m_vertices.shrink_to_fit();
 
     m_to_reload = true;
 }

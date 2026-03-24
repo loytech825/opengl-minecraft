@@ -83,7 +83,7 @@ void Chunk::generate_faces()
     for(int i = 0; i < 6; i++)
     {
         neighbor_chunks.push_back((Chunk*)m_world.get_chunk(pos+direction_vectors[i]));
-        std::cout << i << ": Neighbor: " << neighbor_chunks[i] << "\n";
+        //std::cout << i << ": Neighbor: " << neighbor_chunks[i] << "\n";
     }
 
     for(int y = 0; y < CHUNK_SIDE; y++)

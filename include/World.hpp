@@ -2,8 +2,9 @@
 #include "Chunk.hpp"
 
 #include <vector>
+#include <atomic>
 
-constexpr int RENDER_DISTANCE = 1;
+constexpr int RENDER_DISTANCE = 4;
 
 class Camera;
 class Renderer;
@@ -40,5 +41,5 @@ private:
 
     Renderer& m_renderer;
 
-    bool m_to_reload;
+    std::atomic<bool> m_to_reload;
 };
