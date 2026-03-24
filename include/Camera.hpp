@@ -19,11 +19,6 @@ public:
     float speed;
 
     const glm::mat4 get_transform();
-    /*
-    @brief Moves the camera relative to its looking direction
-    @param direction - unit vector
-    */
-    void move_relative(const glm::vec3& direction);
 
 private:
     glm::mat4 proj;

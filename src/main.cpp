@@ -12,27 +12,9 @@
 #include <iostream>
 
 void process_input(GLFWwindow* window, Camera& cam)
- {
+{
 
-    glm::vec3 move_vec{0, 0, 0};
-
-    if(glfwGetKey(window, GLFW_KEY_W))
-    {
-        move_vec.x = 1;
-    }else if(glfwGetKey(window, GLFW_KEY_S))
-    {
-        move_vec.x = -1;
-    }
-    if(glfwGetKey(window, GLFW_KEY_A))
-    {
-        move_vec.z = -1;
-    }else if(glfwGetKey(window, GLFW_KEY_D))
-    {
-        move_vec.z = 1;
-    }
-
-    cam.move_relative(glm::normalize(move_vec));
- }
+}
 
 int main(){
 

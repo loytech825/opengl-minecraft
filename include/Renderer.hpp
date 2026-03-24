@@ -2,7 +2,6 @@
 #include <glm/glm.hpp>
 
 struct FaceData;
-
 struct VertexData
 {
     glm::vec3 pos;
@@ -20,6 +19,7 @@ struct RenderData
     : VAO(v), index_count(c) {}
 };
 
+//TODO: memory management
 class Renderer
 {
 
@@ -40,6 +40,8 @@ public:
 
 
 private:
+
+    //used for dynamic rendering
     unsigned int m_VAO;
     unsigned int m_VBO;
 

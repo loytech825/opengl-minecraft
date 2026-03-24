@@ -61,7 +61,6 @@ void Renderer::init_batch()
 }
 
 void Renderer::print_draw_calls() {std::cout << "Draw calls: " << draw_calls << "\n";}
-
 void Renderer::set_static_geometry(unsigned int count, VertexData* data)
 {
 

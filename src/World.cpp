@@ -1,12 +1,14 @@
 #include "World.hpp"
 
 #include <iostream>
+#include <thread>
 #include "GLFW/glfw3.h"
 #include "Renderer.hpp"
 #include "Camera.hpp"
 
 World::World(Renderer& r)
-: m_renderer(r)
+:   m_renderer(r),
+    m_to_reload(false)
 {
     m_loaded_chunks.reserve(8*RENDER_DISTANCE*RENDER_DISTANCE*RENDER_DISTANCE);
     //m_loaded_chunks.reserve(2);
@@ -55,9 +57,14 @@ void World::update(const float delta_time, Camera& cam)
     {
         std::cout << "Player entered new chunk!\n";
         last_player_chunk_pos = chunk_player_pos;
-        load_chunks_around_player();
-        reload_chunks();
+        std::thread loading_thread(&World::load_chunks_around_player, this);
+        loading_thread.detach();
+    }
+
+    if(m_to_reload)
+    {
         reload_geometry();
+        m_to_reload = false;
     }
 }
 
@@ -87,26 +94,20 @@ void World::load_chunks_around_player()
     //loaded chunks are in range [player_pos - RENDER_DISTANCE, player_pos + RENDER_DISTANCE]
     //check which indices to clear
     std::vector<Chunk*> reassignable_chunks;
-    std::cout << "before: \n";
+
     for(int i = 0; i < m_loaded_chunks.size(); i++)
     {
         Chunk& c = m_loaded_chunks[i];
-        
         if(c.pos.x > (last_player_chunk_pos.x + RENDER_DISTANCE) || c.pos.x < (last_player_chunk_pos.x - RENDER_DISTANCE)
         || c.pos.y > (last_player_chunk_pos.y + RENDER_DISTANCE) || c.pos.y < (last_player_chunk_pos.y - RENDER_DISTANCE)
         || c.pos.z > (last_player_chunk_pos.z + RENDER_DISTANCE) || c.pos.z < (last_player_chunk_pos.z - RENDER_DISTANCE))
         {
-            std::cout << "-->";
             reassignable_chunks.push_back(&c);
         }
-        std::cout << "[" << i << "] " << c.pos.x << ", " << c.pos.y << ", " << c.pos.z << "\n";
-
     }
 
     //reassignable_chunks should contain all chunks pending for deletion
     int current_index = 0;
-
-    std::cout << "After:\n";
     for(int i = -RENDER_DISTANCE+last_player_chunk_pos.x; i < RENDER_DISTANCE+1+last_player_chunk_pos.x; i++)
     {
         for(int j = -RENDER_DISTANCE + last_player_chunk_pos.y; j < RENDER_DISTANCE+1+last_player_chunk_pos.y; j++)
@@ -116,6 +117,7 @@ void World::load_chunks_around_player()
                 if(std::find_if(m_loaded_chunks.begin(), m_loaded_chunks.end(), [&i, &j, &k](const Chunk& c){ return c.pos == glm::vec3{i, j, k};})
                     == m_loaded_chunks.end())
                 {
+                    //make new chunk where old needs to be deeleted
                     reassignable_chunks[current_index]->~Chunk();
                     new (reassignable_chunks[current_index]) Chunk(i, j, k, *this);
                     current_index++;
@@ -124,12 +126,14 @@ void World::load_chunks_around_player()
         }
     }
 
-    for(int i = 0; i < m_loaded_chunks.size(); i++)
+    //this is the slowest part
+    for(int i = 0; i < reassignable_chunks.size(); i++)
     {
-        Chunk& c = m_loaded_chunks[i];
-        std::cout << "[" << i << "] " << c.pos.x << ", " << c.pos.y << ", " << c.pos.z << "\n";
-
+        Chunk& c = *reassignable_chunks[i];
+        c.generate_faces();
     }
+
+    m_to_reload = true;
 }
 
 const Chunk* World::get_chunk(const glm::vec3& pos) const

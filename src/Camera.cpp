@@ -78,11 +78,3 @@ void Camera::handle_keyboard(GLFWwindow *window, float deltaTime)
 
     update_vectors();
 }
-
-//TODO: rework camera movement
-
-void Camera::move_relative(const glm::vec3& direction)
-{
-    glm::vec3 up{0, 1, 0};
-    //glm::vec3 right = glm::cross(l)
-}

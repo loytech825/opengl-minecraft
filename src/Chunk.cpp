@@ -21,64 +21,6 @@ glm::vec3 direction_vectors[] = {
     glm::vec3(0, -1, 0),
 };
 
-//cube vertex position literals
-float cube_vertices[] = {
-
-    //top
-    0, 1, 0,
-    1, 1, 0,
-    1, 1, 1,
-
-    1, 1, 1,
-    0, 1, 1,
-    0, 1, 0,
-
-    //bottom
-    0, 0, 0,
-    1, 0, 0,
-    1, 0, 1,
-
-    1, 0, 1,
-    0, 0, 1,
-    0, 0, 0,
-
-    //NORTH
-    1, 0, 0,
-    1, 0, 1,
-    1, 1, 1,
-
-    1, 1, 1,
-    1, 1, 0,
-    1, 0, 0,
-
-    //SOUTH
-    0, 0, 0,
-    0, 0, 1,
-    0, 1, 1,
-
-    0, 1, 1,
-    0, 1, 0,
-    0, 0, 0,
-
-    //EAST
-    0, 0, 1,
-    1, 0, 1,
-    1, 1, 1,
-
-    1, 1, 1,
-    0, 1, 1,
-    0, 0, 1,
-
-    //WEST
-    0, 0, 0,
-    1, 0, 0,
-    1, 1, 0,
-
-    1, 1, 0,
-    0, 1, 0,
-    0, 0, 0,
-};
-
 //generates the vertex position for a single side of a block
 //at a position
 void generate_side_vertices(DIRECTION dir, const glm::vec3& block_pos, std::vector<VertexData>& array)
@@ -195,10 +137,10 @@ void Chunk::generate_faces()
                             glm::vec3 relative_block_pos = glm::vec3(x, y, z) + -15.f*direction_vectors[i];
 
                             Block* neighbor = (Block*) neighbor_chunks[i]->get_block(relative_block_pos);
-                            std::cout << "Chunk: " << neighbor_chunks[i] 
+                            /*std::cout << "Chunk: " << neighbor_chunks[i] 
                                         << ", block: " << relative_block_pos.x
                                         << ", " << relative_block_pos.y
-                                        << ", " << relative_block_pos.z << "\n";
+                                        << ", " << relative_block_pos.z << "\n";*/
 
                             if(!neighbor)
                                 continue;
@@ -240,7 +182,6 @@ unsigned int Chunk::generate_face_vertices(std::vector<VertexData>& array, unsig
             {
                 generate_side_vertices((DIRECTION)i, glm::vec3(x, y, z)+pos*(float)CHUNK_SIDE, array);
                 offset += 4;
-                std::cout << "Side gen\n";
             }
         } 
     }

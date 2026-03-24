@@ -39,4 +39,6 @@ private:
     void reload_geometry();
 
     Renderer& m_renderer;
+
+    bool m_to_reload;
 };
