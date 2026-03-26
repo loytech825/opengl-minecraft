@@ -1,3 +1,4 @@
+#pragma once
 #include <glm/glm.hpp>
 
 class GLFWwindow;
@@ -8,19 +9,16 @@ public:
 
     Camera();
 
-    void handle_keyboard(GLFWwindow* window, float delta_time);
-
     glm::vec3 position;
 
     float fov;
     float yaw;
     float pitch;
-    
-    float speed;
 
     const glm::mat4 get_transform();
 
 private:
+    friend class Player;
     glm::mat4 proj;
     glm::mat4 view;
 

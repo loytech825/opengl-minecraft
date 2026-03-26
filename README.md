@@ -12,3 +12,8 @@ I compared different rendering approaches to test their performance:
 3. Static VBO for all geometry together (face-based-rendering-world-storage):
     - The buffer gets set once at the beggining or when the geometry changes
     - Massive performance uplift > 10000fps
+
+Reworked vertex generation:
+    - all dirty chunks get reloaded
+    - all clean chunk data gets copied
+    - 25-70% faster

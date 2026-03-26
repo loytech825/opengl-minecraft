@@ -4,9 +4,9 @@
 #include <vector>
 #include <atomic>
 
-constexpr int RENDER_DISTANCE = 4;
+constexpr int RENDER_DISTANCE = 1;
 
-class Camera;
+class Player;
 class Renderer;
 
 class World
@@ -14,7 +14,7 @@ class World
 public:
     World(Renderer& r);
 
-    void update(const float dt, Camera& cam);
+    void update(const float dt, Player& cam);
     void render();
 
     //returns a raw pointer to a chunk at position

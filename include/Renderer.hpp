@@ -5,9 +5,10 @@ struct FaceData;
 struct VertexData
 {
     glm::vec3 pos;
-    VertexData(const glm::vec3& p)
-    :pos(p) {}
-    VertexData() : VertexData({0, 0, 0}) {}
+    glm::vec2 texture_pos;
+    VertexData(const glm::vec3& p, const glm::vec2& tp)
+    :pos(p), texture_pos(tp) {}
+    VertexData() : VertexData({0, 0, 0}, {0, 0}) {}
 };
 
 struct RenderData

@@ -5,16 +5,17 @@
 #include "OpenGL_support/VBO.hpp"
 #include "OpenGL_support/VertexBufferLayout.hpp"
 #include "Renderer.hpp"
+#include "Player.hpp"
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+#include "stb_image.h"
 
 #include <iostream>
+#include <filesystem>
 
 void process_input(GLFWwindow* window, Camera& cam)
-{
-
-}
+{}
 
 int main(){
 
@@ -46,13 +47,42 @@ int main(){
     //std::cout << glGetError() << "\n";
     glfwSwapInterval(0);
 
-    Camera cam;
-    cam.position = {0, 0, 0};
-    cam.speed = 8;
+    Player player;
+    player.set_position({0, 0, 0});
     Renderer r;
     World world(r);
 
     double delta_time = 0;
+
+    /*TEMP texture loading*/
+    unsigned int texture1;
+    // texture 1
+    // ---------
+    glGenTextures(1, &texture1);
+    glBindTexture(GL_TEXTURE_2D, texture1); 
+     // set the texture wrapping parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // set texture filtering parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    // load image, create texture and generate mipmaps
+    int width, height, nrChannels;
+    stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
+    // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
+    unsigned char *data = stbi_load(std::filesystem::path("textures/stone.png").c_str(), &width, &height, &nrChannels, 0);
+    if (data)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+    glEnable(GL_DEPTH_TEST);
 
     while(!glfwWindowShouldClose(window))
     {
@@ -63,13 +93,13 @@ int main(){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         //UPDATE LOOP
-        cam.handle_keyboard(window, delta_time);
-        world.update(delta_time, cam);
+        player.handle_keyboard(window, delta_time);
+        world.update(delta_time, player);
 
 
         //RENDER CODE
         program.bind();
-        program.set_uniform("transform", cam.get_transform());
+        program.set_uniform("transform", player.get_transform());
         world.render();
 
         glfwSwapBuffers(window);
@@ -78,7 +108,6 @@ int main(){
         double end = glfwGetTime();
 
         delta_time = end - start;
-        //std::cout << "Frametime: " << delta_time << "\tFPS: " << 1/delta_time << "\n";
     }
 
     }

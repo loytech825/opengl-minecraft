@@ -1,9 +1,12 @@
 #version 330 core
 
 out vec4 FragColor;
+
 in vec3 outColor;
+in vec2 textureCoords;
+uniform sampler2D stone_texture;
 
 void main()
 {
-    FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+    FragColor = texture(stone_texture, textureCoords);
 }

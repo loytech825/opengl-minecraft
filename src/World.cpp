@@ -5,6 +5,7 @@
 #include "GLFW/glfw3.h"
 #include "Renderer.hpp"
 #include "Camera.hpp"
+#include "Player.hpp"
 
 World::World(Renderer& r)
 :   m_renderer(r),
@@ -36,7 +37,7 @@ World::World(Renderer& r)
     std::cout << "Vertex count: " << m_vertices.size() << "\n";
 
     r.set_static_geometry(m_vertices.size(), m_vertices.data());
-    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+    //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 }
 
 void World::render()
@@ -49,9 +50,9 @@ void World::render()
     double deltaTime = end-start;
 }
 
-void World::update(const float delta_time, Camera& cam)
+void World::update(const float delta_time, Player& player)
 {
-    glm::vec3 chunk_player_pos = glm::floor(cam.position/(float)CHUNK_SIDE);
+    glm::vec3 chunk_player_pos = glm::floor(player.get_position()/(float)CHUNK_SIDE);
 
     if(chunk_player_pos != last_player_chunk_pos)
     {

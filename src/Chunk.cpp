@@ -33,28 +33,28 @@ void generate_side_vertices(DIRECTION dir, const glm::vec3& block_pos, std::vect
         case UP:
             Y = 1;
         case DOWN:
-            array.emplace_back(block_pos+glm::vec3(0, Y, 0));
-            array.emplace_back(block_pos+glm::vec3(0, Y, 1));
-            array.emplace_back(block_pos+glm::vec3(1, Y, 1));
-            array.emplace_back(block_pos+glm::vec3(1, Y, 0));
+            array.emplace_back(block_pos+glm::vec3(0, Y, 0), glm::vec2(0, 0));
+            array.emplace_back(block_pos+glm::vec3(0, Y, 1), glm::vec2(0, 1));
+            array.emplace_back(block_pos+glm::vec3(1, Y, 1), glm::vec2(1, 1));
+            array.emplace_back(block_pos+glm::vec3(1, Y, 0), glm::vec2(1, 0));
             break;
 
         case NORTH:
             X = 1;
         case SOUTH:
-            array.emplace_back(block_pos+glm::vec3(X, 0, 0));
-            array.emplace_back(block_pos+glm::vec3(X, 0, 1));
-            array.emplace_back(block_pos+glm::vec3(X, 1, 1));
-            array.emplace_back(block_pos+glm::vec3(X, 1, 0));
+            array.emplace_back(block_pos+glm::vec3(X, 0, 0), glm::vec2(0, 0));
+            array.emplace_back(block_pos+glm::vec3(X, 0, 1), glm::vec2(0, 1));
+            array.emplace_back(block_pos+glm::vec3(X, 1, 1), glm::vec2(1, 1));
+            array.emplace_back(block_pos+glm::vec3(X, 1, 0), glm::vec2(1, 0));
             break;
         
         case EAST:
             Z = 1;
         case WEST:
-            array.emplace_back(block_pos+glm::vec3(0, 0, Z));
-            array.emplace_back(block_pos+glm::vec3(0, 1, Z));
-            array.emplace_back(block_pos+glm::vec3(1, 1, Z));
-            array.emplace_back(block_pos+glm::vec3(1, 0, Z));
+            array.emplace_back(block_pos+glm::vec3(0, 0, Z), glm::vec2(0, 0));
+            array.emplace_back(block_pos+glm::vec3(0, 1, Z), glm::vec2(0, 1));
+            array.emplace_back(block_pos+glm::vec3(1, 1, Z), glm::vec2(1, 1));
+            array.emplace_back(block_pos+glm::vec3(1, 0, Z), glm::vec2(1, 0));
             break;
     }
 }
