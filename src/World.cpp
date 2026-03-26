@@ -79,6 +79,7 @@ void World::reload_chunks()
 
 void World::reload_geometry()
 {
+    double start = glfwGetTime();
     auto temp = m_vertices;
     m_vertices.clear();
 
@@ -101,9 +102,15 @@ void World::reload_geometry()
     }
     m_vertices.shrink_to_fit();
     m_renderer.set_static_geometry(m_vertices.size(), m_vertices.data());
+
+    double end = glfwGetTime();
+    double deltaTime = end-start;
+
+    std::cout << "Vertex generation time new: " << deltaTime << "\n";
 }
 
 //works but is probably the slowest shit ever
+//made to run on a separate thread
 void World::load_chunks_around_player()
 {
     //loaded chunks are in range [player_pos - RENDER_DISTANCE, player_pos + RENDER_DISTANCE]
@@ -149,13 +156,7 @@ void World::load_chunks_around_player()
     }
 
     //in this function so it can run on a separate thread
-    m_vertices.clear();
-    unsigned int current = 0;
-    for(auto& c : m_loaded_chunks)
-    {
-        current = c.generate_face_vertices(m_vertices, current);
-    }
-    m_vertices.shrink_to_fit();
+    reload_geometry();
 
     m_to_reload = true;
 }

@@ -78,7 +78,7 @@ int main(){
         double end = glfwGetTime();
 
         delta_time = end - start;
-        std::cout << "Frametime: " << delta_time << "\tFPS: " << 1/delta_time << "\n";
+        //std::cout << "Frametime: " << delta_time << "\tFPS: " << 1/delta_time << "\n";
     }
 
     }
