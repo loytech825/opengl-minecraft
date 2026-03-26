@@ -61,7 +61,11 @@ void generate_side_vertices(DIRECTION dir, const glm::vec3& block_pos, std::vect
 
 Chunk::Chunk(int X, int Y, int Z, World& world)
 :   pos(X, Y, Z),
-    m_world(world)
+    m_world(world),
+    vertex_start(0),
+    vertex_size(0),
+    vertex_end(0),
+    dirty(true)
 {
     //very simple world gen
     if(pos.y > 0)
@@ -187,8 +191,9 @@ unsigned int Chunk::generate_face_vertices(std::vector<VertexData>& array, unsig
     }
     }
     }
-    end = start+offset;
-    return end;
+    vertex_end = vertex_start+offset;
+    vertex_size = offset;
+    return vertex_end;
 }
 
 void Chunk::set_face(const glm::vec3& pos, DIRECTION dir, bool value)
@@ -196,6 +201,7 @@ void Chunk::set_face(const glm::vec3& pos, DIRECTION dir, bool value)
     Block& block = m_blocks[pos.y*CHUNK_SIDE*CHUNK_SIDE+pos.z*CHUNK_SIDE+pos.x];
     //set bit at location dir to value
     block.sides = (block.sides & ~(1<<dir) | value << dir );
+    dirty = true;
 }
 
 const Block* Chunk::get_block(const glm::vec3& pos) const
@@ -218,4 +224,6 @@ void Chunk::set_block(const glm::vec3& pos, const Block& block)
     
     if(check_x && check_y && check_z)
         m_blocks[pos.y*CHUNK_SIDE*CHUNK_SIDE+pos.z*CHUNK_SIDE+pos.x] = block;
+
+    dirty = true;
 }

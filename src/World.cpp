@@ -63,6 +63,7 @@ void World::update(const float delta_time, Camera& cam)
 
     if(m_to_reload)
     {
+        //loads geometry to gpu buffer
         m_renderer.set_static_geometry(m_vertices.size(), m_vertices.data());
         m_to_reload = false;
     }
@@ -78,11 +79,25 @@ void World::reload_chunks()
 
 void World::reload_geometry()
 {
+    auto temp = m_vertices;
     m_vertices.clear();
+
+    //resere a conservative amount of data
+    m_vertices.reserve(temp.size()*1.5);
     unsigned int current = 0;
     for(auto& c : m_loaded_chunks)
     {
-        current = c.generate_face_vertices(m_vertices, current);
+        if(c.dirty)
+        {
+            //if chunk changed, we need to reload its vertices
+            current = c.generate_face_vertices(m_vertices, current);
+        }else
+        {
+            //data is already inside the temp buffer so we just copy
+            std::copy(temp.begin()+c.vertex_start, temp.begin()+c.vertex_end, m_vertices.begin()+current);
+            c.vertex_start = current;
+            current += c.vertex_size;
+        }
     }
     m_vertices.shrink_to_fit();
     m_renderer.set_static_geometry(m_vertices.size(), m_vertices.data());

@@ -74,6 +74,7 @@ private:
 
     void generate_faces();
     unsigned int generate_face_vertices(std::vector<VertexData>& array, unsigned int start_index);
+    //TODO doesnt update faces yet
     const Block* get_block(const glm::vec3& pos) const;
     void set_block(const glm::vec3& pos, const Block& block);
 
@@ -88,8 +89,15 @@ private:
 
     std::array<Block, CHUNK_SIDE*CHUNK_SIDE*CHUNK_SIDE> m_blocks;
     
-    unsigned int start;
-    unsigned int end;
+
+    //metadata
+    //index of where in the array this chunk's vertex data starts
+    unsigned int vertex_start;
+    //how many vertices this chunk has
+    unsigned int vertex_size;
+    unsigned int vertex_end;
+    //indicates if the vertices need to be regenerated
+    bool dirty;
 
     World& m_world;
 
