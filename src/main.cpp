@@ -47,10 +47,10 @@ int main(){
     //std::cout << glGetError() << "\n";
     glfwSwapInterval(0);
 
-    Player player;
-    player.set_position({0, 0, 0});
     Renderer r;
     World world(r);
+    Player player(world);
+    player.set_position({0, 0, 0});
 
     double delta_time = 0;
 

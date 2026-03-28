@@ -4,11 +4,12 @@
 constexpr int REACH_LENGTH = 5;
 
 class GLFWwindow;
+class World;
 
 class Player
 {
 public:
-    Player();
+    Player(World& w);
     void handle_keyboard(GLFWwindow* window, float delta_time);
     void set_position(const glm::vec3& new_pos);
     const glm::vec3 get_position() { return m_position; }
@@ -22,4 +23,5 @@ private:
     Camera m_camera;
     float m_speed;
     glm::vec3 m_position;
+    World& m_world;
 };

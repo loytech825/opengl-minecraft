@@ -1,11 +1,13 @@
 #include "Player.hpp"
+#include "World.hpp"
 #include <GLFW/glfw3.h>
 
 #include <iostream>
 
-Player::Player()
+Player::Player(World& w)
 :   m_camera(),
-    m_speed(8.f)
+    m_speed(8.f),
+    m_world(w)
 {}
 
 void Player::handle_keyboard(GLFWwindow* window, float delta_time)
@@ -67,6 +69,12 @@ void Player::update(GLFWwindow* window, const float dt)
 
 // made with referencing 
 // lodev.org/cgtutor/raycasting.html
+
+std::string vec_to_str(const glm::vec3& vector)
+{
+    return "" + std::to_string(vector.x) + ", " + std::to_string(vector.y) + ", " + std::to_string(vector.z);
+}
+
 void Player::raytrace_block()
 {
     //first we need the looking direction vector
@@ -92,11 +100,21 @@ void Player::raytrace_block()
     if(ray.x < 0)   {side_dist_X = (m_position.x - int_pos.x)*delta_dist_X;      step_X = -1;}
     else            {side_dist_X = (int_pos.x + 1 - m_position.x)*delta_dist_X;  step_X = 1;}
 
+    //if this happens we are right on the edge, so we move 1 block over
+    if(side_dist_X == 0)
+    { int_pos.x += step_X; side_dist_X += delta_dist_X; }
+
     if(ray.y < 0)   {side_dist_Y = (m_position.y - int_pos.y)*delta_dist_Y;      step_Y = -1;}
     else            {side_dist_Y = (int_pos.y + 1 - m_position.y)*delta_dist_Y;  step_Y = 1;}
 
+    if(side_dist_Y == 0)
+    { int_pos.y += step_Y; side_dist_Y += delta_dist_Y; }
+
     if(ray.z < 0)   {side_dist_Z = (m_position.z - int_pos.z)*delta_dist_Z;      step_Z = -1;}
     else            {side_dist_Z = (int_pos.z + 1 - m_position.z)*delta_dist_Z;  step_Z = 1;}
+
+    if(side_dist_Y == 0)
+    { int_pos.y += step_Y; side_dist_Y += delta_dist_Y; }
 
     glm::vec3 side_dist{side_dist_X, side_dist_Y, side_dist_Z};
 
@@ -105,15 +123,27 @@ void Player::raytrace_block()
     //TODO: add check for block we're in
 
     //side dist keeps track of distance from player pos to next side to be checked
+    //std::cout << "Pos: " << vec_to_str(m_position) << "\n";
+    //std::cout << "IntPos: " << vec_to_str(int_pos) << "\n";
+    //std::cout << "Direction: " << vec_to_str(ray) << "\n";
+    //std::cout << "Side_dist: " << vec_to_str(side_dist) << "\n";
+
+    //when we are exactly at the edge of a block, the side we are on has a distance of 0, which can be a problem
+    const Block* looking_at = nullptr;
+    looking_at = m_world.get_block(int_pos);
+
     while(amount_traveled < REACH_LENGTH)
     {
+        if(looking_at && looking_at->type != 0) break;
+
         //x side is closest so we move there
         if(side_dist.x < side_dist.y && side_dist.x < side_dist.z)
         {
             //we move for one block in X direction so the ray gets delta_dist_X longer
             side_dist.x += delta_dist_X;
             int_pos.x += step_X;  
-            amount_traveled += delta_dist_X; 
+            amount_traveled += delta_dist_X;
+            //std::cout << "X\n";
         }
         //y closest
         else if (side_dist.y < side_dist.z)
@@ -121,6 +151,7 @@ void Player::raytrace_block()
             side_dist.y += delta_dist_Y;
             int_pos.y += step_Y;
             amount_traveled += delta_dist_Y;
+            //std::cout << "Y\n";
         }
         //z closest
         else
@@ -128,7 +159,14 @@ void Player::raytrace_block()
             side_dist.z += delta_dist_Z;
             int_pos.z += step_Z;
             amount_traveled += delta_dist_Z;
+            //std::cout << "Z\n";
         }
-        std::cout << "Block found: " << int_pos.x << ", " << int_pos.y << ", " << int_pos.z << "\n"; 
+        looking_at = m_world.get_block(int_pos);
+        //std::cout << "Amount travelled: " << amount_traveled << "\n";
+        //std::cout << "Block found: " << int_pos.x << ", " << int_pos.y << ", " << int_pos.z << "\n"; 
     }
+
+    /*std::cout << "Looking at: ";
+    if(looking_at) std::cout << (unsigned int)looking_at->type << "\n";
+    else std::cout << "nothing.\n";*/
 }
