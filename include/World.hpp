@@ -36,7 +36,7 @@ private:
     glm::vec3 last_player_chunk_pos;
 
     void load_chunks_around_player();
-    void reload_chunks();
+    void reload_chunk_faces();
     void reload_geometry();
 
     Renderer& m_renderer;

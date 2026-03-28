@@ -1,6 +1,8 @@
 #include "Player.hpp"
 #include <GLFW/glfw3.h>
 
+#include <iostream>
+
 Player::Player()
 :   m_camera(),
     m_speed(8.f)
@@ -55,4 +57,78 @@ void Player::set_position(const glm::vec3 &new_pos)
 {
     m_position = new_pos;
     m_camera.position = m_position + m_camera.up*1.f;
+}
+
+void Player::update(GLFWwindow* window, const float dt)
+{
+    handle_keyboard(window, dt);
+    raytrace_block();
+}
+
+// made with referencing 
+// lodev.org/cgtutor/raycasting.html
+void Player::raytrace_block()
+{
+    //first we need the looking direction vector
+    const auto ray = m_camera.front;
+    const auto max_distance = ray*(float)REACH_LENGTH;
+
+    glm::vec3 int_pos = glm::floor(m_position);
+
+    //std::cout << "Looking vector: " << ray.x << ", " << ray.y << ", " << ray.z << "\n";
+    //std::cout << "Max distance vector: " << max_distance.x << ", " << max_distance.y << ", " << max_distance.z << "\n";
+
+    //calculate how long the ray is between each block in x, y or z directions
+    float delta_dist_X = (ray.x == 0) ? 1e30 : std::abs(1/ray.x);
+    float delta_dist_Y = (ray.y == 0) ? 1e30 : std::abs(1/ray.y);
+    float delta_dist_Z = (ray.z == 0) ? 1e30 : std::abs(1/ray.z);
+
+    //distances from cuurent location to nearest sides
+    float side_dist_X, side_dist_Y, side_dist_Z;
+    //either +1 or -1
+    signed char step_X, step_Y, step_Z;
+
+    //gets the distance to nearest face in each direction and wether we are going + or - for each direction 
+    if(ray.x < 0)   {side_dist_X = (m_position.x - int_pos.x)*delta_dist_X;      step_X = -1;}
+    else            {side_dist_X = (int_pos.x + 1 - m_position.x)*delta_dist_X;  step_X = 1;}
+
+    if(ray.y < 0)   {side_dist_Y = (m_position.y - int_pos.y)*delta_dist_Y;      step_Y = -1;}
+    else            {side_dist_Y = (int_pos.y + 1 - m_position.y)*delta_dist_Y;  step_Y = 1;}
+
+    if(ray.z < 0)   {side_dist_Z = (m_position.z - int_pos.z)*delta_dist_Z;      step_Z = -1;}
+    else            {side_dist_Z = (int_pos.z + 1 - m_position.z)*delta_dist_Z;  step_Z = 1;}
+
+    glm::vec3 side_dist{side_dist_X, side_dist_Y, side_dist_Z};
+
+    float amount_traveled = 0;
+
+    //TODO: add check for block we're in
+
+    //side dist keeps track of distance from player pos to next side to be checked
+    while(amount_traveled < REACH_LENGTH)
+    {
+        //x side is closest so we move there
+        if(side_dist.x < side_dist.y && side_dist.x < side_dist.z)
+        {
+            //we move for one block in X direction so the ray gets delta_dist_X longer
+            side_dist.x += delta_dist_X;
+            int_pos.x += step_X;  
+            amount_traveled += delta_dist_X; 
+        }
+        //y closest
+        else if (side_dist.y < side_dist.z)
+        {
+            side_dist.y += delta_dist_Y;
+            int_pos.y += step_Y;
+            amount_traveled += delta_dist_Y;
+        }
+        //z closest
+        else
+        {
+            side_dist.z += delta_dist_Z;
+            int_pos.z += step_Z;
+            amount_traveled += delta_dist_Z;
+        }
+        std::cout << "Block found: " << int_pos.x << ", " << int_pos.y << ", " << int_pos.z << "\n"; 
+    }
 }

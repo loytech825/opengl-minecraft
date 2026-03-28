@@ -20,9 +20,9 @@ struct Block
 {
     BlockType type;
     unsigned char sides;
-    Block(const unsigned char& tp) : Block(tp, 0){};
-    Block(const unsigned char& tp, const unsigned char s) : type(AIR), sides(s){};
-    Block(): type(AIR){};
+    Block(BlockType tp) : Block(tp, 0){};
+    Block(BlockType tp, const unsigned char s) : type(tp), sides(s){};
+    Block(): type(AIR), sides(0){};
 };
 
 //configured so opposite side is SIZE-side-1
@@ -77,13 +77,14 @@ private:
     //so world can generate vertices as well
     friend World;
 
-    void generate_faces();
-    unsigned int generate_face_vertices(std::vector<VertexData>& array, unsigned int start_index);
+    void generate_all_faces();
+    unsigned int generate_all_vertices(std::vector<VertexData>& array, unsigned int start_index);
 
     void generate_block_faces(const glm::vec3& pos, const BlockType type);
     //Sets block at pos and updates its faces and surrounding block faces
     const Block* get_block(const glm::vec3& pos) const;
-    void set_block(const glm::vec3& pos, const Block& block);
+    //set the type and updates sides
+    void set_block(const glm::vec3& pos, const BlockType type);
 
     /*
     @brief Sets face of block to value

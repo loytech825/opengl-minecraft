@@ -69,16 +69,16 @@ Chunk::Chunk(int X, int Y, int Z, World& world)
 {
     //very simple world gen
     if(pos.y > 0)
-        std::fill(m_blocks.begin(), m_blocks.end(), (unsigned char)0);
+        std::fill(m_blocks.begin(), m_blocks.end(), AIR);
     else
-        std::fill(m_blocks.begin(), m_blocks.end(), (unsigned char)1);
+        std::fill(m_blocks.begin(), m_blocks.end(), STONE);
 
     //std::fill(m_blocks.begin(), m_blocks.end(), (unsigned char)0);
 }
 
 Chunk::Chunk(World& world) : Chunk(0, 0, 0, world) {}
 
-void Chunk::generate_faces()
+void Chunk::generate_all_faces()
 {
 
     std::vector<Chunk*> neighbor_chunks;
@@ -92,84 +92,86 @@ void Chunk::generate_faces()
 
     for(int y = 0; y < CHUNK_SIDE; y++)
     {
-        for(int z = 0; z < CHUNK_SIDE; z++)
-        {
-            for(int x = 0; x < CHUNK_SIDE; x++)
-            {
-                Block& this_block = m_blocks[y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x];
+    for(int z = 0; z < CHUNK_SIDE; z++)
+    {
+    for(int x = 0; x < CHUNK_SIDE; x++)
+    {
+        Block& this_block = m_blocks[y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x];
 
-                //Here i dont use the generate_block_faces function because we preloaded the neighboring chunks
-                //so this is faster
+        //Here i dont use the generate_block_faces function because we preloaded the neighboring chunks
+        //so this is faster
     
-                //check all six sides
-                for(int i = 0; i < 6; i++)
-                {
+        //check all six sides
+        for(int i = 0; i < 6; i++)
+        {
 
-                    int index = (direction_vectors[i].y+y)*CHUNK_SIDE*CHUNK_SIDE
-                                +(direction_vectors[i].z+z)*CHUNK_SIDE
-                                +(direction_vectors[i].x+x);
+            int index = (direction_vectors[i].y+y)*CHUNK_SIDE*CHUNK_SIDE
+                        +(direction_vectors[i].z+z)*CHUNK_SIDE
+                        +(direction_vectors[i].x+x);
 
-                    //checks if neighboring block is in chunk
-                    //these three ints get us a chunk offset of the neighboring block
-                    //all three == 0, when block is in this chunk
+            //checks if neighboring block is in chunk
+            //these three ints get us a chunk offset of the neighboring block
+            //all three == 0, when block is in this chunk
 
-                    const int rel_x = floor((float)(x+(int)direction_vectors[i].x)/CHUNK_SIDE);
-                    const int rel_y = floor((float)(y+(int)direction_vectors[i].y)/CHUNK_SIDE);
-                    const int rel_z = floor((float)(z+(int)direction_vectors[i].z)/CHUNK_SIDE);
+            const int rel_x = floor((float)(x+(int)direction_vectors[i].x)/CHUNK_SIDE);
+            const int rel_y = floor((float)(y+(int)direction_vectors[i].y)/CHUNK_SIDE);
+            const int rel_z = floor((float)(z+(int)direction_vectors[i].z)/CHUNK_SIDE);
 
-                    const bool in_x_limit = rel_x == 0;
-                    const bool in_y_limit = rel_y == 0;
-                    const bool in_z_limit = rel_z == 0;
+            const bool in_x_limit = rel_x == 0;
+            const bool in_y_limit = rel_y == 0;
+            const bool in_z_limit = rel_z == 0;
 
-                    if(in_x_limit && in_y_limit && in_z_limit)
-                    {
-                        //we can skip generation for this block if its
-                        //empty and in this chunk
-                        if(this_block.type == 0)
-                            continue;
-                        //checks if neighboring block exists
-                        if(m_blocks[index].type)
-                        {
-                            //std::cout << ": " << x << ", " << y << ", " << z << ": " << m_blocks[index].type << "\n";
-                            continue;
-                        }
-                    }else
-                    {
-                        if(neighbor_chunks[i])
-                        {
-                            //direction vector has a 1 or -1 in the direction of neighboring chunk
-                            //if it has a 1, the coorinate at that position needs to be 0
-                            // 1 -> add -15
-                            // -1 -> add 15 
-                            glm::vec3 relative_block_pos = glm::vec3(x, y, z) + -15.f*direction_vectors[i];
+            if(in_x_limit && in_y_limit && in_z_limit)
+            {
+                //we can skip generation for this block if its
+                //empty and in this chunk
+                if(this_block.type == 0)
+                    continue;
 
-                            Block* neighbor = (Block*) neighbor_chunks[i]->get_block(relative_block_pos);
-                            /*std::cout << "Chunk: " << neighbor_chunks[i] 
-                                        << ", block: " << relative_block_pos.x
-                                        << ", " << relative_block_pos.y
-                                        << ", " << relative_block_pos.z << "\n";*/
-
-                            if(!neighbor)
-                                continue;
-
-                            //Update neighbor block side
-                            if(this_block.type == 0)
-                                neighbor->sides |= 1<<(DIRECTION::SIZE-1-i);
-                            else
-                                neighbor->sides &= ~(1<<(DIRECTION::SIZE-1-i));
-
-                            if(neighbor->type != 0)
-                                continue;
-                        }//else continue;
-                    }
-                    this_block.sides |= 1<<i;
-                }
+            //checks if neighboring block exists
+            if(m_blocks[index].type)
+            {
+                //std::cout << ": " << x << ", " << y << ", " << z << ": " << m_blocks[index].type << "\n";
+                continue;
             }
+            }else
+            {
+                if(neighbor_chunks[i])
+                {
+                    //direction vector has a 1 or -1 in the direction of neighboring chunk
+                    //if it has a 1, the coorinate at that position needs to be 0
+                    // 1 -> add -15
+                    // -1 -> add 15 
+                    glm::vec3 relative_block_pos = glm::vec3(x, y, z) + -15.f*direction_vectors[i];
+
+                    Block* neighbor = (Block*) neighbor_chunks[i]->get_block(relative_block_pos);
+                    /*std::cout << "Chunk: " << neighbor_chunks[i] 
+                                << ", block: " << relative_block_pos.x
+                                << ", " << relative_block_pos.y
+                                << ", " << relative_block_pos.z << "\n";*/
+
+                    if(!neighbor)
+                        continue;
+
+                    //Update neighbor block side
+                    if(this_block.type == 0)
+                        neighbor->sides |= 1<<(DIRECTION::SIZE-1-i);
+                    else
+                        neighbor->sides &= ~(1<<(DIRECTION::SIZE-1-i));
+
+                    if(neighbor->type != 0)
+                                continue;
+                }//else continue;
+            }
+            //std::cout << "set side!\n";
+            this_block.sides |= 1<<i;
+        }
+        }
         }
     }
 }
 
-unsigned int Chunk::generate_face_vertices(std::vector<VertexData>& array, unsigned int start_index)
+unsigned int Chunk::generate_all_vertices(std::vector<VertexData>& array, unsigned int start_index)
 {
     unsigned int offset = 0;
     for(int y = 0; y < CHUNK_SIDE; y++)
@@ -178,7 +180,7 @@ unsigned int Chunk::generate_face_vertices(std::vector<VertexData>& array, unsig
     {
     for(int x = 0; x < CHUNK_SIDE; x++)
     {
-        if(m_blocks[y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x].type == 0) continue;
+        if(m_blocks[y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x].type == AIR) continue;
 
         unsigned char sides = m_blocks[y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x].sides;
 
@@ -210,8 +212,6 @@ void Chunk::set_face(const glm::vec3& pos, DIRECTION dir, bool value)
 void Chunk::generate_block_faces(const glm::vec3& pos, const BlockType type)
 {
     Block& this_block = m_blocks[pos.y*CHUNK_SIDE*CHUNK_SIDE+pos.z*CHUNK_SIDE+pos.x];
-
-
     for(int i = 0; i < 6; i++)
     {
 
@@ -288,14 +288,16 @@ const Block* Chunk::get_block(const glm::vec3& pos) const
     return nullptr;
 }
 
-void Chunk::set_block(const glm::vec3& pos, const Block& block)
+void Chunk::set_block(const glm::vec3& pos, const BlockType type)
 {
     const bool check_x = pos.x >= 0 && pos.x < CHUNK_SIDE; 
     const bool check_y = pos.y >= 0 && pos.y < CHUNK_SIDE;
     const bool check_z = pos.z >= 0 && pos.z < CHUNK_SIDE;
     
     if(check_x && check_y && check_z)
-        m_blocks[pos.y*CHUNK_SIDE*CHUNK_SIDE+pos.z*CHUNK_SIDE+pos.x] = block;
-
+    {
+        m_blocks[pos.y*CHUNK_SIDE*CHUNK_SIDE+pos.z*CHUNK_SIDE+pos.x].type = type;
+        generate_block_faces(pos, type);
+    }
     dirty = true;
 }

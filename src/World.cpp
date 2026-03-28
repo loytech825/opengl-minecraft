@@ -25,7 +25,7 @@ World::World(Renderer& r)
         }
     }
 
-    reload_chunks();
+    reload_chunk_faces();
     reload_geometry();
 
     std::cout << "Size of single block: " << sizeof(Block) << "\n";
@@ -70,11 +70,11 @@ void World::update(const float delta_time, Player& player)
     }
 }
 
-void World::reload_chunks()
+void World::reload_chunk_faces()
 {
     for(auto& c : m_loaded_chunks)
     {
-        c.generate_faces();
+        c.generate_all_faces();
     }
 }
 
@@ -92,7 +92,7 @@ void World::reload_geometry()
         if(c.dirty)
         {
             //if chunk changed, we need to reload its vertices
-            current = c.generate_face_vertices(m_vertices, current);
+            current = c.generate_all_vertices(m_vertices, current);
         }else
         {
             //data is already inside the temp buffer so we just copy
@@ -153,7 +153,7 @@ void World::load_chunks_around_player()
     for(int i = 0; i < reassignable_chunks.size(); i++)
     {
         Chunk& c = *reassignable_chunks[i];
-        c.generate_faces();
+        c.generate_all_faces();
     }
 
     //in this function so it can run on a separate thread

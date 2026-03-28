@@ -12,6 +12,7 @@ public:
     glm::vec3 position;
 
     float fov;
+    //+x = yaw=0
     float yaw;
     float pitch;
 

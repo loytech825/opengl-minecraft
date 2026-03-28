@@ -93,7 +93,7 @@ int main(){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         //UPDATE LOOP
-        player.handle_keyboard(window, delta_time);
+        player.update(window, delta_time);
         world.update(delta_time, player);
 
 
