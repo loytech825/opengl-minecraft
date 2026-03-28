@@ -11,13 +11,18 @@ class Renderer;
 
 extern glm::vec3 direction_vectors[];
 
+enum BlockType : unsigned char
+{
+    AIR = 0, STONE
+};
+
 struct Block
 {
-    unsigned char type;
+    BlockType type;
     unsigned char sides;
     Block(const unsigned char& tp) : Block(tp, 0){};
-    Block(const unsigned char& tp, const unsigned char s) : type(tp), sides(s){};
-    Block(): type(0){};
+    Block(const unsigned char& tp, const unsigned char s) : type(AIR), sides(s){};
+    Block(): type(AIR){};
 };
 
 //configured so opposite side is SIZE-side-1
@@ -74,7 +79,9 @@ private:
 
     void generate_faces();
     unsigned int generate_face_vertices(std::vector<VertexData>& array, unsigned int start_index);
-    //TODO doesnt update faces yet
+
+    void generate_block_faces(const glm::vec3& pos, const BlockType type);
+    //Sets block at pos and updates its faces and surrounding block faces
     const Block* get_block(const glm::vec3& pos) const;
     void set_block(const glm::vec3& pos, const Block& block);
 
