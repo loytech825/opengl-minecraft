@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <atomic>
+#include <thread>
+#include <mutex>
 
 constexpr int RENDER_DISTANCE = 1;
 
@@ -32,6 +34,7 @@ public:
 private:
     std::vector<Chunk> m_loaded_chunks;
     std::vector<VertexData> m_vertices;
+    std::mutex m_vertices_mtx;
 
     glm::vec3 last_player_chunk_pos;
 

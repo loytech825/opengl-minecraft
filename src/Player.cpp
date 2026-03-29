@@ -1,5 +1,6 @@
 #include "Player.hpp"
 #include "World.hpp"
+#include "Chunk.hpp"
 #include <GLFW/glfw3.h>
 
 #include <iostream>
@@ -7,11 +8,13 @@
 Player::Player(World& w)
 :   m_camera(),
     m_speed(8.f),
-    m_world(w)
+    m_world(w),
+    m_targeted_block(nullptr)
 {}
 
 void Player::handle_keyboard(GLFWwindow* window, float delta_time)
 {
+    /****************CAMERA*UPDATE*****************/
     float velocity = m_speed * delta_time;
     glm::vec3 direction = glm::normalize(glm::vec3(m_camera.front.x, 0, m_camera.front.z));
 
@@ -53,6 +56,15 @@ void Player::handle_keyboard(GLFWwindow* window, float delta_time)
 
     m_camera.position = m_position + m_camera.up*1.f;
     m_camera.update_vectors();
+
+    /***************BLOCK*INTERACTION******************/
+    if(glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+    {
+        if(m_targeted_block)
+        {
+            m_world.set_block(m_targeted_block_pos, Block(AIR));
+        }
+    }
 }
 
 void Player::set_position(const glm::vec3 &new_pos)
@@ -81,7 +93,7 @@ void Player::raytrace_block()
     const auto ray = m_camera.front;
     const auto max_distance = ray*(float)REACH_LENGTH;
 
-    glm::vec3 int_pos = glm::floor(m_position);
+    glm::vec3 int_pos = glm::floor(m_camera.position);
 
     //std::cout << "Looking vector: " << ray.x << ", " << ray.y << ", " << ray.z << "\n";
     //std::cout << "Max distance vector: " << max_distance.x << ", " << max_distance.y << ", " << max_distance.z << "\n";
@@ -165,6 +177,9 @@ void Player::raytrace_block()
         //std::cout << "Amount travelled: " << amount_traveled << "\n";
         //std::cout << "Block found: " << int_pos.x << ", " << int_pos.y << ", " << int_pos.z << "\n"; 
     }
+
+    m_targeted_block = looking_at;
+    m_targeted_block_pos = int_pos;
 
     /*std::cout << "Looking at: ";
     if(looking_at) std::cout << (unsigned int)looking_at->type << "\n";

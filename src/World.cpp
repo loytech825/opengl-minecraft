@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <thread>
+#include <exception>
+
 #include "GLFW/glfw3.h"
 #include "Renderer.hpp"
 #include "Camera.hpp"
@@ -56,10 +58,11 @@ void World::update(const float delta_time, Player& player)
 
     if(chunk_player_pos != last_player_chunk_pos)
     {
-        std::cout << "Player entered new chunk!\n";
+
         last_player_chunk_pos = chunk_player_pos;
         std::thread loading_thread(&World::load_chunks_around_player, this);
         loading_thread.detach();
+
     }
 
     if(m_to_reload)
@@ -80,6 +83,9 @@ void World::reload_chunk_faces()
 
 void World::reload_geometry()
 {
+    //locks the acess to variables for other threads
+    m_vertices_mtx.lock();
+
     double start = glfwGetTime();
     auto temp = m_vertices;
     m_vertices.clear();
@@ -107,7 +113,8 @@ void World::reload_geometry()
     double end = glfwGetTime();
     double deltaTime = end-start;
 
-    std::cout << "Vertex generation time new: " << deltaTime << "\n";
+    m_vertices_mtx.unlock();
+    //std::cout << "Vertex generation time new: " << deltaTime << "\n";
 }
 
 //works but is probably the slowest shit ever
@@ -172,15 +179,26 @@ const Chunk* World::get_chunk(const glm::vec3& pos) const
     return &*index;
 }
 
+//currently each set block reloads geometry!!!
 void World::set_block(const glm::vec3& pos, const Block& block)
 {
+
+    glm::vec3 chunk_pos = glm::floor(pos/16.f);
+    glm::vec3 block_pos = pos - chunk_pos*16.f;
+
+    Chunk* chunk = (Chunk*) get_chunk(chunk_pos);
+    if(!chunk) return;
+
     Block* main_block = (Block*) get_block(pos);
-    if(!main_block) return;
+    //if(!main_block) return;
+
+    //main_block->type = block.type;
+
+    chunk->set_block(block_pos, block.type);
+    reload_geometry();
 
 
-    main_block->type = block.type;
-
-    for(int i = 0; i < DIRECTION::SIZE; i++)
+    /*for(int i = 0; i < DIRECTION::SIZE; i++)
     {
         Block* side_block = (Block*) get_block(pos+direction_vectors[i]);
         std::cout << pos.x << "\t" << (pos+direction_vectors[i]).x << ": " << side_block << "\n";
@@ -200,7 +218,7 @@ void World::set_block(const glm::vec3& pos, const Block& block)
         {
             side_block->sides &= ~(1<<(DIRECTION::SIZE-1-i));
         }
-    }
+    }*/
 }
 
 const Block* World::get_block(const glm::vec3 &pos) const

@@ -5,6 +5,7 @@ constexpr int REACH_LENGTH = 5;
 
 class GLFWwindow;
 class World;
+class Block;
 
 class Player
 {
@@ -24,4 +25,7 @@ private:
     float m_speed;
     glm::vec3 m_position;
     World& m_world;
+
+    const Block* m_targeted_block;
+    glm::vec3 m_targeted_block_pos;
 };

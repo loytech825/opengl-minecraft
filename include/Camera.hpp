@@ -29,5 +29,6 @@ private:
     glm::vec3 up;
 
     void update_vectors();
+    //TODO: pos to index
 
 };
