@@ -1,5 +1,6 @@
 #pragma once
 #include <array>
+#include <mutex>
 #include <glm/glm.hpp>
 #include "OpenGL_support/VAO.hpp"
 #include "Renderer.hpp"
@@ -70,6 +71,19 @@ public:
     Chunk(World& world);
     Chunk(int X, int Y, int Z, World& world);
 
+    Chunk(const Chunk&& other)
+    :   pos(other.pos),
+        m_blocks(std::move(other.m_blocks)),
+        m_world(other.m_world),
+        dirty(other.dirty),
+        vertex_start(other.vertex_start),
+        vertex_end(other.vertex_end),
+        vertex_size(other.vertex_size),
+        m_vertex_gen_mtx()
+    {
+
+    }
+
     glm::vec3 pos;
 
 private:
@@ -79,6 +93,7 @@ private:
 
     void generate_all_faces();
     unsigned int generate_all_vertices(std::vector<VertexData>& array, unsigned int start_index);
+    std::mutex m_vertex_gen_mtx;
 
     void generate_block_faces(const glm::vec3& pos, const BlockType type);
     //Sets block at pos and updates its faces and surrounding block faces

@@ -1,11 +1,13 @@
 #pragma once
 #include "Camera.hpp"
+#include "Chunk.hpp"
 
 constexpr int REACH_LENGTH = 5;
 
 class GLFWwindow;
 class World;
 class Block;
+
 
 class Player
 {
@@ -28,4 +30,5 @@ private:
 
     const Block* m_targeted_block;
     glm::vec3 m_targeted_block_pos;
+    DIRECTION m_targeted_block_face;
 };

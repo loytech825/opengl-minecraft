@@ -64,6 +64,12 @@ void Player::handle_keyboard(GLFWwindow* window, float delta_time)
         {
             m_world.set_block(m_targeted_block_pos, Block(AIR));
         }
+    }else if(glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+    {
+        if(m_targeted_block)
+        {
+            m_world.set_block(m_targeted_block_pos+direction_vectors[m_targeted_block_face], Block(STONE));
+        }
     }
 }
 
@@ -155,6 +161,7 @@ void Player::raytrace_block()
             side_dist.x += delta_dist_X;
             int_pos.x += step_X;  
             amount_traveled += delta_dist_X;
+            m_targeted_block_face = step_X > 0 ? SOUTH : NORTH;
             //std::cout << "X\n";
         }
         //y closest
@@ -163,6 +170,7 @@ void Player::raytrace_block()
             side_dist.y += delta_dist_Y;
             int_pos.y += step_Y;
             amount_traveled += delta_dist_Y;
+            m_targeted_block_face = step_Y > 0 ? DOWN : UP;
             //std::cout << "Y\n";
         }
         //z closest
@@ -171,6 +179,7 @@ void Player::raytrace_block()
             side_dist.z += delta_dist_Z;
             int_pos.z += step_Z;
             amount_traveled += delta_dist_Z;
+            m_targeted_block_face = step_Z > 0 ? WEST : EAST;
             //std::cout << "Z\n";
         }
         looking_at = m_world.get_block(int_pos);

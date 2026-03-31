@@ -166,6 +166,9 @@ void Chunk::generate_all_faces()
 
 unsigned int Chunk::generate_all_vertices(std::vector<VertexData>& array, unsigned int start_index)
 {
+    m_vertex_gen_mtx.lock();
+    dirty = false;
+    //std::cout << pos.x << ", " << pos.y << ", " << pos.z << ": vertex gen\n";
     unsigned int offset = 0;
     for(int y = 0; y < CHUNK_SIDE; y++)
     {
@@ -189,8 +192,10 @@ unsigned int Chunk::generate_all_vertices(std::vector<VertexData>& array, unsign
     }
     }
     }
+    vertex_start = start_index;
     vertex_end = vertex_start+offset;
     vertex_size = offset;
+    m_vertex_gen_mtx.unlock();
     return vertex_end;
 }
 
@@ -202,13 +207,15 @@ void Chunk::set_face(const glm::vec3& pos, DIRECTION dir, bool value)
     dirty = true;
 }
 
+//FIXME when block is not 0
 void Chunk::generate_block_faces(const glm::vec3& block_pos, const BlockType type)
 {
     Block& this_block = m_blocks[pos.y*CHUNK_SIDE*CHUNK_SIDE+pos.z*CHUNK_SIDE+pos.x];
 
     //check if this block is transparent
     //if it is we need to generate neighbor's faces
-    bool neighbors_visible = type == 0;
+    bool neighbors_visible = (type == AIR);
+    this_block.sides = 0;
 
     for(int i = 0; i < 6; i++)
     {
@@ -241,7 +248,6 @@ void Chunk::generate_block_faces(const glm::vec3& block_pos, const BlockType typ
         }else
         {
             std::cout << std::to_string((pos+direction_vectors[i]).x) + ", " + std::to_string((pos+direction_vectors[i]).y) + ", " + std::to_string((pos+direction_vectors[i]).z);
-            std::cout << "\n";
             auto neighbor_chunk = (Chunk*)m_world.get_chunk(pos+direction_vectors[i]);
             if(neighbor_chunk)
             {
@@ -273,8 +279,12 @@ void Chunk::generate_block_faces(const glm::vec3& block_pos, const BlockType typ
                     neighbor->sides &= ~(1<<(DIRECTION::SIZE-1-i));*/
             }//else continue;
         }
+        std::cout << i << "\n";
         this_block.sides |= 1<<i;
+        std::cout << std::hex << (int)this_block.sides << std::dec << "\n";
+        std::cout << (int)this_block.type << "\n";
     }
+    std::cout << "\n\n\n\n\n";
 }
 
 const Block* Chunk::get_block(const glm::vec3& pos) const
@@ -297,6 +307,9 @@ void Chunk::set_block(const glm::vec3& pos, const BlockType type)
     
     if(check_x && check_y && check_z)
     {
+        //no need to change anything and no need to regenerate vetices
+        if(m_blocks[pos.y*CHUNK_SIDE*CHUNK_SIDE+pos.z*CHUNK_SIDE+pos.x].type == type) return;
+
         m_blocks[pos.y*CHUNK_SIDE*CHUNK_SIDE+pos.z*CHUNK_SIDE+pos.x].type = type;
         generate_block_faces(pos, type);
     }

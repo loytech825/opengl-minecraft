@@ -3,18 +3,24 @@
 #include <iostream>
 #include <thread>
 #include <exception>
+#include <cstring>
 
 #include "GLFW/glfw3.h"
 #include "Renderer.hpp"
 #include "Camera.hpp"
 #include "Player.hpp"
 
+//TODO: FIX vertex regenration, produces seemingly random crashes (thread safety?)
+
 World::World(Renderer& r)
 :   m_renderer(r),
-    m_to_reload(false)
+    m_to_reload(false),
+    last_player_chunk_pos(0, 0, 0)
 {
     m_loaded_chunks.reserve(8*RENDER_DISTANCE*RENDER_DISTANCE*RENDER_DISTANCE);
     //m_loaded_chunks.reserve(2);
+
+    std::cout << RENDER_DISTANCE << "\n";
 
     for(int i = -RENDER_DISTANCE+last_player_chunk_pos.x; i < RENDER_DISTANCE+1+last_player_chunk_pos.x; i++)
     {
@@ -65,11 +71,12 @@ void World::update(const float delta_time, Player& player)
 
     }
 
-    if(m_to_reload)
+    if(m_to_reload && m_vertices_mtx.try_lock())
     {
         //loads geometry to gpu buffer
         m_renderer.set_static_geometry(m_vertices.size(), m_vertices.data());
         m_to_reload = false;
+        m_vertices_mtx.unlock();
     }
 }
 
@@ -92,23 +99,44 @@ void World::reload_geometry()
 
     //resere a conservative amount of data
     m_vertices.reserve(temp.size()*1.5);
+
+    //current should always be equal to m_vertices.size()
+    //left it in here just in case, it helped me debug once
     unsigned int current = 0;
     for(auto& c : m_loaded_chunks)
     {
         if(c.dirty)
         {
             //if chunk changed, we need to reload its vertices
+            //std::cout << c.pos.x << ", " << c.pos.y << ", " << c.pos.z << "\n";
             current = c.generate_all_vertices(m_vertices, current);
         }else
         {
             //data is already inside the temp buffer so we just copy
-            std::copy(temp.begin()+c.vertex_start, temp.begin()+c.vertex_end, m_vertices.begin()+current);
+            if(m_vertices.capacity() < m_vertices.size()+c.vertex_size)
+                m_vertices.reserve((m_vertices.size()+c.vertex_size)*1.5);
+
+            m_vertices.resize((m_vertices.size()+c.vertex_size));
+
+            const auto& destination_location = m_vertices.data()+current;
+            const auto& source_start = temp.data()+c.vertex_start;
+            const unsigned int size = c.vertex_size*sizeof(VertexData);
+
+            std::memcpy(destination_location, source_start, size);
+
+            //std::copy(temp.begin()+c.vertex_start, temp.begin()+c.vertex_end, m_vertices.begin()+current);
+            //m_vertices.insert(m_vertices.begin()+current, temp.begin()+c.vertex_start, temp.begin()+c.vertex_end);
+
             c.vertex_start = current;
+            c.vertex_end = current+c.vertex_size;
             current += c.vertex_size;
         }
     }
+
+    m_to_reload = true;
+
     m_vertices.shrink_to_fit();
-    m_renderer.set_static_geometry(m_vertices.size(), m_vertices.data());
+    //m_renderer.set_static_geometry(m_vertices.size(), m_vertices.data());
 
     double end = glfwGetTime();
     double deltaTime = end-start;
@@ -121,6 +149,7 @@ void World::reload_geometry()
 //made to run on a separate thread
 void World::load_chunks_around_player()
 {
+    m_chunk_loading.lock();
     //loaded chunks are in range [player_pos - RENDER_DISTANCE, player_pos + RENDER_DISTANCE]
     //check which indices to clear
     std::vector<Chunk*> reassignable_chunks;
@@ -128,6 +157,8 @@ void World::load_chunks_around_player()
     for(int i = 0; i < m_loaded_chunks.size(); i++)
     {
         Chunk& c = m_loaded_chunks[i];
+
+        //marks chunks too far as reassignable
         if(c.pos.x > (last_player_chunk_pos.x + RENDER_DISTANCE) || c.pos.x < (last_player_chunk_pos.x - RENDER_DISTANCE)
         || c.pos.y > (last_player_chunk_pos.y + RENDER_DISTANCE) || c.pos.y < (last_player_chunk_pos.y - RENDER_DISTANCE)
         || c.pos.z > (last_player_chunk_pos.z + RENDER_DISTANCE) || c.pos.z < (last_player_chunk_pos.z - RENDER_DISTANCE))
@@ -165,8 +196,7 @@ void World::load_chunks_around_player()
 
     //in this function so it can run on a separate thread
     reload_geometry();
-
-    m_to_reload = true;
+    m_chunk_loading.unlock();
 }
 
 const Chunk* World::get_chunk(const glm::vec3& pos) const
@@ -196,29 +226,6 @@ void World::set_block(const glm::vec3& pos, const Block& block)
 
     chunk->set_block(block_pos, block.type);
     reload_geometry();
-
-
-    /*for(int i = 0; i < DIRECTION::SIZE; i++)
-    {
-        Block* side_block = (Block*) get_block(pos+direction_vectors[i]);
-        std::cout << pos.x << "\t" << (pos+direction_vectors[i]).x << ": " << side_block << "\n";
-
-        if(!side_block) 
-        { 
-            main_block->sides = (block.sides | (1<<i));
-            continue;
-        }
-
-        // two cases: block we set is transparent
-        main_block->sides |= (1<<i);
-        if(main_block->type == 0)
-        {
-            side_block->sides |= (1<<(DIRECTION::SIZE-1-i));
-        }else
-        {
-            side_block->sides &= ~(1<<(DIRECTION::SIZE-1-i));
-        }
-    }*/
 }
 
 const Block* World::get_block(const glm::vec3 &pos) const
