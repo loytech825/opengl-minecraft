@@ -21,6 +21,16 @@ glm::vec3 direction_vectors[] = {
     glm::vec3(0, -1, 0),
 };
 
+inline unsigned int pos_to_index(int x, int y, int z)
+{
+    return y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x;
+}
+
+inline unsigned int pos_to_index(const glm::vec3& pos)
+{
+    return pos.y*CHUNK_SIDE*CHUNK_SIDE+pos.z*CHUNK_SIDE+pos.x;
+}
+
 //generates the vertex position for a single side of a block
 //at a position
 void generate_side_vertices(DIRECTION dir, const glm::vec3& block_pos, std::vector<VertexData>& array)
@@ -167,6 +177,7 @@ void Chunk::generate_all_faces()
 unsigned int Chunk::generate_all_vertices(std::vector<VertexData>& array, unsigned int start_index)
 {
     m_vertex_gen_mtx.lock();
+    m_blocks_access_mtx.lock();
     dirty = false;
     //std::cout << pos.x << ", " << pos.y << ", " << pos.z << ": vertex gen\n";
     unsigned int offset = 0;
@@ -176,9 +187,12 @@ unsigned int Chunk::generate_all_vertices(std::vector<VertexData>& array, unsign
     {
     for(int x = 0; x < CHUNK_SIDE; x++)
     {
-        if(m_blocks[y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x].type == AIR) continue;
+        if(m_blocks[pos_to_index(x, y, z)].type == AIR) continue;
 
-        unsigned char sides = m_blocks[y*CHUNK_SIDE*CHUNK_SIDE+z*CHUNK_SIDE+x].sides;
+        const unsigned char sides = m_blocks[pos_to_index(x, y, z)].sides;
+
+        //std::cout << "BLOCK HERE!" << "\n";
+        //std::cout << std::hex << (int)sides << std::dec << "\n"; 
 
         if(!sides) continue;
         for(int i = 0; i < 6; i++)
@@ -196,6 +210,7 @@ unsigned int Chunk::generate_all_vertices(std::vector<VertexData>& array, unsign
     vertex_end = vertex_start+offset;
     vertex_size = offset;
     m_vertex_gen_mtx.unlock();
+    m_blocks_access_mtx.unlock();
     return vertex_end;
 }
 
@@ -207,15 +222,18 @@ void Chunk::set_face(const glm::vec3& pos, DIRECTION dir, bool value)
     dirty = true;
 }
 
-//FIXME when block is not 0
+//WORKS, was using chunk pos instead of block pos
 void Chunk::generate_block_faces(const glm::vec3& block_pos, const BlockType type)
 {
-    Block& this_block = m_blocks[pos.y*CHUNK_SIDE*CHUNK_SIDE+pos.z*CHUNK_SIDE+pos.x];
+    m_blocks_access_mtx.lock();
+    Block& this_block = m_blocks[pos_to_index(block_pos)];
+    this_block.type = type;
 
     //check if this block is transparent
     //if it is we need to generate neighbor's faces
     bool neighbors_visible = (type == AIR);
     this_block.sides = 0;
+    //m_blocks[pos.y*CHUNK_SIDE*CHUNK_SIDE+pos.z*CHUNK_SIDE+pos.x].sides = 255;
 
     for(int i = 0; i < 6; i++)
     {
@@ -240,7 +258,7 @@ void Chunk::generate_block_faces(const glm::vec3& block_pos, const BlockType typ
         if(in_x_limit && in_y_limit && in_z_limit)
         {
             //checks if neighboring block exists
-            if(m_blocks[index].type != 0)
+            if(m_blocks[index].type != AIR)
             {
                 set_face(neighbor_pos, (DIRECTION)(DIRECTION::SIZE-1-i), neighbors_visible);
                 continue;
@@ -262,7 +280,7 @@ void Chunk::generate_block_faces(const glm::vec3& block_pos, const BlockType typ
 
                 Block* neighbor = (Block*) neighbor_chunk->get_block(relative_block_pos);
 
-                if(neighbor->type != 0)
+                if(neighbor->type != AIR)
                     continue;
                 /*std::cout << "Chunk: " << neighbor_chunks[i] 
                             << ", block: " << relative_block_pos.x
@@ -279,12 +297,13 @@ void Chunk::generate_block_faces(const glm::vec3& block_pos, const BlockType typ
                     neighbor->sides &= ~(1<<(DIRECTION::SIZE-1-i));*/
             }//else continue;
         }
+        
         std::cout << i << "\n";
-        this_block.sides |= 1<<i;
+        this_block.sides = this_block.sides | (1<<i); 
         std::cout << std::hex << (int)this_block.sides << std::dec << "\n";
-        std::cout << (int)this_block.type << "\n";
     }
     std::cout << "\n\n\n\n\n";
+    m_blocks_access_mtx.unlock();
 }
 
 const Block* Chunk::get_block(const glm::vec3& pos) const
@@ -311,7 +330,8 @@ void Chunk::set_block(const glm::vec3& pos, const BlockType type)
         if(m_blocks[pos.y*CHUNK_SIDE*CHUNK_SIDE+pos.z*CHUNK_SIDE+pos.x].type == type) return;
 
         m_blocks[pos.y*CHUNK_SIDE*CHUNK_SIDE+pos.z*CHUNK_SIDE+pos.x].type = type;
+        //m_blocks[pos.y*CHUNK_SIDE*CHUNK_SIDE+pos.z*CHUNK_SIDE+pos.x].sides = 255;
         generate_block_faces(pos, type);
+        dirty = true;
     }
-    dirty = true;
 }

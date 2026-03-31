@@ -111,6 +111,7 @@ private:
 
 
     std::array<Block, CHUNK_SIDE*CHUNK_SIDE*CHUNK_SIDE> m_blocks;
+    std::mutex m_blocks_access_mtx;
     
 
     //metadata
