@@ -6,9 +6,10 @@ struct VertexData
 {
     glm::vec3 pos;
     glm::vec2 texture_pos;
-    VertexData(const glm::vec3& p, const glm::vec2& tp)
-    :pos(p), texture_pos(tp) {}
-    VertexData() : VertexData({0, 0, 0}, {0, 0}) {}
+    float texture_id;
+    VertexData(const glm::vec3& p, const glm::vec2& tp, const unsigned int& id)
+    :pos(p), texture_pos(tp), texture_id(id) {}
+    VertexData() : VertexData({0, 0, 0}, {0, 0}, 0U) {}
 };
 
 struct RenderData
@@ -38,6 +39,9 @@ public:
 
     void print_draw_calls();
     void reset_draw_calls() {draw_calls=0;}
+
+    //draw filled block
+    void draw_block(const glm::vec3& pos, const glm::vec3& color);
 
 
 private:

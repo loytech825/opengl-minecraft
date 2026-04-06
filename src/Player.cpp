@@ -85,14 +85,13 @@ void Player::update(GLFWwindow* window, const float dt)
     raytrace_block();
 }
 
-// made with referencing 
-// lodev.org/cgtutor/raycasting.html
-
 std::string vec_to_str(const glm::vec3& vector)
 {
     return "" + std::to_string(vector.x) + ", " + std::to_string(vector.y) + ", " + std::to_string(vector.z);
 }
 
+// made with referencing 
+// lodev.org/cgtutor/raycasting.html
 void Player::raytrace_block()
 {
     //first we need the looking direction vector
@@ -140,6 +139,7 @@ void Player::raytrace_block()
 
     //TODO: add check for block we're in
 
+    //FIXME the ray tracer seems buggy, we can add a visual cue and troubleshoot later
     //side dist keeps track of distance from player pos to next side to be checked
     //std::cout << "Pos: " << vec_to_str(m_position) << "\n";
     //std::cout << "IntPos: " << vec_to_str(int_pos) << "\n";

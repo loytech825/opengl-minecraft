@@ -53,6 +53,9 @@ void ShaderProgram::set_uniform(const std::string& name, glm::vec3 value)
 void ShaderProgram::set_uniform(const std::string& name, glm::vec4 value)
 {glUniform4fv(glGetUniformLocation(m_ID, name.c_str()), 1, &value[0]);} 
 
+void ShaderProgram::set_uniform(const std::string& name, unsigned int count, void* pointer)
+{glUniform1iv(glGetUniformLocation(m_ID, name.c_str()), count, (const GLint*)pointer);}
+
 
 
 void ShaderProgram::compile_shader(const std::filesystem::path& v_path, const std::filesystem::path& f_path)

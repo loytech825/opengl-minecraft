@@ -10,8 +10,6 @@
 #include "Camera.hpp"
 #include "Player.hpp"
 
-//TODO: FIX vertex regenration, produces seemingly random crashes (thread safety?)
-
 World::World(Renderer& r)
 :   m_renderer(r),
     m_to_reload(false),

@@ -83,6 +83,9 @@ void Renderer::set_static_geometry(unsigned int count, VertexData* data)
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void*)offsetof(VertexData, texture_pos));
     glEnableVertexAttribArray(1);
 
+    glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void*)offsetof(VertexData, texture_id));
+    glEnableVertexAttribArray(2);
+
     unsigned int index_count = (count/4)*6;
 
     unsigned int* indices = new unsigned int[index_count];
@@ -113,6 +116,11 @@ void Renderer::render_static_geometry()
 {
     glBindVertexArray(m_static_geometry.VAO);
     glDrawElements(GL_TRIANGLES, m_static_geometry.index_count, GL_UNSIGNED_INT, 0);
+}
+
+void Renderer::draw_block(const glm::vec3& pos, const glm::vec3& color)
+{
+
 }
 
 void Renderer::add_vertex(const VertexData& v)
