@@ -91,15 +91,12 @@ int main(){
     //textures
     TextureAtlas block_atlas({"textures/stone.png", "textures/test.png"}, 16, 16);
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, block_atlas.get_handle());
+    glBindTexture(GL_TEXTURE_2D_ARRAY, block_atlas.get_handle());
 
     glEnable(GL_DEPTH_TEST);
 
     program.bind();
     program.set_uniform("u_texture", 0);
-    program.set_uniform("u_textures_per_side", (int)block_atlas.get_size_textures());
-    program.set_uniform("u_atlas_width", (int)block_atlas.get_atlas_w());
-    program.set_uniform("u_atlas_height", (int)block_atlas.get_atlas_h());
 
     while(!glfwWindowShouldClose(window))
     {

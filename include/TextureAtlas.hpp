@@ -16,14 +16,14 @@ public:
     unsigned int get_handle() {return m_handle;}
 
     //atlas is x by x textures, this function returns x
-    unsigned int get_size_textures() {return m_side_textures;}
-    unsigned int get_atlas_w() {return m_atlas_w;};
-    unsigned int get_atlas_h() {return m_atlas_h;};
+    //unsigned int get_size_textures() {return m_side_textures;}
+    //unsigned int get_atlas_w() {return m_atlas_w;};
+    //unsigned int get_atlas_h() {return m_atlas_h;};
 
 private:
     //corresponds to the opengl texture id
     unsigned int m_handle;
-    unsigned int m_side_textures;
-    unsigned int m_atlas_w;
-    unsigned int m_atlas_h;
+    //unsigned int m_side_textures;
+    //unsigned int m_atlas_w;
+    //unsigned int m_atlas_h;
 };

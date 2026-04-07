@@ -11,24 +11,25 @@ TextureAtlas::TextureAtlas(const std::vector<std::string>& textures, int img_w, 
 {
 
     //total number of pixels
-    unsigned int px_count = img_w*img_h*textures.size();
+    //unsigned int px_count = img_w*img_h*textures.size();
 
-    float atlas_size = sqrt(textures.size());
+    //float atlas_size = sqrt(textures.size());
 
     //get int part of atlas size
     //we make a sqare large enough to hold all the textures
-    m_side_textures = ceil(atlas_size);
+    //m_side_textures = ceil(atlas_size);
 
-    unsigned int atlas_width = img_w*m_side_textures;
+    /*unsigned int atlas_width = img_w*m_side_textures;
     unsigned int atlas_height = img_h*m_side_textures;
 
     m_atlas_w = atlas_width;
-    m_atlas_h = atlas_height;
+    m_atlas_h = atlas_height;*/
 
     std::vector<unsigned char> atlas_data;
     //we will be storing in RGBA format
-    atlas_data.reserve(atlas_width*atlas_height*4);
+    atlas_data.reserve(img_w*img_h*4);
 
+    /*old code for regular atlas
     //load each texture and store its pixels
     for(int i = 0; i < textures.size(); i++)
     {
@@ -69,5 +70,43 @@ TextureAtlas::TextureAtlas(const std::vector<std::string>& textures, int img_w, 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, atlas_width, atlas_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, atlas_data.data());
-    //glGenerateMipmap(GL_TEXTURE_2D);
+    //glGenerateMipmap(GL_TEXTURE_2D);*/
+
+
+    /*new code for arraytexture
+        For data layout refer to
+        https://wikis.khronos.org/opengl/Array_Texture
+    */
+
+    for(int i = 0; i < textures.size(); i++)
+    {
+        int width, height, nr_channels;
+        stbi_set_flip_vertically_on_load(true);
+        unsigned char *data = stbi_load(std::filesystem::path(textures[i]).c_str(), &width, &height, &nr_channels, 0);
+
+        const int& atlas_size = atlas_data.size(); 
+        
+        for(int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++){
+
+                int data_R = (y*width+x)*nr_channels;
+                atlas_data.emplace_back(data[data_R]); //R
+                atlas_data.emplace_back(data[data_R + 1]); //G
+                atlas_data.emplace_back(data[data_R + 2]); //B
+
+                if(nr_channels == 4) atlas_data.emplace_back(data[data_R + 3]); //A
+                else atlas_data.emplace_back(255);
+            }
+        }
+    }
+
+    glGenTextures(1, &m_handle);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, m_handle);
+
+    glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA, img_w, img_h, textures.size(), 0, GL_RGBA, GL_UNSIGNED_BYTE, atlas_data.data());
+
+    glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
 }
