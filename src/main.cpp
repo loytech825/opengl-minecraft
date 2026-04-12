@@ -117,6 +117,12 @@ int main(){
         program.set_uniform("transform", player.get_transform());
         world.render();
 
+        r.init_batch();
+        player.draw(&r);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        r.flush();
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
         glfwSwapBuffers(window);
         glfwPollEvents();
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
+#include "Defines.hpp"
 
 struct FaceData;
 struct VertexData
@@ -45,6 +46,8 @@ public:
 
 
 private:
+
+    void add_quad(const glm::vec3& block_pos, DIRECTION dir);
 
     //used for dynamic rendering
     unsigned int m_VAO;

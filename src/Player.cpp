@@ -1,6 +1,8 @@
 #include "Player.hpp"
 #include "World.hpp"
 #include "Chunk.hpp"
+#include "Renderer.hpp"
+
 #include <GLFW/glfw3.h>
 
 #include <iostream>
@@ -190,7 +192,12 @@ void Player::raytrace_block()
     m_targeted_block = looking_at;
     m_targeted_block_pos = int_pos;
 
-    std::cout << "Looking at: ";
-    if(looking_at) std::cout << vec_to_str(m_targeted_block_pos) << ", face: " << (int)m_targeted_block_face <<"\n";
-    else std::cout << "nothing.\n";
+    //std::cout << "Looking at: ";
+    //if(looking_at) std::cout << vec_to_str(m_targeted_block_pos) << ", face: " << (int)m_targeted_block_face <<"\n";
+    //else std::cout << "nothing.\n";
+}
+
+void Player::draw(Renderer* renderer)
+{
+    renderer->draw_block(m_targeted_block_pos, {0, 0, 0});
 }

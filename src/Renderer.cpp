@@ -6,7 +6,7 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 
-constexpr unsigned int MAX_FACES = 130000;
+constexpr unsigned int MAX_FACES = 4000;
 constexpr unsigned int MAX_VERTICES = MAX_FACES*4;
 constexpr unsigned int MAX_INDICES = MAX_FACES*6;
 
@@ -24,8 +24,14 @@ Renderer::Renderer()
     glBufferData(GL_ARRAY_BUFFER, MAX_VERTICES*sizeof(VertexData), nullptr, GL_DYNAMIC_DRAW);
 
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)offsetof(VertexData, pos));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void*)offsetof(VertexData, pos));
     glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void*)offsetof(VertexData, texture_pos));
+    glEnableVertexAttribArray(1);
+
+    glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void*)offsetof(VertexData, texture_id));
+    glEnableVertexAttribArray(2);
 
     //since we're drawing quads, indices are always in the same order
     unsigned int* indices = new unsigned int[MAX_INDICES];
@@ -120,10 +126,54 @@ void Renderer::render_static_geometry()
 
 void Renderer::draw_block(const glm::vec3& pos, const glm::vec3& color)
 {
-    //add_vertex(VertexData(pos + glm::vec3(0, 0, 0), {0, 0}, 0));
-    //add_vertex(VertexData(pos + glm::vec3(0, 0, 1), {0, 1}, 0));
-    //add_vertex(VertexData(pos + glm::vec3(1, 0, 1), {1, 1}, 0));
-    //add_vertex(VertexData(pos + glm::vec3(1, 0, 0), {0, 0}, 0));
+    add_quad(pos, UP);
+    add_quad(pos, DOWN);
+    add_quad(pos, EAST);
+    add_quad(pos, WEST);
+    add_quad(pos, NORTH);
+    add_quad(pos, SOUTH);
+}
+
+void Renderer::add_quad(const glm::vec3& block_pos, DIRECTION dir)
+{
+    //slightly larger so it renders over regular blocks
+    constexpr float offset = 0.01;
+    constexpr float zero = -offset;
+    constexpr float one = 1+offset;
+
+    float X = zero, Y = zero, Z = zero;
+
+    switch(dir)
+    {
+        case UP:
+            Y = one;
+        case DOWN:
+            add_vertex(VertexData(block_pos+glm::vec3(zero, Y, zero), glm::vec2(0, 0), 0));
+            add_vertex(VertexData(block_pos+glm::vec3(zero, Y, one), glm::vec2(0, 1), 0));
+            add_vertex(VertexData(block_pos+glm::vec3(one, Y, one), glm::vec2(1, 1), 0));
+            add_vertex(VertexData(block_pos+glm::vec3(one, Y, zero), glm::vec2(1, 0), 0));
+            break;
+
+        case NORTH:
+            X = one;
+        case SOUTH:
+            add_vertex(VertexData(block_pos+glm::vec3(X, zero, zero), glm::vec2(0, 0), 0));
+            add_vertex(VertexData(block_pos+glm::vec3(X, zero, one), glm::vec2(0, 1), 0));
+            add_vertex(VertexData(block_pos+glm::vec3(X, one, one), glm::vec2(1, 1), 0));
+            add_vertex(VertexData(block_pos+glm::vec3(X, one, zero), glm::vec2(1, 0), 0));
+            break;
+        
+        case EAST:
+            Z = one;
+        case WEST:
+            add_vertex(VertexData(block_pos+glm::vec3(zero, zero, Z), glm::vec2(0, 0), 0));
+            add_vertex(VertexData(block_pos+glm::vec3(zero, one, Z), glm::vec2(0, 1), 0));
+            add_vertex(VertexData(block_pos+glm::vec3(one, one, Z), glm::vec2(1, 1), 0));
+            add_vertex(VertexData(block_pos+glm::vec3(one, zero, Z), glm::vec2(1, 0), 0));
+            break;
+    }
+
+    indices_to_draw += 6;
 }
 
 void Renderer::add_vertex(const VertexData& v)
@@ -135,6 +185,8 @@ void Renderer::add_vertex(const VertexData& v)
     }
 
     currentPtr->pos = v.pos;
+    currentPtr->texture_id = v.texture_id;
+    currentPtr->texture_pos = v.texture_pos;
     currentPtr++;
 }
 
@@ -159,11 +211,17 @@ void Renderer::add_vertices(unsigned int count, const VertexData* data)
 
 void Renderer::flush()
 { 
+
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE_STRIP);
+
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, MAX_VERTICES*sizeof(VertexData), bufferPtr);
 
     glBindVertexArray(m_VAO);
     glDrawElements(GL_TRIANGLES, indices_to_draw, GL_UNSIGNED_INT, 0);
+    std::cout << indices_to_draw << "i\n";
+
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
 }
 
 Renderer::~Renderer()

@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include "OpenGL_support/VAO.hpp"
 #include "Renderer.hpp"
+#include "Defines.hpp"
 
 constexpr int CHUNK_SIDE = 16;
 
@@ -24,12 +25,6 @@ struct Block
     Block(BlockType tp) : Block(tp, 0){};
     Block(BlockType tp, const unsigned char s) : type(tp), sides(s){};
     Block(): type(AIR), sides(0){};
-};
-
-//configured so opposite side is SIZE-side-1
-enum DIRECTION : unsigned char
-{
-    UP = 0, NORTH, EAST, WEST, SOUTH, DOWN, SIZE
 };
 
 struct FaceData

@@ -7,6 +7,7 @@ constexpr int REACH_LENGTH = 5;
 class GLFWwindow;
 class World;
 class Block;
+class Renderer;
 
 
 class Player
@@ -22,6 +23,8 @@ public:
     //test of look at raytrace
     void raytrace_block();
     void update(GLFWwindow* window, const float dt);
+    void draw(Renderer* renderer);
+
 private:
     Camera m_camera;
     float m_speed;
