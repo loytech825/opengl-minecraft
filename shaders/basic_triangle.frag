@@ -41,6 +41,6 @@ void main()
 {
 
     //textures start from bottom left to top right
-
-    FragColor = texture(u_texture, vec3(textureCoords.xy, 0.0f));
+    //                                                  TEXid
+    FragColor = texture(u_texture, vec3(textureCoords.xy, texID));
 }

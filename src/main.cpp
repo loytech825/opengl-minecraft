@@ -89,7 +89,7 @@ int main(){
     double delta_time = 0;
 
     //textures
-    TextureAtlas block_atlas({"textures/stone.png", "textures/test.png"}, 16, 16);
+    TextureAtlas block_atlas({"textures/test.png", "textures/stone.png"}, 16, 16);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D_ARRAY, block_atlas.get_handle());
 

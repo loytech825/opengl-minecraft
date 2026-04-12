@@ -120,7 +120,10 @@ void Renderer::render_static_geometry()
 
 void Renderer::draw_block(const glm::vec3& pos, const glm::vec3& color)
 {
-
+    //add_vertex(VertexData(pos + glm::vec3(0, 0, 0), {0, 0}, 0));
+    //add_vertex(VertexData(pos + glm::vec3(0, 0, 1), {0, 1}, 0));
+    //add_vertex(VertexData(pos + glm::vec3(1, 0, 1), {1, 1}, 0));
+    //add_vertex(VertexData(pos + glm::vec3(1, 0, 0), {0, 0}, 0));
 }
 
 void Renderer::add_vertex(const VertexData& v)
