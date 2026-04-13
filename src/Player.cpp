@@ -5,6 +5,7 @@
 
 #include <GLFW/glfw3.h>
 
+
 #include <iostream>
 
 Player::Player(World& w)
@@ -98,8 +99,7 @@ void Player::raytrace_block()
 {
     //first we need the looking direction vector
     const auto ray = m_camera.front;
-    const auto max_distance = ray*(float)REACH_LENGTH;
-
+    
     glm::vec3 int_pos = glm::floor(m_camera.position);
 
     //std::cout << "Looking vector: " << ray.x << ", " << ray.y << ", " << ray.z << "\n";
@@ -121,25 +121,26 @@ void Player::raytrace_block()
 
     //if this happens we are right on the edge, so we move 1 block over
     if(side_dist_X == 0)
-    { int_pos.x += step_X; side_dist_X += delta_dist_X; }
+    { /*int_pos.x += step_X;*/ side_dist_X += delta_dist_X; }
 
     if(ray.y < 0)   {side_dist_Y = (m_position.y - int_pos.y)*delta_dist_Y;      step_Y = -1;}
     else            {side_dist_Y = (int_pos.y + 1 - m_position.y)*delta_dist_Y;  step_Y = 1;}
 
     if(side_dist_Y == 0)
-    { int_pos.y += step_Y; side_dist_Y += delta_dist_Y; }
+    { /*int_pos.y += step_Y;*/ side_dist_Y += delta_dist_Y; }
 
     if(ray.z < 0)   {side_dist_Z = (m_position.z - int_pos.z)*delta_dist_Z;      step_Z = -1;}
     else            {side_dist_Z = (int_pos.z + 1 - m_position.z)*delta_dist_Z;  step_Z = 1;}
 
     if(side_dist_Y == 0)
-    { int_pos.y += step_Y; side_dist_Y += delta_dist_Y; }
+    { /*int_pos.y += step_Y;*/ side_dist_Y += delta_dist_Y; }
 
     glm::vec3 side_dist{side_dist_X, side_dist_Y, side_dist_Z};
 
-    float amount_traveled = 0;
 
-    //TODO: add check for block we're in
+    //std::cout << "X: " << delta_dist_X << ", Y: " << delta_dist_Y << ", Z: " << delta_dist_Z << "\n";
+
+    float amount_traveled = 0;
 
     //FIXME the ray tracer seems buggy, we can add a visual cue and troubleshoot later
     //side dist keeps track of distance from player pos to next side to be checked
@@ -161,8 +162,7 @@ void Player::raytrace_block()
         {
             //we move for one block in X direction so the ray gets delta_dist_X longer
             side_dist.x += delta_dist_X;
-            int_pos.x += step_X;  
-            amount_traveled += delta_dist_X;
+            int_pos.x += step_X; 
             m_targeted_block_face = step_X > 0 ? SOUTH : NORTH;
             //std::cout << "X\n";
         }
@@ -171,7 +171,6 @@ void Player::raytrace_block()
         {
             side_dist.y += delta_dist_Y;
             int_pos.y += step_Y;
-            amount_traveled += delta_dist_Y;
             m_targeted_block_face = step_Y > 0 ? DOWN : UP;
             //std::cout << "Y\n";
         }
@@ -180,13 +179,13 @@ void Player::raytrace_block()
         {
             side_dist.z += delta_dist_Z;
             int_pos.z += step_Z;
-            amount_traveled += delta_dist_Z;
             m_targeted_block_face = step_Z > 0 ? WEST : EAST;
             //std::cout << "Z\n";
         }
         looking_at = m_world.get_block(int_pos);
+        amount_traveled = glm::length(int_pos-m_camera.position);
         //std::cout << "Amount travelled: " << amount_traveled << "\n";
-        //std::cout << "Block found: " << int_pos.x << ", " << int_pos.y << ", " << int_pos.z << "\n"; 
+        //std::cout << "Block found: " << int_pos.x << ", " << int_pos.y << ", " << int_pos.z << "\n";
     }
 
     m_targeted_block = looking_at;
@@ -199,5 +198,6 @@ void Player::raytrace_block()
 
 void Player::draw(Renderer* renderer)
 {
-    renderer->draw_block(m_targeted_block_pos, {0, 0, 0});
+    if(m_targeted_block && m_targeted_block->type != 0)
+        renderer->draw_block(m_targeted_block_pos, {0, 0, 0});
 }

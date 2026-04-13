@@ -219,7 +219,6 @@ void Renderer::flush()
 
     glBindVertexArray(m_VAO);
     glDrawElements(GL_TRIANGLES, indices_to_draw, GL_UNSIGNED_INT, 0);
-    std::cout << indices_to_draw << "i\n";
 
     //glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
 }
