@@ -92,6 +92,9 @@ void Renderer::set_static_geometry(unsigned int count, VertexData* data)
     glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void*)offsetof(VertexData, texture_id));
     glEnableVertexAttribArray(2);
 
+    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void*)offsetof(VertexData, normal_direction));
+    glEnableVertexAttribArray(3);
+
     unsigned int index_count = (count/4)*6;
 
     unsigned int* indices = new unsigned int[index_count];
@@ -148,28 +151,28 @@ void Renderer::add_quad(const glm::vec3& block_pos, DIRECTION dir)
         case UP:
             Y = one;
         case DOWN:
-            add_vertex(VertexData(block_pos+glm::vec3(zero, Y, zero), glm::vec2(0, 0), 0));
-            add_vertex(VertexData(block_pos+glm::vec3(zero, Y, one), glm::vec2(0, 1), 0));
-            add_vertex(VertexData(block_pos+glm::vec3(one, Y, one), glm::vec2(1, 1), 0));
-            add_vertex(VertexData(block_pos+glm::vec3(one, Y, zero), glm::vec2(1, 0), 0));
+            add_vertex(VertexData(block_pos+glm::vec3(zero, Y, zero),   glm::vec2(0, 0), 0, 0));
+            add_vertex(VertexData(block_pos+glm::vec3(zero, Y, one),    glm::vec2(0, 1), 0, 0));
+            add_vertex(VertexData(block_pos+glm::vec3(one, Y, one),     glm::vec2(1, 1), 0, 0));
+            add_vertex(VertexData(block_pos+glm::vec3(one, Y, zero),    glm::vec2(1, 0), 0, 0));
             break;
 
         case NORTH:
             X = one;
         case SOUTH:
-            add_vertex(VertexData(block_pos+glm::vec3(X, zero, zero), glm::vec2(0, 0), 0));
-            add_vertex(VertexData(block_pos+glm::vec3(X, zero, one), glm::vec2(0, 1), 0));
-            add_vertex(VertexData(block_pos+glm::vec3(X, one, one), glm::vec2(1, 1), 0));
-            add_vertex(VertexData(block_pos+glm::vec3(X, one, zero), glm::vec2(1, 0), 0));
+            add_vertex(VertexData(block_pos+glm::vec3(X, zero, zero),   glm::vec2(0, 0), 0, 0));
+            add_vertex(VertexData(block_pos+glm::vec3(X, zero, one),    glm::vec2(0, 1), 0, 0));
+            add_vertex(VertexData(block_pos+glm::vec3(X, one, one),     glm::vec2(1, 1), 0, 0));
+            add_vertex(VertexData(block_pos+glm::vec3(X, one, zero),    glm::vec2(1, 0), 0, 0));
             break;
         
         case EAST:
             Z = one;
         case WEST:
-            add_vertex(VertexData(block_pos+glm::vec3(zero, zero, Z), glm::vec2(0, 0), 0));
-            add_vertex(VertexData(block_pos+glm::vec3(zero, one, Z), glm::vec2(0, 1), 0));
-            add_vertex(VertexData(block_pos+glm::vec3(one, one, Z), glm::vec2(1, 1), 0));
-            add_vertex(VertexData(block_pos+glm::vec3(one, zero, Z), glm::vec2(1, 0), 0));
+            add_vertex(VertexData(block_pos+glm::vec3(zero, zero, Z),   glm::vec2(0, 0), 0, 0));
+            add_vertex(VertexData(block_pos+glm::vec3(zero, one, Z),    glm::vec2(0, 1), 0, 0));
+            add_vertex(VertexData(block_pos+glm::vec3(one, one, Z),     glm::vec2(1, 1), 0, 0));
+            add_vertex(VertexData(block_pos+glm::vec3(one, zero, Z),    glm::vec2(1, 0), 0, 0));
             break;
     }
 

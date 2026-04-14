@@ -43,28 +43,28 @@ void generate_side_vertices(DIRECTION dir, const glm::vec3& block_pos, std::vect
         case UP:
             Y = 1;
         case DOWN:
-            array.emplace_back(block_pos+glm::vec3(0, Y, 0), glm::vec2(0, 0), (unsigned int)type);
-            array.emplace_back(block_pos+glm::vec3(0, Y, 1), glm::vec2(0, 1), (unsigned int)type);
-            array.emplace_back(block_pos+glm::vec3(1, Y, 1), glm::vec2(1, 1), (unsigned int)type);
-            array.emplace_back(block_pos+glm::vec3(1, Y, 0), glm::vec2(1, 0), (unsigned int)type);
+            array.emplace_back(block_pos+glm::vec3(0, Y, 0), glm::vec2(0, 0), (unsigned int)type, (float)dir);
+            array.emplace_back(block_pos+glm::vec3(0, Y, 1), glm::vec2(0, 1), (unsigned int)type, (float)dir);
+            array.emplace_back(block_pos+glm::vec3(1, Y, 1), glm::vec2(1, 1), (unsigned int)type, (float)dir);
+            array.emplace_back(block_pos+glm::vec3(1, Y, 0), glm::vec2(1, 0), (unsigned int)type, (float)dir);
             break;
 
         case NORTH:
             X = 1;
         case SOUTH:
-            array.emplace_back(block_pos+glm::vec3(X, 0, 0), glm::vec2(0, 0), (unsigned int)type);
-            array.emplace_back(block_pos+glm::vec3(X, 0, 1), glm::vec2(0, 1), (unsigned int)type);
-            array.emplace_back(block_pos+glm::vec3(X, 1, 1), glm::vec2(1, 1), (unsigned int)type);
-            array.emplace_back(block_pos+glm::vec3(X, 1, 0), glm::vec2(1, 0), (unsigned int)type);
+            array.emplace_back(block_pos+glm::vec3(X, 0, 0), glm::vec2(0, 0), (unsigned int)type, (float)dir);
+            array.emplace_back(block_pos+glm::vec3(X, 0, 1), glm::vec2(0, 1), (unsigned int)type, (float)dir);
+            array.emplace_back(block_pos+glm::vec3(X, 1, 1), glm::vec2(1, 1), (unsigned int)type, (float)dir);
+            array.emplace_back(block_pos+glm::vec3(X, 1, 0), glm::vec2(1, 0), (unsigned int)type, (float)dir);
             break;
         
         case EAST:
             Z = 1;
         case WEST:
-            array.emplace_back(block_pos+glm::vec3(0, 0, Z), glm::vec2(0, 0), (unsigned int)type);
-            array.emplace_back(block_pos+glm::vec3(0, 1, Z), glm::vec2(0, 1), (unsigned int)type);
-            array.emplace_back(block_pos+glm::vec3(1, 1, Z), glm::vec2(1, 1), (unsigned int)type);
-            array.emplace_back(block_pos+glm::vec3(1, 0, Z), glm::vec2(1, 0), (unsigned int)type);
+            array.emplace_back(block_pos+glm::vec3(0, 0, Z), glm::vec2(0, 0), (unsigned int)type, (float)dir);
+            array.emplace_back(block_pos+glm::vec3(0, 1, Z), glm::vec2(0, 1), (unsigned int)type, (float)dir);
+            array.emplace_back(block_pos+glm::vec3(1, 1, Z), glm::vec2(1, 1), (unsigned int)type, (float)dir);
+            array.emplace_back(block_pos+glm::vec3(1, 0, Z), glm::vec2(1, 0), (unsigned int)type, (float)dir);
             break;
     }
 }

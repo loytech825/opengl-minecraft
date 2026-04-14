@@ -6,6 +6,8 @@ in vec3 outColor;
 in vec2 textureCoords;
 in float texID;
 
+in vec3 normal;
+
 uniform sampler2DArray u_texture;
 
 //atlas data
@@ -40,7 +42,10 @@ uniform int u_atlas_height;
 void main()
 {
 
+    //normal test
+    vec3 n = vec3(0.5, 0.5, 0.5) + 0.5*normal;
+
     //textures start from bottom left to top right
     //                                                  TEXid
-    FragColor = texture(u_texture, vec3(textureCoords.xy, texID));
+    FragColor = texture(u_texture, vec3(textureCoords.xy, texID)) * vec4(n.xyz, 1);
 }

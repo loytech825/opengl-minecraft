@@ -8,9 +8,10 @@ struct VertexData
     glm::vec3 pos;
     glm::vec2 texture_pos;
     float texture_id;
-    VertexData(const glm::vec3& p, const glm::vec2& tp, const unsigned int& id)
-    :pos(p), texture_pos(tp), texture_id(id) {}
-    VertexData() : VertexData({0, 0, 0}, {0, 0}, 0U) {}
+    float normal_direction; // corresponds to DIRECTION of the notmal
+    VertexData(const glm::vec3& p, const glm::vec2& tp, const unsigned int& id, const float& normal)
+    :pos(p), texture_pos(tp), texture_id(id), normal_direction(normal) {}
+    VertexData() : VertexData({0, 0, 0}, {0, 0}, 0U, 0) {}
 };
 
 struct RenderData
